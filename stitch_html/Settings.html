@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings | TurfMaster Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffc0ac",
+                        "surface-container-high": "#242c25",
+                        "surface-container-low": "#161d17",
+                        "on-primary-container": "#005027",
+                        "on-background": "#dce5da",
+                        "on-primary": "#003919",
+                        "on-secondary-container": "#003115",
+                        "surface-container-highest": "#2f372f",
+                        "primary": "#54e98a",
+                        "on-primary-fixed-variant": "#005228",
+                        "surface-dim": "#0e150f",
+                        "inverse-primary": "#006d37",
+                        "on-secondary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "secondary-container": "#25a55a",
+                        "secondary-fixed": "#83fba5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2b322b",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-secondary": "#003919",
+                        "surface-bright": "#333b34",
+                        "surface-container-lowest": "#09100a",
+                        "on-tertiary-container": "#772e14",
+                        "primary-fixed": "#6bfe9c",
+                        "on-surface": "#dce5da",
+                        "background": "#0e150f",
+                        "surface-variant": "#2f372f",
+                        "primary-container": "#2ecc71",
+                        "on-primary-fixed": "#00210c",
+                        "primary-fixed-dim": "#4ae183",
+                        "outline": "#869486",
+                        "surface-tint": "#4ae183",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "outline-variant": "#3d4a3e",
+                        "surface": "#0e150f",
+                        "tertiary-container": "#ff9875",
+                        "on-surface-variant": "#bbcbbb",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#793015",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container": "#1a211b",
+                        "inverse-surface": "#dce5da",
+                        "on-secondary-fixed-variant": "#005227",
+                        "secondary": "#66dd8b",
+                        "on-tertiary": "#5b1a02"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e150f;
+            color: #dce5da;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md z-50">
+<div class="mb-xl px-4">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="font-label-sm text-on-surface-variant tracking-widest uppercase">Elite Performance</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="stadium">stadium</span>
+<span>Turfs</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+<span>Slots</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span>Bookings</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span>Coupons</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1 scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-sm text-error hover:bg-error-container/10 transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 z-40 w-full flex justify-between items-center h-16 px-gutter ml-64 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<h2 class="font-headline-md text-headline-md text-primary">Settings</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-1.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-body-md w-64" placeholder="Search settings..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-gutter max-w-7xl">
+<!-- Profile Settings Bento Section -->
+<section class="mb-lg">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="manage_accounts">manage_accounts</span>
+<h3 class="font-headline-md text-headline-md">Profile Settings</h3>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Business Info Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border border-outline-variant rounded-2xl p-md">
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-base col-span-2 md:col-span-1">
+<label class="font-label-sm text-on-surface-variant">Business Name</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="text" value="Apex Arena"/>
+</div>
+<div class="space-y-base col-span-2 md:col-span-1">
+<label class="font-label-sm text-on-surface-variant">Contact Email</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="email" value="ops@apexarena.pro"/>
+</div>
+<div class="space-y-base col-span-2">
+<label class="font-label-sm text-on-surface-variant">Business Description</label>
+<textarea class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none" rows="3">Elite multi-sport facility specializing in high-performance synthetic turf rentals and professional coaching clinics.</textarea>
+</div>
+</div>
+</div>
+<!-- Logo Upload Card -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low border border-outline-variant rounded-2xl p-md flex flex-col items-center justify-center text-center">
+<div class="relative group">
+<img class="w-32 h-32 rounded-full object-cover border-4 border-outline-variant group-hover:border-primary transition-colors" data-alt="A professional athletic brand logo displayed on a high-contrast circular profile placeholder. The lighting is crisp and studio-quality, emphasizing sharp lines and a modern, high-performance aesthetic. The background consists of dark graphite textures common in elite sports facility branding. The image conveys mastery, discipline, and corporate sports excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1HW9M6uYksAtBXlNk3tASuYRK-7gUf6DBZGHlnwruAUp8qXYiJxaHYmeliZjX0tZP5fpKdW8ZUlK84TfUr-yLy6cHVY4a7fsoNiCvEpbjrQXxYDL14U4Uvr9177nX8YO26NSoDnpHv1y_VxPyTfisTdu_hMAl53CQgxp7-nnEM_l4V8Rc8EKmayA0EujqXBvT-IJIiPXXPT-xO-piJgPkrLmhXQHUpckaM8Fhnz7Z5IqNvr-tAP_oZ9tdM22fJsKqSms4GYButctN"/>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span>
+</button>
+</div>
+<h4 class="mt-md font-headline-md text-primary">Business Logo</h4>
+<p class="text-on-surface-variant text-sm mt-1">PNG, JPG up to 5MB</p>
+<button class="mt-md border border-outline-variant px-6 py-2 rounded-lg hover:bg-surface-container-highest transition-colors">Replace Logo</button>
+</div>
+</div>
+</section>
+<!-- Turf & Booking Rules Section -->
+<section class="mb-lg">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="sports_soccer">sports_soccer</span>
+<h3 class="font-headline-md text-headline-md">Turf Settings</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Pricing Rules -->
+<div class="bg-surface-container border border-outline-variant rounded-2xl p-md hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-sm mb-base">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
+<h4 class="font-headline-sm font-bold">Default Pricing</h4>
+</div>
+<div class="space-y-4 mt-md">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+<span class="text-on-surface-variant">Hourly Rate</span>
+<span class="text-primary font-bold">$120/hr</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+<span class="text-on-surface-variant">Peak Premium</span>
+<span class="text-secondary font-bold">+25%</span>
+</div>
+<button class="w-full text-center text-sm font-bold uppercase tracking-widest text-primary pt-2">Edit Schedule</button>
+</div>
+</div>
+<!-- Booking Rules -->
+<div class="bg-surface-container border border-outline-variant rounded-2xl p-md hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-sm mb-base">
+<span class="material-symbols-outlined text-secondary" data-icon="rule">rule</span>
+<h4 class="font-headline-sm font-bold">Booking Logic</h4>
+</div>
+<div class="space-y-4 mt-md">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Max Days Advance</span>
+<span class="font-bold">30 Days</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Buffer Time</span>
+<span class="font-bold">15 Mins</span>
+</div>
+<div class="flex items-center gap-2 mt-md">
+<div class="w-10 h-5 bg-primary rounded-full flex items-center justify-end px-1">
+<div class="w-3 h-3 bg-on-primary rounded-full"></div>
+</div>
+<span class="text-sm">Auto-approve Bookings</span>
+</div>
+</div>
+</div>
+<!-- Cancellation Policy -->
+<div class="bg-surface-container border border-outline-variant rounded-2xl p-md hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-sm mb-base">
+<span class="material-symbols-outlined text-secondary" data-icon="cancel">cancel</span>
+<h4 class="font-headline-sm font-bold">Cancellation</h4>
+</div>
+<div class="space-y-4 mt-md">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Full Refund Period</span>
+<span class="font-bold">24 Hours</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Late Fee</span>
+<span class="text-error font-bold">50% Charge</span>
+</div>
+<div class="p-3 bg-surface-dim rounded-lg text-xs text-on-surface-variant italic mt-2">
+                            "Policy applies to all turf types unless specifically overridden."
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Preferences Section (Notifications & Security) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-xl">
+<!-- Notifications Card -->
+<section class="bg-surface-container-low border border-outline-variant rounded-2xl overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-headline-md text-headline-md">Notifications</h3>
+</div>
+<button class="text-xs font-bold text-primary uppercase tracking-tighter">Toggle All</button>
+</div>
+<div class="divide-y divide-outline-variant/30">
+<div class="p-md flex items-center justify-between">
+<div>
+<h5 class="font-bold">Email Alerts</h5>
+<p class="text-sm text-on-surface-variant">Daily booking summaries and reports.</p>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full flex items-center justify-end px-1">
+<div class="w-4 h-4 bg-on-primary rounded-full"></div>
+</div>
+</div>
+<div class="p-md flex items-center justify-between">
+<div>
+<h5 class="font-bold">SMS Notifications</h5>
+<p class="text-sm text-on-surface-variant">Instant alerts for new high-value bookings.</p>
+</div>
+<div class="w-12 h-6 bg-outline-variant rounded-full flex items-center justify-start px-1">
+<div class="w-4 h-4 bg-surface rounded-full"></div>
+</div>
+</div>
+<div class="p-md flex items-center justify-between">
+<div>
+<h5 class="font-bold">Push Notifications</h5>
+<p class="text-sm text-on-surface-variant">Mobile app alerts for field maintenance.</p>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full flex items-center justify-end px-1">
+<div class="w-4 h-4 bg-on-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Security Card -->
+<section class="bg-surface-container-low border border-outline-variant rounded-2xl overflow-hidden">
+<div class="p-md border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h3 class="font-headline-md text-headline-md">Security</h3>
+</div>
+</div>
+<div class="p-md space-y-md">
+<div>
+<div class="flex justify-between mb-sm">
+<h5 class="font-bold">Password</h5>
+<button class="text-primary text-sm font-bold">Change</button>
+</div>
+<p class="text-sm text-on-surface-variant">Last updated 14 days ago. Strong password enabled.</p>
+</div>
+<div class="p-4 bg-surface-container rounded-xl border border-primary/20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-3xl text-secondary" data-icon="verified_user" data-weight="fill">verified_user</span>
+<div>
+<h5 class="font-bold">Two-Factor Authentication</h5>
+<p class="text-xs text-on-surface-variant">Add an extra layer of security to your turf management account.</p>
+</div>
+</div>
+<button class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-lg text-sm font-bold">ENABLE</button>
+</div>
+</div>
+<div>
+<h5 class="font-bold mb-xs">Active Sessions</h5>
+<ul class="text-xs text-on-surface-variant space-y-2">
+<li class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                                Chrome on Windows (Current) — Portland, OR
+                            </li>
+<li class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+                                TurfMaster Pro Mobile App — iPhone 15 Pro
+                            </li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<!-- Danger Zone -->
+<section class="bg-error-container/10 border border-error/20 rounded-2xl p-md flex items-center justify-between">
+<div>
+<h4 class="font-bold text-error">Danger Zone</h4>
+<p class="text-sm text-on-surface-variant">Deleting your account will permanently remove all booking history and turf data.</p>
+</div>
+<button class="border border-error text-error px-6 py-2 rounded-lg hover:bg-error/10 transition-colors font-bold">Delete Account</button>
+</section>
+<!-- Bottom Actions -->
+<div class="mt-xl pt-lg border-t border-outline-variant flex justify-end gap-md">
+<button class="px-8 py-3 rounded-lg border border-outline-variant font-bold hover:bg-surface-container-highest transition-colors">Discard Changes</button>
+<button class="px-8 py-3 rounded-lg bg-primary text-on-primary font-bold shadow-[0_0_15px_rgba(84,233,138,0.3)] hover:scale-[1.02] transition-transform">Save Settings</button>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications | TurfMaster Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffc0ac",
+                        "surface-container-high": "#242c25",
+                        "surface-container-low": "#161d17",
+                        "on-primary-container": "#005027",
+                        "on-background": "#dce5da",
+                        "on-primary": "#003919",
+                        "on-secondary-container": "#003115",
+                        "surface-container-highest": "#2f372f",
+                        "primary": "#54e98a",
+                        "on-primary-fixed-variant": "#005228",
+                        "surface-dim": "#0e150f",
+                        "inverse-primary": "#006d37",
+                        "on-secondary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "secondary-container": "#25a55a",
+                        "secondary-fixed": "#83fba5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2b322b",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-secondary": "#003919",
+                        "surface-bright": "#333b34",
+                        "surface-container-lowest": "#09100a",
+                        "on-tertiary-container": "#772e14",
+                        "primary-fixed": "#6bfe9c",
+                        "on-surface": "#dce5da",
+                        "background": "#0e150f",
+                        "surface-variant": "#2f372f",
+                        "primary-container": "#2ecc71",
+                        "on-primary-fixed": "#00210c",
+                        "primary-fixed-dim": "#4ae183",
+                        "outline": "#869486",
+                        "surface-tint": "#4ae183",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "outline-variant": "#3d4a3e",
+                        "surface": "#0e150f",
+                        "tertiary-container": "#ff9875",
+                        "on-surface-variant": "#bbcbbb",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#793015",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container": "#1a211b",
+                        "inverse-surface": "#dce5da",
+                        "on-secondary-fixed-variant": "#005227",
+                        "secondary": "#66dd8b",
+                        "on-tertiary": "#5b1a02"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e150f;
+            color: #dce5da;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background">
+<!-- SideNavBar Shell -->
+<nav class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md z-50">
+<div class="mb-xl px-4">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="text-on-surface-variant font-label-sm">Elite Performance</p>
+</div>
+<div class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">stadium</span>
+<span class="font-body-md text-body-md">Turfs</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-body-md text-body-md">Slots</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-body-md text-body-md">Bookings</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Customers</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-body-md text-body-md">Coupons</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<!-- Active State Navigation -->
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-body-md text-body-md">Notifications</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-md px-4 flex flex-col gap-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-body-md text-body-md">Profile</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface transition-colors mt-2" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md text-body-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 z-40 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center h-16 px-gutter ml-64 max-w-[calc(100%-16rem)]">
+<h2 class="font-headline-md text-headline-md text-primary">Notifications</h2>
+<div class="flex items-center gap-md">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all w-64 text-body-md" placeholder="Search broadcasts..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20">help</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-64 p-gutter pt-lg">
+<div class="max-w-6xl mx-auto">
+<!-- Actions Bar -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Communication Hub</h3>
+<p class="text-on-surface-variant text-body-md">Manage your automated reminders and campaign broadcasts.</p>
+</div>
+<button class="bg-primary text-on-primary font-bold px-6 py-3 rounded-lg flex items-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add</span>
+                    Create Notification
+                </button>
+</div>
+<!-- Bento Layout for Notification Categories -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Category Summary (Sidebar Style in Bento) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container rounded-2xl p-md border border-outline-variant">
+<h4 class="font-headline-md text-on-surface mb-md">Campaign Performance</h4>
+<div class="space-y-sm">
+<div class="p-sm bg-surface-container-high rounded-xl">
+<p class="text-label-sm text-on-surface-variant">AVERAGE OPEN RATE</p>
+<p class="text-display-xl font-display-xl text-primary">82.4%</p>
+</div>
+<div class="p-sm bg-surface-container-high rounded-xl">
+<p class="text-label-sm text-on-surface-variant">CONVERSION (BOOKINGS)</p>
+<p class="text-display-xl font-display-xl text-secondary">12.1%</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-2xl p-md border border-outline-variant">
+<h4 class="text-headline-md text-on-surface mb-md">Quick Actions</h4>
+<div class="grid grid-cols-1 gap-2">
+<button class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-highest transition-colors text-left group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">campaign</span>
+<div>
+<p class="font-bold text-on-surface">New Offer</p>
+<p class="text-label-sm text-on-surface-variant">Blast to active users</p>
+</div>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-highest transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform">schedule_send</span>
+<div>
+<p class="font-bold text-on-surface">System Update</p>
+<p class="text-label-sm text-on-surface-variant">Inform of downtime</p>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Notification List -->
+<div class="col-span-12 lg:col-span-8 space-y-md">
+<!-- Offer Campaign Card -->
+<div class="bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group hover:border-primary/50 transition-colors">
+<div class="flex items-center p-md gap-md">
+<div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">local_offer</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-label-sm mb-2 inline-block">OFFER CAMPAIGN</span>
+<span class="text-on-surface-variant text-label-sm">2 hours ago</span>
+</div>
+<h4 class="font-headline-md text-on-surface">Weekend Flash Sale: 20% Off All Slots</h4>
+<p class="text-on-surface-variant text-body-md mt-1">Target: Active Players (Last 30 days). Reach: 2,450 users.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+<span class="text-secondary font-bold text-label-sm">DELIVERED</span>
+</div>
+</div>
+<div class="bg-surface-container-highest px-md py-2 flex gap-gutter border-t border-outline-variant">
+<div class="flex items-center gap-1 text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">visibility</span> 1,840 Opens
+                            </div>
+<div class="flex items-center gap-1 text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">touch_app</span> 420 Clicks
+                            </div>
+</div>
+</div>
+<!-- Booking Reminder Card -->
+<div class="bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group hover:border-secondary/50 transition-colors">
+<div class="flex items-center p-md gap-md">
+<div class="w-16 h-16 rounded-xl bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-3xl">notifications_active</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-label-sm mb-2 inline-block">SYSTEM AUTOMATION</span>
+<span class="text-on-surface-variant text-label-sm">Scheduled: Tomorrow, 08:00 AM</span>
+</div>
+<h4 class="font-headline-md text-on-surface">24h Pre-Booking Reminder</h4>
+<p class="text-on-surface-variant text-body-md mt-1">Sent automatically to players with matches starting in 24 hours.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+<span class="text-on-surface-variant font-bold text-label-sm italic">RECURRING</span>
+</div>
+</div>
+</div>
+<!-- Platform Update Card -->
+<div class="bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group hover:border-tertiary/50 transition-colors">
+<div class="flex items-center p-md gap-md">
+<div class="w-16 h-16 rounded-xl bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl">system_update</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-label-sm mb-2 inline-block">PLATFORM UPDATE</span>
+<span class="text-on-surface-variant text-label-sm">Yesterday</span>
+</div>
+<h4 class="font-headline-md text-on-surface">Maintenance Notice: Oct 24th</h4>
+<p class="text-on-surface-variant text-body-md mt-1">Brief downtime between 02:00 and 04:00 AM for database optimization.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+<span class="text-tertiary font-bold text-label-sm">ARCHIVED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Create Notification Modal (Overlay) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter bg-black/80 backdrop-blur-sm">
+<div class="bg-surface-container-high w-full max-w-2xl rounded-3xl border border-outline-variant shadow-2xl overflow-hidden">
+<!-- Modal Header -->
+<div class="px-md py-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-lg text-headline-lg text-primary">New Broadcast</h3>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-colors p-2">close</button>
+</div>
+<!-- Modal Content -->
+<div class="p-md space-y-md">
+<div class="space-y-xs">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Broadcast Title</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-xl p-3 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. Early Bird Discounts Available" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Message Body</label>
+<textarea class="w-full bg-surface-dim border border-outline-variant rounded-xl p-3 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Craft your message here..." rows="4"></textarea>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Target Audience</label>
+<select class="w-full bg-surface-dim border border-outline-variant rounded-xl p-3 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none">
+<option>All Registered Users</option>
+<option>Active Players (Last 30d)</option>
+<option>New Signups (Last 7d)</option>
+<option>Inactive (90d+)</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Communication Channel</label>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-highest border border-primary text-primary rounded-xl py-2 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">smartphone</span> Push
+                            </button>
+<button class="flex-1 bg-surface-dim border border-outline-variant text-on-surface-variant rounded-xl py-2 flex items-center justify-center gap-1 hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">mail</span> Email
+                            </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-md border border-outline-variant/50">
+<div class="flex items-start gap-md">
+<img class="w-32 h-20 rounded-lg object-cover" data-alt="A cinematic low-angle shot of a professional sports turf under stadium lights at dusk. The vibrant emerald green blades of the high-performance turf are perfectly manicured, showing sharp precision and athletic intensity. The atmosphere is professional and energetic, lit with a cool neon-tinged stadium glow that highlights the matte textures and high-contrast environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjk-3k-IAhaPrCbEbG-hD4FbmfiadzrpM0aelmt4DZqRFz82srmJnBp-uZG6p2UyRFkM0n2t-1Bkt7QCMGxFPZ8qr5s9jrTZVYaRpFCSdhUNf5AjB7w2i9llZ3MByW3sJu3uP-cnNpSmv_VVplWccAGwaJLyDawmte_x-eVa64bS2xjZX1fjWwJx4f2XBeh36PTI-BjfGFEIfvf5U7o-zcNIn8fBk7PnylUkC98zgoiBtYT-B-k8yV3jJ0kscdgiLBdwabbV8RFgGK"/>
+<div class="flex-1">
+<p class="font-bold text-on-surface">Attachment Preview</p>
+<p class="text-label-sm text-on-surface-variant">Weekend_Banner.jpg (240kb)</p>
+<button class="text-primary text-label-sm mt-2 font-bold hover:underline">Change Media</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-md py-md bg-surface-container-highest flex justify-between items-center">
+<button class="text-on-surface-variant font-bold hover:text-on-surface transition-colors px-4 py-2">Save as Draft</button>
+<div class="flex gap-md">
+<button class="text-on-surface-variant font-bold hover:text-on-surface transition-colors px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined">schedule</span> Schedule
+                    </button>
+<button class="bg-primary text-on-primary font-bold px-8 py-3 rounded-xl flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(84,233,138,0.3)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+                        Send Now
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

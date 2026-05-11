@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro - Turf Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0e150f;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffc0ac",
+                        "surface-container-high": "#242c25",
+                        "surface-container-low": "#161d17",
+                        "on-primary-container": "#005027",
+                        "on-background": "#dce5da",
+                        "on-primary": "#003919",
+                        "on-secondary-container": "#003115",
+                        "surface-container-highest": "#2f372f",
+                        "primary": "#54e98a",
+                        "on-primary-fixed-variant": "#005228",
+                        "surface-dim": "#0e150f",
+                        "inverse-primary": "#006d37",
+                        "on-secondary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "secondary-container": "#25a55a",
+                        "secondary-fixed": "#83fba5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2b322b",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-secondary": "#003919",
+                        "surface-bright": "#333b34",
+                        "surface-container-lowest": "#09100a",
+                        "on-tertiary-container": "#772e14",
+                        "primary-fixed": "#6bfe9c",
+                        "on-surface": "#dce5da",
+                        "background": "#0e150f",
+                        "surface-variant": "#2f372f",
+                        "primary-container": "#2ecc71",
+                        "on-primary-fixed": "#00210c",
+                        "primary-fixed-dim": "#4ae183",
+                        "outline": "#869486",
+                        "surface-tint": "#4ae183",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "outline-variant": "#3d4a3e",
+                        "surface": "#0e150f",
+                        "tertiary-container": "#ff9875",
+                        "on-surface-variant": "#bbcbbb",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#793015",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container": "#1a211b",
+                        "inverse-surface": "#dce5da",
+                        "on-secondary-fixed-variant": "#005227",
+                        "secondary": "#66dd8b",
+                        "on-tertiary": "#5b1a02"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col h-full p-md z-40">
+<div class="mb-lg">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="text-on-surface-variant font-body-md text-sm">Elite Performance</p>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>Dashboard</a></li>
+<li><a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="stadium">stadium</span>Turfs</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="schedule">schedule</span>Slots</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="event_note">event_note</span>Bookings</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="group">group</span>Customers</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>Coupons</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="analytics">analytics</span>Analytics</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="notifications">notifications</span>Notifications</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>Settings</a></li>
+</ul>
+</nav>
+<div class="pt-md border-t border-outline-variant mt-auto space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>Profile</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>Logout</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-64 right-0 z-30 h-16 px-gutter bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center">
+<h2 class="text-headline-md font-headline-lg text-primary">Turfs</h2>
+<div class="flex items-center gap-md">
+<div class="relative">
+<input class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search turfs..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-on-surface-variant" data-icon="search">search</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-gutter pb-xl min-h-screen">
+<!-- Page Title and CTA -->
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Manage Your Inventory</h3>
+<p class="text-on-surface-variant font-body-md mt-xs">Optimize slot occupancy and monitor turf performance.</p>
+</div>
+<button class="bg-primary text-on-primary font-bold px-6 py-3 rounded-lg flex items-center gap-2 hover:scale-[0.98] transition-transform duration-150 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Add Turf
+            </button>
+</div>
+<!-- Turf List Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Turf Card 1 -->
+<div class="col-span-12 lg:col-span-6 xl:col-span-4 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group">
+<div class="relative h-48 overflow-hidden">
+<img alt="Emerald Arena" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A wide-angle landscape shot of a lush, perfectly manicured professional football turf under bright stadium floodlights at night. The deep emerald green of the synthetic grass contrasts with the dark charcoal night sky. The atmosphere is energetic and focused, with high-contrast lighting creating sharp shadows and a professional athletic mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk7eKWWS3qvTaMUHp-RRdiz_uoIptHGZDGNSA9C1iANrjwXxElXpRp7M0E-l8IqKz5hQxPvdEf5bcdWlk9SwjIAoiEifqD-CXEc0omjp_plfLr84jv5NORLLt-tAFzVf-amhnc2HUjuc23RUFljdb1Tg46bh2jdLhaqdJ3HC7E5BzZI_WBMk35b0WrNx7gtcBOGwfUYt8uopPZg69UMWsc6t-fzaUy6LumjAM0akJJVgFuZPcrUEM4emEw8tOiaE0lWVeAfWM8QTKB"/>
+<div class="absolute top-4 right-4">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Active</span>
+</div>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h4 class="font-headline-md text-on-surface">Emerald Arena</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-sm">Downtown Sports Complex</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">4.9</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Football</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Floodlights</span>
+</div>
+<div class="flex justify-between items-center pt-md border-t border-outline-variant">
+<div>
+<span class="text-primary font-display-xl text-2xl">$45</span>
+<span class="text-on-surface-variant text-sm">/hour</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface font-semibold px-4 py-2 rounded-lg hover:bg-surface-bright transition-colors text-sm">
+                                View Details
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Turf Card 2 -->
+<div class="col-span-12 lg:col-span-6 xl:col-span-4 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group">
+<div class="relative h-48 overflow-hidden">
+<img alt="The Cage North" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An indoor multi-sport facility with a focus on basketball and futsal, featuring vibrant court markings and polished matte charcoal flooring. Neon green accents line the perimeter walls. The lighting is crisp and diffused, creating an urban, high-tech athletic environment suitable for elite training sessions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVUsYba5uEC8EZ4EmkHzHG33cccbLhMGtX3bh9I5XkIl6wYQoxhu90Cw1D5n0TMzOb_02uuDxGjF0BRJpfOsjX4m14396ckRyh8FdIZVBHUzXC6AoOJJmIB1NB79RU7hKW6oRzq4wMZpQYfGmEvNx2ZnaNRxlXAovp81wRrUu7_ydIMbM75u93EWviCTFPq7b4_kvN1gpXsPipe1xickwJSOhnVhyHLK2obuzNbb0Kw4cMWzITFCnx81gUtKz_Zh-GYsISNPJfJaCH"/>
+<div class="absolute top-4 right-4">
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Maintenance</span>
+</div>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h4 class="font-headline-md text-on-surface">The Cage North</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-sm">Sector 12 Industrial Hub</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">4.7</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Futsal</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Indoor</span>
+</div>
+<div class="flex justify-between items-center pt-md border-t border-outline-variant">
+<div>
+<span class="text-primary font-display-xl text-2xl">$60</span>
+<span class="text-on-surface-variant text-sm">/hour</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface font-semibold px-4 py-2 rounded-lg hover:bg-surface-bright transition-colors text-sm">
+                                View Details
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Turf Card 3 -->
+<div class="col-span-12 lg:col-span-6 xl:col-span-4 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden group">
+<div class="relative h-48 overflow-hidden">
+<img alt="Skyline Heights" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A rooftop athletic field featuring high-performance synthetic turf, overlooking a modern city skyline at dusk. The sky is painted with shades of deep violet and orange. The field is bordered by a minimalist matte black safety fence. The overall style is luxurious and exclusive, with soft cinematic lighting illuminating the turf surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN6yaPlY0gME0UY87tZIvycRwKcHM1CynIvuiI0bqHlUXflzZ1f9PtGZsOIRp-NWyvN97WJsqpOEeKnBghTUfYO-SjCU4aYK8iEiQw0Kn-idj4vmTDZggK9bqv9F_iOmOQCzaylyWBd4TPIb0Ibh6RyYKHv7s_uPnXSSj3HU2VvMxR_m-wxg9e2ooWX3YbsXRLCdjXEj2Lc2nLsa_OPRZ93CbOy2JS4aDucz8wz5MZByXylj0npwvKK-lj7v0ECdmMtLr0Av8fRKNE"/>
+<div class="absolute top-4 right-4">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Closed</span>
+</div>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h4 class="font-headline-md text-on-surface">Skyline Heights</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-sm">Prestige Towers Rooftop</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">5.0</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Multi-sport</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs">Rooftop</span>
+</div>
+<div class="flex justify-between items-center pt-md border-t border-outline-variant">
+<div>
+<span class="text-primary font-display-xl text-2xl">$120</span>
+<span class="text-on-surface-variant text-sm">/hour</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors border border-outline-variant rounded-lg">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface font-semibold px-4 py-2 rounded-lg hover:bg-surface-bright transition-colors text-sm">
+                                View Details
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Panel / Modal: Add Turf -->
+<div class="fixed inset-0 z-50 flex justify-end">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+<!-- Sidebar Content -->
+<div class="relative w-full max-w-lg h-full bg-surface-container shadow-2xl overflow-y-auto">
+<div class="sticky top-0 bg-surface-container z-10 p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-lg text-headline-md text-on-surface">Add New Turf</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-md space-y-lg">
+<!-- Image Uploader -->
+<div class="space-y-sm">
+<label class="block text-label-sm uppercase text-on-surface-variant">Turf Imagery</label>
+<div class="w-full h-48 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center bg-surface-container-low hover:border-primary/50 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-4xl mb-sm group-hover:scale-110 transition-transform" data-icon="add_a_photo">add_a_photo</span>
+<p class="text-sm font-body-md text-on-surface-variant">Upload professional turf shots</p>
+<p class="text-[10px] text-on-surface-variant/60 uppercase mt-xs">PNG, JPG, Max 10MB</p>
+</div>
+</div>
+<!-- Basic Info -->
+<div class="space-y-md">
+<h4 class="text-primary font-bold text-sm uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="info">info</span> Basic Information
+                    </h4>
+<div class="space-y-sm">
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Turf Name</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none" placeholder="e.g. Olympic Central Pitch" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Location Details</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none" placeholder="Street address, block, area" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Sports Type</label>
+<select class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none appearance-none">
+<option>Football (5v5)</option>
+<option>Football (7v7)</option>
+<option>Cricket</option>
+<option>Tennis</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Capacity</label>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none" placeholder="Max players" type="number"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Pricing -->
+<div class="space-y-md">
+<h4 class="text-primary font-bold text-sm uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="payments">payments</span> Pricing Model
+                    </h4>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Weekday Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-3 text-on-surface-variant">$</span>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg pl-8 pr-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none" placeholder="0.00" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Weekend Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-3 text-on-surface-variant">$</span>
+<input class="w-full bg-surface-dim border border-outline-variant rounded-lg pl-8 pr-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm outline-none" placeholder="0.00" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Amenities -->
+<div class="space-y-md">
+<h4 class="text-primary font-bold text-sm uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="checklist">checklist</span> Amenities
+                    </h4>
+<div class="grid grid-cols-2 gap-sm">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-dim text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Floodlights</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-dim text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Changing Rooms</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-dim text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Water Facility</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-dim text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Parking Area</span>
+</label>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-xl pb-md flex gap-md">
+<button class="flex-1 border border-outline-variant text-on-surface font-bold py-3 rounded-lg hover:bg-surface-container-highest transition-colors">
+                        Save as Draft
+                    </button>
+<button class="flex-1 bg-primary text-on-primary font-bold py-3 rounded-lg shadow-lg shadow-primary/20 hover:scale-[0.98] transition-transform">
+                        Publish Turf
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

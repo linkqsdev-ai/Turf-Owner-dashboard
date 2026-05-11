@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro - Booking Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffc0ac",
+                        "surface-container-high": "#242c25",
+                        "surface-container-low": "#161d17",
+                        "on-primary-container": "#005027",
+                        "on-background": "#dce5da",
+                        "on-primary": "#003919",
+                        "on-secondary-container": "#003115",
+                        "surface-container-highest": "#2f372f",
+                        "primary": "#54e98a",
+                        "on-primary-fixed-variant": "#005228",
+                        "surface-dim": "#0e150f",
+                        "inverse-primary": "#006d37",
+                        "on-secondary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "secondary-container": "#25a55a",
+                        "secondary-fixed": "#83fba5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2b322b",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-secondary": "#003919",
+                        "surface-bright": "#333b34",
+                        "surface-container-lowest": "#09100a",
+                        "on-tertiary-container": "#772e14",
+                        "primary-fixed": "#6bfe9c",
+                        "on-surface": "#dce5da",
+                        "background": "#0e150f",
+                        "surface-variant": "#2f372f",
+                        "primary-container": "#2ecc71",
+                        "on-primary-fixed": "#00210c",
+                        "primary-fixed-dim": "#4ae183",
+                        "outline": "#869486",
+                        "surface-tint": "#4ae183",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "outline-variant": "#3d4a3e",
+                        "surface": "#0e150f",
+                        "tertiary-container": "#ff9875",
+                        "on-surface-variant": "#bbcbbb",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#793015",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container": "#1a211b",
+                        "inverse-surface": "#dce5da",
+                        "on-secondary-fixed-variant": "#005227",
+                        "secondary": "#66dd8b",
+                        "on-tertiary": "#5b1a02"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e150f;
+            color: #dce5da;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #161d17; }
+        ::-webkit-scrollbar-thumb { background: #3d4a3e; border-radius: 3px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- SideNavBar Anchor -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md">
+<div class="mb-xl">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="text-label-sm text-on-surface-variant tracking-widest uppercase">Elite Performance</p>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">stadium</span> Turfs
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">schedule</span> Slots
+            </a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1 active:scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">event_note</span> Bookings
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">group</span> Customers
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">confirmation_number</span> Coupons
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">analytics</span> Analytics
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">notifications</span> Notifications
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">account_circle</span> Profile
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Anchor -->
+<header class="sticky top-0 z-50 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center h-16 px-gutter">
+<div class="flex items-center gap-md">
+<h2 class="text-headline-md font-headline-lg text-primary">Booking Management</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all w-64 text-sm" placeholder="Global search..." type="text"/>
+</div>
+<div class="flex gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin">
+<!-- Filter Bar Section -->
+<section class="mb-lg bg-surface-container p-gutter rounded-xl border border-outline-variant grid grid-cols-1 md:grid-cols-4 gap-md items-end">
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Search Bookings</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+<input class="w-full bg-background border border-outline-variant rounded-lg py-2.5 pl-10 pr-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface" placeholder="ID or Name..." type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Booking Status</label>
+<select class="w-full bg-background border border-outline-variant rounded-lg py-2.5 px-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface appearance-none">
+<option>All Statuses</option>
+<option>Pending</option>
+<option>Approved</option>
+<option>Cancelled</option>
+<option>Completed</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Date Range</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">calendar_today</span>
+<input class="w-full bg-background border border-outline-variant rounded-lg py-2.5 pl-10 pr-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface" placeholder="Pick a range" type="text" value="Oct 20 - Oct 27, 2023"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Turf Selector</label>
+<select class="w-full bg-background border border-outline-variant rounded-lg py-2.5 px-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface appearance-none">
+<option>All Turfs</option>
+<option>Vanguard Arena</option>
+<option>Neon Court</option>
+<option>The Cage</option>
+</select>
+</div>
+</section>
+<!-- Bookings Table Section -->
+<div class="flex flex-col lg:flex-row gap-lg">
+<!-- Main Table Area -->
+<div class="flex-grow bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-high border-b border-outline-variant">
+<tr>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">ID</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Customer</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Turf</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Schedule</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Amount</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Payment</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase">Status</th>
+<th class="px-gutter py-4 font-label-sm text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="px-gutter py-4 font-mono text-sm">#BK-9241</td>
+<td class="px-gutter py-4">
+<div class="font-bold">Marcus Sterling</div>
+<div class="text-xs text-on-surface-variant">+1 555-0123</div>
+</td>
+<td class="px-gutter py-4">Vanguard Arena</td>
+<td class="px-gutter py-4">
+<div class="text-sm">24 Oct 2023</div>
+<div class="text-xs text-on-surface-variant">08:00 PM - 09:30 PM</div>
+</td>
+<td class="px-gutter py-4 font-bold">$120.00</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Paid</span>
+</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/20 text-secondary">Approved</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors text-primary" title="Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-highest transition-colors bg-surface-container-high/30">
+<td class="px-gutter py-4 font-mono text-sm">#BK-9242</td>
+<td class="px-gutter py-4">
+<div class="font-bold">Elena Rodriguez</div>
+<div class="text-xs text-on-surface-variant">+1 555-4567</div>
+</td>
+<td class="px-gutter py-4">The Cage</td>
+<td class="px-gutter py-4">
+<div class="text-sm">25 Oct 2023</div>
+<div class="text-xs text-on-surface-variant">06:00 PM - 07:00 PM</div>
+</td>
+<td class="px-gutter py-4 font-bold">$85.00</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error-container/20 text-error">Unpaid</span>
+</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-container/20 text-tertiary">Pending</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors text-primary" title="Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="px-gutter py-4 font-mono text-sm">#BK-9243</td>
+<td class="px-gutter py-4">
+<div class="font-bold">Jordan Lee</div>
+<div class="text-xs text-on-surface-variant">+1 555-8899</div>
+</td>
+<td class="px-gutter py-4">Neon Court</td>
+<td class="px-gutter py-4">
+<div class="text-sm">26 Oct 2023</div>
+<div class="text-xs text-on-surface-variant">09:00 AM - 11:00 AM</div>
+</td>
+<td class="px-gutter py-4 font-bold">$150.00</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Paid</span>
+</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-on-surface-variant/20 text-on-surface-variant">Cancelled</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors text-primary" title="Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="px-gutter py-4 font-mono text-sm">#BK-9244</td>
+<td class="px-gutter py-4">
+<div class="font-bold">Aria Thorne</div>
+<div class="text-xs text-on-surface-variant">+1 555-3322</div>
+</td>
+<td class="px-gutter py-4">Vanguard Arena</td>
+<td class="px-gutter py-4">
+<div class="text-sm">27 Oct 2023</div>
+<div class="text-xs text-on-surface-variant">04:00 PM - 05:00 PM</div>
+</td>
+<td class="px-gutter py-4 font-bold">$100.00</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Paid</span>
+</td>
+<td class="px-gutter py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/20 text-secondary">Approved</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors text-primary" title="Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Booking Details Drawer (Shown as Sidebar for UI clarity) -->
+<aside class="w-full lg:w-96 bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-gutter border-b border-outline-variant flex justify-between items-center">
+<h3 class="text-headline-md font-bold text-on-surface">Booking Details</h3>
+<span class="px-3 py-1 bg-tertiary-container/20 text-tertiary rounded-full text-xs font-bold uppercase tracking-widest">Pending</span>
+</div>
+<div class="flex-grow overflow-y-auto p-gutter space-y-lg">
+<!-- Customer Info -->
+<section>
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">person</span>
+<h4 class="font-bold uppercase tracking-wider text-label-sm text-on-surface-variant">Customer Information</h4>
+</div>
+<div class="bg-surface-container-high p-4 rounded-lg space-y-3">
+<div>
+<p class="text-xs text-on-surface-variant">Full Name</p>
+<p class="font-semibold">Elena Rodriguez</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant">Phone Number</p>
+<p class="font-semibold">+1 555-4567</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant">Email</p>
+<p class="font-semibold">elena.rod@example.com</p>
+</div>
+</div>
+</section>
+<!-- Payment Info -->
+<section>
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">payments</span>
+<h4 class="font-bold uppercase tracking-wider text-label-sm text-on-surface-variant">Payment Summary</h4>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">Base Rate (1hr)</span>
+<span>$80.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">Taxes &amp; Fees</span>
+<span>$5.00</span>
+</div>
+<div class="border-t border-outline-variant pt-2 flex justify-between font-bold text-lg">
+<span>Total Amount</span>
+<span class="text-primary">$85.00</span>
+</div>
+</div>
+</section>
+<!-- Timeline -->
+<section>
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">history</span>
+<h4 class="font-bold uppercase tracking-wider text-label-sm text-on-surface-variant">Booking Timeline</h4>
+</div>
+<div class="space-y-4 relative before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant">
+<div class="flex gap-4 relative">
+<div class="w-3.5 h-3.5 rounded-full bg-primary mt-1 border-2 border-surface-container"></div>
+<div>
+<p class="text-sm font-semibold">Booking Created</p>
+<p class="text-xs text-on-surface-variant">Oct 22, 2023 at 10:45 AM</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-3.5 h-3.5 rounded-full bg-outline mt-1 border-2 border-surface-container"></div>
+<div>
+<p class="text-sm font-semibold">Payment Initiated</p>
+<p class="text-xs text-on-surface-variant">Oct 22, 2023 at 10:46 AM</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-3.5 h-3.5 rounded-full bg-error mt-1 border-2 border-surface-container"></div>
+<div>
+<p class="text-sm font-semibold">Payment Failed</p>
+<p class="text-xs text-on-surface-variant">Oct 22, 2023 at 10:50 AM</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Notes -->
+<section>
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">description</span>
+<h4 class="font-bold uppercase tracking-wider text-label-sm text-on-surface-variant">Notes</h4>
+</div>
+<textarea class="w-full bg-surface-container-high border border-outline-variant rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Add a note to this booking..." rows="3"></textarea>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-gutter bg-surface-container-high border-t border-outline-variant grid grid-cols-2 gap-sm">
+<button class="bg-primary text-on-primary font-bold py-3 rounded-lg flex items-center justify-center gap-sm hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-base">check_circle</span> Approve
+                        </button>
+<button class="border border-error text-error font-bold py-3 rounded-lg flex items-center justify-center gap-sm hover:bg-error/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-base">cancel</span> Reject
+                        </button>
+<button class="col-span-2 border border-outline-variant text-on-surface font-bold py-3 rounded-lg flex items-center justify-center gap-sm hover:bg-surface-container-highest active:scale-95 transition-all mt-2">
+<span class="material-symbols-outlined text-base">refresh</span> Refund Amount
+                        </button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Background Decorative Element -->
+<div class="fixed top-0 right-0 -z-10 w-1/2 h-1/2 bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+</body></html>

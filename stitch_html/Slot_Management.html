@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro - Slot Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#ffc0ac",
+            "surface-container-high": "#242c25",
+            "surface-container-low": "#161d17",
+            "on-primary-container": "#005027",
+            "on-background": "#dce5da",
+            "on-primary": "#003919",
+            "on-secondary-container": "#003115",
+            "surface-container-highest": "#2f372f",
+            "primary": "#54e98a",
+            "on-primary-fixed-variant": "#005228",
+            "surface-dim": "#0e150f",
+            "inverse-primary": "#006d37",
+            "on-secondary-fixed": "#00210c",
+            "error-container": "#93000a",
+            "secondary-container": "#25a55a",
+            "secondary-fixed": "#83fba5",
+            "on-error": "#690005",
+            "inverse-on-surface": "#2b322b",
+            "tertiary-fixed": "#ffdbd0",
+            "on-tertiary-fixed": "#390c00",
+            "on-secondary": "#003919",
+            "surface-bright": "#333b34",
+            "surface-container-lowest": "#09100a",
+            "on-tertiary-container": "#772e14",
+            "primary-fixed": "#6bfe9c",
+            "on-surface": "#dce5da",
+            "background": "#0e150f",
+            "surface-variant": "#2f372f",
+            "primary-container": "#2ecc71",
+            "on-primary-fixed": "#00210c",
+            "primary-fixed-dim": "#4ae183",
+            "outline": "#869486",
+            "surface-tint": "#4ae183",
+            "secondary-fixed-dim": "#66dd8b",
+            "outline-variant": "#3d4a3e",
+            "surface": "#0e150f",
+            "tertiary-container": "#ff9875",
+            "on-surface-variant": "#bbcbbb",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#793015",
+            "error": "#ffb4ab",
+            "tertiary-fixed-dim": "#ffb59d",
+            "surface-container": "#1a211b",
+            "inverse-surface": "#dce5da",
+            "on-secondary-fixed-variant": "#005227",
+            "secondary": "#66dd8b",
+            "on-tertiary": "#5b1a02"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "lg": "40px",
+            "xl": "64px",
+            "xs": "4px",
+            "sm": "12px",
+            "base": "8px",
+            "gutter": "24px",
+            "md": "24px",
+            "margin": "32px"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-xl": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .glass-card {
+      background: rgba(28, 28, 28, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(42, 42, 42, 1);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md">
+<div class="mb-xl">
+<div class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</div>
+<div class="text-label-sm text-on-surface-variant tracking-widest mt-xs">ELITE PERFORMANCE</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">stadium</span>
+<span class="font-body-md">Turfs</span>
+</a>
+<!-- Active State for Slots -->
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-body-md">Slots</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-body-md">Bookings</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md">Customers</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-body-md">Coupons</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-body-md">Notifications</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 hover:bg-surface-container-highest transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface px-4 py-2 mb-2" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-body-md">Profile</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface px-4 py-2" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 h-screen flex flex-col overflow-hidden relative">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 w-full h-16 px-gutter flex justify-between items-center bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<h1 class="text-headline-md font-headline-lg text-primary">Slot Management</h1>
+<div class="flex items-center gap-sm bg-surface-container px-sm py-1.5 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[20px]">stadium</span>
+<select class="bg-transparent border-none text-body-md focus:ring-0 text-on-surface cursor-pointer">
+<option>Arena Central - Pitch A</option>
+<option>Arena Central - Pitch B</option>
+<option>Skyline Turf - Main</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex items-center bg-surface-container-high rounded-full px-4 py-2 border border-outline-variant w-96">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full" placeholder="Search bookings or players..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="relative hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Header / Controls -->
+<section class="p-gutter border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs bg-surface-container-highest rounded-lg border border-outline-variant p-1">
+<button class="p-2 hover:bg-surface-container-high rounded-md transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<div class="px-md font-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+            October 24, 2023
+          </div>
+<button class="p-2 hover:bg-surface-container-high rounded-md transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+<button class="px-md py-2 border border-outline-variant rounded-lg hover:bg-surface-container-high transition-colors font-body-md">Today</button>
+</div>
+<div class="flex items-center gap-sm">
+<div class="flex items-center gap-md px-md border-r border-outline-variant mr-md">
+<div class="flex items-center gap-xs text-label-sm">
+<span class="w-3 h-3 rounded-full bg-secondary"></span> Available
+          </div>
+<div class="flex items-center gap-xs text-label-sm">
+<span class="w-3 h-3 rounded-full bg-error"></span> Booked
+          </div>
+<div class="flex items-center gap-xs text-label-sm">
+<span class="w-3 h-3 rounded-full bg-outline"></span> Blocked
+          </div>
+</div>
+<button class="bg-primary text-on-primary px-gutter py-2.5 rounded-lg font-headline-md text-[16px] shadow-[0_0_15px_rgba(84,233,138,0.3)] hover:brightness-110 active:scale-95 transition-all">
+          Quick Action Bar
+        </button>
+</div>
+</section>
+<!-- Slot Grid -->
+<div class="flex-grow overflow-y-auto scrollbar-hide p-gutter pb-xl bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-md">
+<!-- Slot: 06:00 AM (Available) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">06:00 AM - 07:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$45.00</div>
+<div class="text-label-sm text-on-surface-variant italic">Standard Rate</div>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity"></div>
+</div>
+<!-- Slot: 07:00 AM (Booked) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer overflow-hidden active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">07:00 AM - 08:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider">Booked</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface truncate">Alex Johnson</div>
+<div class="text-label-sm text-on-surface-variant">Elite Training Session</div>
+<div class="absolute bottom-0 left-0 h-1 bg-error w-full"></div>
+</div>
+<!-- Slot: 08:00 AM (Blocked/Maintenance) -->
+<div class="group relative bg-surface-container-low/50 border border-outline-variant rounded-2xl p-md cursor-pointer active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm opacity-50">
+<span class="text-label-sm text-on-surface-variant">08:00 AM - 09:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-outline/20 text-on-surface-variant text-[10px] font-bold uppercase tracking-wider">Blocked</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined">engineering</span>
+<div class="text-body-md">Mowing &amp; Grooming</div>
+</div>
+</div>
+<!-- Slot: 09:00 AM (Available - Weekend Pricing Highlight) -->
+<div class="group relative bg-surface-container-low border-2 border-primary/20 rounded-2xl p-md cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.3)] active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-primary">09:00 AM - 10:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider">Peak Time</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$75.00</div>
+<div class="text-label-sm text-primary/70">Weekend Pricing Applied</div>
+</div>
+<!-- Repeat Grid Items for the full day -->
+<!-- Slot: 10:00 AM (Available) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">10:00 AM - 11:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$60.00</div>
+<div class="text-label-sm text-on-surface-variant italic">Standard Rate</div>
+</div>
+<!-- Slot: 11:00 AM (Booked) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer overflow-hidden active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">11:00 AM - 12:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider">Booked</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface truncate">Strikers FC</div>
+<div class="text-label-sm text-on-surface-variant">Youth League Practice</div>
+<div class="absolute bottom-0 left-0 h-1 bg-error w-full"></div>
+</div>
+<!-- Slot: 12:00 PM (Available) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">12:00 PM - 01:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$60.00</div>
+<div class="text-label-sm text-on-surface-variant italic">Lunch Promo</div>
+</div>
+<!-- Slot: 01:00 PM (Available) -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">01:00 PM - 02:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$60.00</div>
+<div class="text-label-sm text-on-surface-variant italic">Standard Rate</div>
+</div>
+<!-- Pop-over simulation (The Click Slot to see popup) -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-card rounded-2xl shadow-2xl z-[100] w-[320px] p-md overflow-hidden ring-1 ring-primary/20">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="text-headline-md text-primary leading-tight">Slot Control</h3>
+<p class="text-label-sm text-on-surface-variant uppercase">02:00 PM — 03:00 PM</p>
+</div>
+<button class="p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-sm">
+<button class="w-full flex items-center gap-md px-md py-3 rounded-xl bg-surface-container-high hover:bg-secondary/20 hover:text-secondary transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">check_circle</span>
+<span class="font-headline-md text-[16px]">Open for Booking</span>
+</button>
+<button class="w-full flex items-center gap-md px-md py-3 rounded-xl bg-surface-container-high hover:bg-error/20 hover:text-error transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">block</span>
+<span class="font-headline-md text-[16px]">Block Slot</span>
+</button>
+<button class="w-full flex items-center gap-md px-md py-3 rounded-xl bg-surface-container-high hover:bg-primary/20 hover:text-primary transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">edit_calendar</span>
+<span class="font-headline-md text-[16px]">Edit Pricing</span>
+</button>
+<button class="w-full flex items-center gap-md px-md py-3 rounded-xl bg-surface-container-high hover:bg-outline/20 hover:text-white transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">build</span>
+<span class="font-headline-md text-[16px]">Mark Maintenance</span>
+</button>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant flex gap-sm">
+<button class="flex-grow py-2 rounded-lg bg-surface-container-highest text-on-surface font-body-md">Cancel</button>
+<button class="flex-grow py-2 rounded-lg bg-primary text-on-primary font-body-md font-bold">Apply Changes</button>
+</div>
+</div>
+<!-- Add more slots for visual density -->
+<!-- ... 03:00 PM to 10:00 PM -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">03:00 PM - 04:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$65.00</div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">04:00 PM - 05:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$65.00</div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer overflow-hidden">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">05:00 PM - 06:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider">Booked</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface truncate">Premier Div 2</div>
+<div class="absolute bottom-0 left-0 h-1 bg-error w-full"></div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer overflow-hidden">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">06:00 PM - 07:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider">Booked</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface truncate">Private Match</div>
+<div class="absolute bottom-0 left-0 h-1 bg-error w-full"></div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer overflow-hidden border-primary/40">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-primary">07:00 PM - 08:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">Peak Time</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$80.00</div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">08:00 PM - 09:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$70.00</div>
+</div>
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-2xl p-md cursor-pointer hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant">09:00 PM - 10:00 PM</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-wider">Available</span>
+</div>
+<div class="text-headline-md font-headline-lg text-on-surface mb-xs">$70.00</div>
+</div>
+</div>
+</div>
+<!-- Quick Action Bar (Bottom Floating) -->
+<div class="fixed bottom-gutter left-1/2 -translate-x-1/2 ml-32 z-50">
+<div class="bg-surface-container-high border border-outline-variant shadow-2xl rounded-2xl px-gutter py-4 flex items-center gap-gutter backdrop-blur-xl">
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase font-bold">Bulk Actions</span>
+<span class="text-[10px] text-primary">October 24 Selects</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<button class="flex items-center gap-sm px-md py-2 rounded-xl bg-surface-container-highest hover:bg-secondary/20 hover:text-secondary transition-all group">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110">lock_open</span>
+<span class="font-body-md font-bold">Open Full Day</span>
+</button>
+<button class="flex items-center gap-sm px-md py-2 rounded-xl bg-surface-container-highest hover:bg-error/20 hover:text-error transition-all group">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110">lock</span>
+<span class="font-body-md font-bold">Close Full Day</span>
+</button>
+<button class="flex items-center gap-sm px-md py-2 rounded-xl bg-surface-container-highest hover:bg-primary/20 hover:text-primary transition-all group border border-primary/30">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110">payments</span>
+<span class="font-body-md font-bold">Apply Weekend Pricing</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Visual Overlay for Neon Depth -->
+<div class="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_-20%,rgba(84,233,138,0.05),transparent_70%)]"></div>
+</body></html>

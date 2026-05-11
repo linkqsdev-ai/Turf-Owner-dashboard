@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro | Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffc0ac",
+                        "surface-container-high": "#242c25",
+                        "surface-container-low": "#161d17",
+                        "on-primary-container": "#005027",
+                        "on-background": "#dce5da",
+                        "on-primary": "#003919",
+                        "on-secondary-container": "#003115",
+                        "surface-container-highest": "#2f372f",
+                        "primary": "#54e98a",
+                        "on-primary-fixed-variant": "#005228",
+                        "surface-dim": "#0e150f",
+                        "inverse-primary": "#006d37",
+                        "on-secondary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "secondary-container": "#25a55a",
+                        "secondary-fixed": "#83fba5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2b322b",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-secondary": "#003919",
+                        "surface-bright": "#333b34",
+                        "surface-container-lowest": "#09100a",
+                        "on-tertiary-container": "#772e14",
+                        "primary-fixed": "#6bfe9c",
+                        "on-surface": "#dce5da",
+                        "background": "#0e150f",
+                        "surface-variant": "#2f372f",
+                        "primary-container": "#2ecc71",
+                        "on-primary-fixed": "#00210c",
+                        "primary-fixed-dim": "#4ae183",
+                        "outline": "#869486",
+                        "surface-tint": "#4ae183",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "outline-variant": "#3d4a3e",
+                        "surface": "#0e150f",
+                        "tertiary-container": "#ff9875",
+                        "on-surface-variant": "#bbcbbb",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#793015",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container": "#1a211b",
+                        "inverse-surface": "#dce5da",
+                        "on-secondary-fixed-variant": "#005227",
+                        "secondary": "#66dd8b",
+                        "on-tertiary": "#5b1a02"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0e150f; color: #dce5da; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card {
+            background: rgba(28, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #2a2a2a;
+        }
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md z-50">
+<div class="mb-xl px-4">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="text-on-surface-variant font-label-sm">Elite Performance</p>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="stadium">stadium</span>
+<span>Turfs</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+<span>Slots</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span>Bookings</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span>Coupons</span>
+</a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1 scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md px-4 space-y-2">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 h-16 px-gutter bg-surface/80 backdrop-blur-md flex justify-between items-center border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-primary">Analytics Engine</h2>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<input class="bg-surface-container-lowest border border-outline-variant rounded-full px-10 py-1 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Search analytics..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1.5 text-on-surface-variant" data-icon="search">search</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="p-md space-y-lg">
+<!-- Filters Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-md items-end">
+<div class="md:col-span-4 space-y-xs">
+<label class="font-label-sm text-on-surface-variant px-1 uppercase tracking-wider">Date Range</label>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg p-3 gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
+<span class="text-body-md">Oct 01, 2023 - Oct 31, 2023</span>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-3 space-y-xs">
+<label class="font-label-sm text-on-surface-variant px-1 uppercase tracking-wider">Turf Location</label>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg p-3 gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="stadium">stadium</span>
+<span class="text-body-md">Grand Arena Park</span>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-3 space-y-xs">
+<label class="font-label-sm text-on-surface-variant px-1 uppercase tracking-wider">Sport Filter</label>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg p-3 gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="sports_soccer">sports_soccer</span>
+<span class="text-body-md">Football, Tennis</span>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-2">
+<button class="w-full bg-primary text-on-primary h-[48px] rounded-lg font-bold flex items-center justify-center gap-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                        Apply
+                    </button>
+</div>
+</section>
+<!-- Insight Cards (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<div class="md:col-span-4 glass-card p-md rounded-2xl flex items-start gap-md">
+<div class="bg-primary/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<h4 class="font-label-sm text-on-surface-variant uppercase">Key Insight</h4>
+<p class="text-body-lg font-bold mt-1">Football is your most booked sport this month.</p>
+<p class="text-label-sm text-primary mt-2 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_upward">arrow_upward</span> 12% increase vs last month
+                        </p>
+</div>
+</div>
+<div class="md:col-span-4 glass-card p-md rounded-2xl flex items-start gap-md">
+<div class="bg-secondary-container/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="schedule">schedule</span>
+</div>
+<div>
+<h4 class="font-label-sm text-on-surface-variant uppercase">Peak Performance</h4>
+<p class="text-body-lg font-bold mt-1">Evening slots (6PM - 9PM) are 98% occupied.</p>
+<p class="text-label-sm text-on-surface-variant mt-2">Suggest adding dynamic pricing.</p>
+</div>
+</div>
+<div class="md:col-span-4 glass-card p-md rounded-2xl flex items-start gap-md border-primary/30">
+<div class="bg-tertiary-container/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="group_add">group_add</span>
+</div>
+<div>
+<h4 class="font-label-sm text-on-surface-variant uppercase">Retention Alert</h4>
+<p class="text-body-lg font-bold mt-1">42% of new customers booked a second slot.</p>
+<p class="text-label-sm text-tertiary mt-2 flex items-center gap-xs">
+                            Goal: Reach 50% by December
+                        </p>
+</div>
+</div>
+</section>
+<!-- Main Charts Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Revenue Analytics (Line Chart) -->
+<div class="md:col-span-8 glass-card p-md rounded-2xl">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md">Revenue Analytics</h3>
+<div class="flex gap-sm">
+<span class="flex items-center gap-xs text-label-sm text-on-surface-variant">
+<span class="w-3 h-3 rounded-full bg-primary"></span> Revenue
+                            </span>
+<span class="flex items-center gap-xs text-label-sm text-on-surface-variant">
+<span class="w-3 h-3 rounded-full bg-outline"></span> Previous
+                            </span>
+</div>
+</div>
+<div class="h-[300px] flex items-end justify-between px-md gap-4">
+<!-- Simulated Chart Bars/Lines -->
+<div class="w-full h-full relative border-l border-b border-outline-variant/30">
+<svg class="w-full h-full" viewbox="0 0 800 300">
+<path d="M0,250 Q100,220 200,240 T400,150 T600,100 T800,80" fill="none" stroke="#54e98a" stroke-linecap="round" stroke-width="4"></path>
+<path d="M0,280 Q150,260 300,270 T500,200 T800,180" fill="none" stroke="#3d4a3e" stroke-dasharray="8 4" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="flex justify-between mt-sm text-label-sm text-on-surface-variant px-md">
+<span>WK 1</span><span>WK 2</span><span>WK 3</span><span>WK 4</span>
+</div>
+</div>
+<!-- Sport Usage Distribution (Pie Chart) -->
+<div class="md:col-span-4 glass-card p-md rounded-2xl flex flex-col">
+<h3 class="font-headline-md mb-md">Sport Usage</h3>
+<div class="relative flex-grow flex items-center justify-center">
+<div class="w-48 h-48 rounded-full border-[16px] border-primary" style="clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 50%);"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-display-xl font-display-xl text-primary leading-none">64%</span>
+<span class="text-label-sm uppercase">Football</span>
+</div>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-sm"><span class="w-3 h-3 bg-primary rounded-full"></span> Football</span>
+<span class="font-bold">64.2%</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-sm"><span class="w-3 h-3 bg-secondary rounded-full"></span> Cricket</span>
+<span class="font-bold">22.8%</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-sm"><span class="w-3 h-3 bg-tertiary-container rounded-full"></span> Tennis</span>
+<span class="font-bold">13.0%</span>
+</div>
+</div>
+</div>
+<!-- Booking Trends (Bar Chart) -->
+<div class="md:col-span-4 glass-card p-md rounded-2xl">
+<h3 class="font-headline-md mb-md">Booking Trends</h3>
+<div class="h-[200px] flex items-end justify-between gap-2">
+<div class="w-8 bg-surface-container-highest rounded-t-lg h-[40%] transition-all hover:bg-primary"></div>
+<div class="w-8 bg-surface-container-highest rounded-t-lg h-[65%] transition-all hover:bg-primary"></div>
+<div class="w-8 bg-surface-container-highest rounded-t-lg h-[45%] transition-all hover:bg-primary"></div>
+<div class="w-8 bg-primary rounded-t-lg h-[95%] transition-all"></div>
+<div class="w-8 bg-surface-container-highest rounded-t-lg h-[75%] transition-all hover:bg-primary"></div>
+<div class="w-8 bg-surface-container-highest rounded-t-lg h-[60%] transition-all hover:bg-primary"></div>
+</div>
+<div class="flex justify-between mt-sm text-label-sm text-on-surface-variant">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+</div>
+</div>
+<!-- Popular Slots (Heatmap) -->
+<div class="md:col-span-4 glass-card p-md rounded-2xl">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md">Peak Hours</h3>
+<span class="text-label-sm text-primary uppercase">Heatmap</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Heatmap Cells -->
+<div class="heatmap-cell bg-primary/10"></div><div class="heatmap-cell bg-primary/20"></div><div class="heatmap-cell bg-primary/40"></div><div class="heatmap-cell bg-primary/60"></div><div class="heatmap-cell bg-primary/80"></div><div class="heatmap-cell bg-primary"></div><div class="heatmap-cell bg-primary/90"></div>
+<div class="heatmap-cell bg-primary/05"></div><div class="heatmap-cell bg-primary/10"></div><div class="heatmap-cell bg-primary/20"></div><div class="heatmap-cell bg-primary/40"></div><div class="heatmap-cell bg-primary/70"></div><div class="heatmap-cell bg-primary/80"></div><div class="heatmap-cell bg-primary/60"></div>
+<div class="heatmap-cell bg-primary/10"></div><div class="heatmap-cell bg-primary/30"></div><div class="heatmap-cell bg-primary/50"></div><div class="heatmap-cell bg-primary/80"></div><div class="heatmap-cell bg-primary"></div><div class="heatmap-cell bg-primary/90"></div><div class="heatmap-cell bg-primary/80"></div>
+<div class="heatmap-cell bg-primary/20"></div><div class="heatmap-cell bg-primary/40"></div><div class="heatmap-cell bg-primary/60"></div><div class="heatmap-cell bg-primary/90"></div><div class="heatmap-cell bg-primary"></div><div class="heatmap-cell bg-primary"></div><div class="heatmap-cell bg-primary/90"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] text-on-surface-variant">
+<span>06:00 AM</span>
+<span>03:00 PM</span>
+<span>11:00 PM</span>
+</div>
+</div>
+<!-- Customer Growth (Area Chart) -->
+<div class="md:col-span-4 glass-card p-md rounded-2xl relative overflow-hidden">
+<h3 class="font-headline-md mb-2">User Growth</h3>
+<div class="flex items-baseline gap-2">
+<span class="text-display-xl font-display-xl text-on-surface">1,248</span>
+<span class="text-primary font-bold">+24%</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-24 overflow-hidden">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 200 100">
+<defs>
+<lineargradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#54e98a" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#54e98a" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,100 L0,80 Q50,70 80,40 T150,20 T200,0 L200,100 Z" fill="url(#areaGradient)"></path>
+<path d="M0,80 Q50,70 80,40 T150,20 T200,0" fill="none" stroke="#54e98a" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- Bottom Detail Table (Professional List Pattern) -->
+<section class="glass-card rounded-2xl overflow-hidden mb-xl">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md">Recent Performance Breakdown</h3>
+<button class="text-primary flex items-center gap-sm text-label-sm">
+                        EXPORT CSV <span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-highest/30">
+<tr>
+<th class="px-md py-4 font-label-sm uppercase tracking-widest">Turf Name</th>
+<th class="px-md py-4 font-label-sm uppercase tracking-widest text-center">Bookings</th>
+<th class="px-md py-4 font-label-sm uppercase tracking-widest text-center">Avg Intensity</th>
+<th class="px-md py-4 font-label-sm uppercase tracking-widest text-right">Revenue</th>
+<th class="px-md py-4 font-label-sm uppercase tracking-widest text-right">Trend</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-md py-4 flex items-center gap-md">
+<img class="w-12 h-12 rounded-lg object-cover" data-alt="A professional aerial view of a vibrant green synthetic football turf at dusk, illuminated by powerful stadium floodlights creating long shadows. The setting is a modern athletic complex with dark charcoal seating and clean architectural lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbugW1ZwpJmyjO16WKT6ALL6028Sm0wPQ1ZR3GBUKt0kpKHlxbTnD94i4M2VkQkVFNUqbcPe96RC7AnwaDtu4iSJczqeoB_QTezOSvy_Qpz9SxHoV39dYwQRG9RxqNmx0O8na6_v58uvXWIdEjDGJdXf3tuv_4KSaidWig86WA3xptX7l_QqI0h895Yjs_Msi8Y_0dlvHraDkc2k-JqRKpLmn7a_Pd6wXoQfgcI1BYzCeXkpDQeTH7dZdqHHORDCptzkagjjSXBr03"/>
+<div>
+<div class="font-bold">Grand Arena Park</div>
+<div class="text-xs text-on-surface-variant">Central District</div>
+</div>
+</td>
+<td class="px-md py-4 text-center font-bold">142</td>
+<td class="px-md py-4">
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%] shadow-[0_0_8px_rgba(84,233,138,0.6)]"></div>
+</div>
+</td>
+<td class="px-md py-4 text-right font-bold">$12,450</td>
+<td class="px-md py-4 text-right">
+<span class="text-primary flex items-center justify-end gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span> 14%
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-md py-4 flex items-center gap-md">
+<img class="w-12 h-12 rounded-lg object-cover" data-alt="Close-up detail of a high-quality tennis court surface with neon emerald boundary lines against a dark graphite base. The scene is lit by professional-grade athletic lighting, emphasizing the technical texture of the court in a sleek, minimalist sports environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk6nABTVjmSOhq4T9VelAyb6jjV-Ei3mPXMY4HU6l8y2U1SwzHcYk2ZR1HYykHmwVDBIeZlun8HmUKnuWTR9KH0Sy69ZKx-fELMJs6Lun1dYjuZnF_GxbtWBosBKP3kYTMQVMqrIc7QdBxnfXXZY6kuPNTqy1xhfjzdVr587Q0Ov2tGc8vcyCaBzvPpF3-4Z0r4K9XMzurw7Swzs1JSKEBFCL-HdWzEbFxx9JorRwc7IHQsGGuTgUvgHuMVejfGV2UgJXtzJ_sOaZn"/>
+<div>
+<div class="font-bold">Emerald Courts</div>
+<div class="text-xs text-on-surface-variant">Westside Hub</div>
+</div>
+</td>
+<td class="px-md py-4 text-center font-bold">89</td>
+<td class="px-md py-4">
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[62%] shadow-[0_0_8px_rgba(102,221,139,0.6)]"></div>
+</div>
+</td>
+<td class="px-md py-4 text-right font-bold">$7,820</td>
+<td class="px-md py-4 text-right">
+<span class="text-on-surface-variant flex items-center justify-end gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_flat">trending_flat</span> 2%
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</body></html>

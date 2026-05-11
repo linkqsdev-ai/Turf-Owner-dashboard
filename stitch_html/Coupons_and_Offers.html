@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro — Coupon Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffc0ac",
+                    "surface-container-high": "#242c25",
+                    "surface-container-low": "#161d17",
+                    "on-primary-container": "#005027",
+                    "on-background": "#dce5da",
+                    "on-primary": "#003919",
+                    "on-secondary-container": "#003115",
+                    "surface-container-highest": "#2f372f",
+                    "primary": "#54e98a",
+                    "on-primary-fixed-variant": "#005228",
+                    "surface-dim": "#0e150f",
+                    "inverse-primary": "#006d37",
+                    "on-secondary-fixed": "#00210c",
+                    "error-container": "#93000a",
+                    "secondary-container": "#25a55a",
+                    "secondary-fixed": "#83fba5",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2b322b",
+                    "tertiary-fixed": "#ffdbd0",
+                    "on-tertiary-fixed": "#390c00",
+                    "on-secondary": "#003919",
+                    "surface-bright": "#333b34",
+                    "surface-container-lowest": "#09100a",
+                    "on-tertiary-container": "#772e14",
+                    "primary-fixed": "#6bfe9c",
+                    "on-surface": "#dce5da",
+                    "background": "#0e150f",
+                    "surface-variant": "#2f372f",
+                    "primary-container": "#2ecc71",
+                    "on-primary-fixed": "#00210c",
+                    "primary-fixed-dim": "#4ae183",
+                    "outline": "#869486",
+                    "surface-tint": "#4ae183",
+                    "secondary-fixed-dim": "#66dd8b",
+                    "outline-variant": "#3d4a3e",
+                    "surface": "#0e150f",
+                    "tertiary-container": "#ff9875",
+                    "on-surface-variant": "#bbcbbb",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#793015",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb59d",
+                    "surface-container": "#1a211b",
+                    "inverse-surface": "#dce5da",
+                    "on-secondary-fixed-variant": "#005227",
+                    "secondary": "#66dd8b",
+                    "on-tertiary": "#5b1a02"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "40px",
+                    "xl": "64px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-xl": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0e150f; color: #dce5da; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(28, 28, 28, 0.8); backdrop-filter: blur(12px); border: 1px solid #2A2A2A; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container-low flex flex-col h-full p-md z-50">
+<div class="mb-xl px-4">
+<h1 class="text-headline-md font-headline-lg text-primary dark:text-primary">TurfMaster Pro</h1>
+<p class="text-on-surface-variant font-label-sm text-[10px] tracking-widest uppercase">Elite Performance</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">stadium</span>
+<span>Turfs</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span>Slots</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span>Bookings</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1 active:scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span>Coupons</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-1">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 w-full h-16 px-gutter flex justify-between items-center bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<h2 class="font-headline-md text-headline-md text-primary">Coupons</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:outline-none w-64" placeholder="Search promo codes..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 rounded-full">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-gutter max-w-7xl mx-auto space-y-lg">
+<!-- Hero Action Section -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="space-y-1">
+<h3 class="font-headline-lg text-headline-lg">Active Promotions</h3>
+<p class="text-on-surface-variant">Manage your athlete engagement strategies and discount incentives.</p>
+</div>
+<button class="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(84,233,138,0.3)]">
+<span class="material-symbols-outlined">add_circle</span>
+                    Create Coupon
+                </button>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="bg-surface-container p-md rounded-2xl border border-outline-variant">
+<p class="text-on-surface-variant text-label-sm mb-2">ACTIVE COUPONS</p>
+<h4 class="text-display-xl font-display-xl text-primary">12</h4>
+<p class="text-secondary text-sm mt-1">+2 from last month</p>
+</div>
+<div class="bg-surface-container p-md rounded-2xl border border-outline-variant">
+<p class="text-on-surface-variant text-label-sm mb-2">TOTAL USAGE</p>
+<h4 class="text-display-xl font-display-xl text-on-surface">1,284</h4>
+<p class="text-on-surface-variant text-sm mt-1">Across all campaigns</p>
+</div>
+<div class="bg-surface-container p-md rounded-2xl border border-outline-variant">
+<p class="text-on-surface-variant text-label-sm mb-2">REVENUE IMPACT</p>
+<h4 class="text-display-xl font-display-xl text-tertiary">-$4.2k</h4>
+<p class="text-on-surface-variant text-sm mt-1">Total discounts given</p>
+</div>
+<div class="bg-surface-container p-md rounded-2xl border border-outline-variant">
+<p class="text-on-surface-variant text-label-sm mb-2">CONVERSION</p>
+<h4 class="text-display-xl font-display-xl text-secondary">24%</h4>
+<div class="w-full h-1 bg-surface-container-highest mt-4 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 24%"></div>
+</div>
+</div>
+</section>
+<!-- Main Coupon Table -->
+<section class="bg-surface-container rounded-2xl border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high/30">
+<h4 class="font-headline-md text-headline-md">Coupon Inventory</h4>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-sm hover:bg-surface-container-highest transition-colors">Export CSV</button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-sm hover:bg-surface-container-highest transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-md py-4 text-label-sm text-on-surface-variant">CODE</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">DISCOUNT TYPE</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">AMOUNT</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">EXPIRY</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">USAGE COUNT</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">STATUS</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-md py-4"><span class="font-bold font-headline-md text-primary tracking-wider">KICKOFF2024</span></td>
+<td class="px-md py-4 text-on-surface">Percentage</td>
+<td class="px-md py-4 text-on-surface">20%</td>
+<td class="px-md py-4 text-on-surface-variant">Dec 31, 2024</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-2">
+<span class="text-on-surface">142</span>
+<span class="text-[10px] text-on-surface-variant">/ 500</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">ACTIVE</span>
+</td>
+<td class="px-md py-4">
+<div class="flex gap-3">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-md py-4"><span class="font-bold font-headline-md text-primary tracking-wider">ELITEPLAY</span></td>
+<td class="px-md py-4 text-on-surface">Fixed Amount</td>
+<td class="px-md py-4 text-on-surface">$50.00</td>
+<td class="px-md py-4 text-on-surface-variant">Oct 15, 2024</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-2">
+<span class="text-on-surface">89</span>
+<span class="text-[10px] text-on-surface-variant">/ 100</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-secondary/10 text-secondary border border-secondary/20">LIMITED</span>
+</td>
+<td class="px-md py-4">
+<div class="flex gap-3">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-md py-4"><span class="font-bold font-headline-md text-on-surface-variant tracking-wider line-through">SUMMER24</span></td>
+<td class="px-md py-4 text-on-surface-variant">Percentage</td>
+<td class="px-md py-4 text-on-surface-variant">15%</td>
+<td class="px-md py-4 text-error/80">Expired</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant">250</span>
+<span class="text-[10px] text-on-surface-variant">/ 250</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-outline-variant/20 text-on-surface-variant border border-outline-variant/30 uppercase tracking-tighter">Disabled</span>
+</td>
+<td class="px-md py-4">
+<div class="flex gap-3">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">history</span></button>
+<button class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Create Coupon Modal (Simulated Overlay) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter bg-black/60 backdrop-blur-sm">
+<div class="w-full max-w-2xl bg-surface-container-high rounded-3xl border border-outline-variant shadow-[0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden">
+<div class="px-xl py-md border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Create New Coupon</h3>
+<p class="text-on-surface-variant text-sm">Define your athlete promotion parameters.</p>
+</div>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="p-xl space-y-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-widest">Coupon Code</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-on-surface font-bold" placeholder="e.g. CHAMPION20" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-widest">Discount Type</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-on-surface">
+<option>Percentage (%)</option>
+<option>Fixed Amount ($)</option>
+<option>Free Slot</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-widest">Expiry Date</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-on-surface" type="date"/>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-widest">Usage Limit</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-on-surface" placeholder="500" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm text-on-surface-variant uppercase tracking-widest">Min Booking ($)</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-on-surface" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-md rounded-xl border border-outline-variant/30">
+<p class="text-label-sm text-on-surface-variant mb-3 uppercase tracking-widest">Visibility &amp; Restrictions</p>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<p class="text-sm font-bold">Public Listing</p>
+<p class="text-[10px] text-on-surface-variant">Visible to all athletes on booking page</p>
+</div>
+</div>
+<div class="w-12 h-6 bg-secondary-container rounded-full relative">
+<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="pt-lg flex flex-col md:flex-row gap-md">
+<button class="flex-1 border border-outline-variant py-3 rounded-xl hover:bg-surface-container-highest transition-all font-bold" type="button">Cancel</button>
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-xl hover:brightness-110 active:scale-95 transition-all font-bold flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined">save</span>
+                            Save Coupon
+                        </button>
+</div>
+</form>
+<div class="bg-surface-container-high px-xl py-4 flex items-center justify-between border-t border-outline-variant">
+<button class="text-error font-label-sm flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">delete</span> DELETE FOREVER
+                    </button>
+<button class="text-on-surface-variant font-label-sm flex items-center gap-1 hover:text-on-surface">
+<span class="material-symbols-outlined text-sm">block</span> DISABLE TEMPORARILY
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for quick action -->
+<button class="fixed bottom-gutter right-gutter w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_8px_30px_rgba(84,233,138,0.4)] flex items-center justify-center z-50 md:hidden">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

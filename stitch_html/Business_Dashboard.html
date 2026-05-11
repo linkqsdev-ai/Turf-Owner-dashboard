@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfMaster Pro - Performance Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffc0ac",
+                    "surface-container-high": "#242c25",
+                    "surface-container-low": "#161d17",
+                    "on-primary-container": "#005027",
+                    "on-background": "#dce5da",
+                    "on-primary": "#003919",
+                    "on-secondary-container": "#003115",
+                    "surface-container-highest": "#2f372f",
+                    "primary": "#54e98a",
+                    "on-primary-fixed-variant": "#005228",
+                    "surface-dim": "#0e150f",
+                    "inverse-primary": "#006d37",
+                    "on-secondary-fixed": "#00210c",
+                    "error-container": "#93000a",
+                    "secondary-container": "#25a55a",
+                    "secondary-fixed": "#83fba5",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2b322b",
+                    "tertiary-fixed": "#ffdbd0",
+                    "on-tertiary-fixed": "#390c00",
+                    "on-secondary": "#003919",
+                    "surface-bright": "#333b34",
+                    "surface-container-lowest": "#09100a",
+                    "on-tertiary-container": "#772e14",
+                    "primary-fixed": "#6bfe9c",
+                    "on-surface": "#dce5da",
+                    "background": "#0e150f",
+                    "surface-variant": "#2f372f",
+                    "primary-container": "#2ecc71",
+                    "on-primary-fixed": "#00210c",
+                    "primary-fixed-dim": "#4ae183",
+                    "outline": "#869486",
+                    "surface-tint": "#4ae183",
+                    "secondary-fixed-dim": "#66dd8b",
+                    "outline-variant": "#3d4a3e",
+                    "surface": "#0e150f",
+                    "tertiary-container": "#ff9875",
+                    "on-surface-variant": "#bbcbbb",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#793015",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb59d",
+                    "surface-container": "#1a211b",
+                    "inverse-surface": "#dce5da",
+                    "on-secondary-fixed-variant": "#005227",
+                    "secondary": "#66dd8b",
+                    "on-tertiary": "#5b1a02"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "40px",
+                    "xl": "64px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-xl": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel {
+            background: rgba(28, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(61, 74, 62, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low flex flex-col p-md">
+<div class="mb-xl">
+<h1 class="text-headline-md font-headline-lg text-primary">TurfMaster Pro</h1>
+<p class="text-label-sm text-on-surface-variant">Elite Performance</p>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-sm">
+<li><a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">dashboard</span> Dashboard</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">stadium</span> Turfs</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">schedule</span> Slots</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">event_note</span> Bookings</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">group</span> Customers</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">confirmation_number</span> Coupons</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">analytics</span> Analytics</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">notifications</span> Notifications</a></li>
+<li><a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">settings</span> Settings</a></li>
+</ul>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-sm">
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">account_circle</span> Profile</a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:text-on-surface rounded-lg px-4 py-2 my-1" href="#"><span class="material-symbols-outlined">logout</span> Logout</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar (Shared Component) -->
+<header class="sticky top-0 z-50 w-full h-16 px-gutter flex justify-between items-center bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-lg text-primary">Dashboard</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg px-10 py-1.5 focus:ring-2 focus:ring-primary/20 focus:outline-none text-body-md w-64" placeholder="Search analytics..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">help</button>
+<img alt="Admin" class="w-8 h-8 rounded-full border border-primary/20" data-alt="Close up portrait of a professional business manager with a confident expression, set against a blurred modern office background. The lighting is crisp and cool-toned, echoing the high-performance sports tech brand identity of TurfMaster Pro." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACgMBY72-MjLu15Mm-cyb5uwU_kOmUbt9d5rmhSQfr2Tsbq1cZ-9KvhNMSoVUAhfcYJO-wIXnyTPJvplVskFrzxJEcvgLaid8snsh413d-TxBR-IHqNEriptNq-GVbz9GkxK0kgk6zFQUf0LRY4dFACIs7ZILZgK_51s5SqfRsfrbzTQTezV075h-BktfFMjnzRAmBWw9bzVDqpjP-5RKVuyf9r738kx6b_EVJt41WHcsR1zPdQB8RR1_xX0w9rsgAb8OdjS2GFOLE"/>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-gutter space-y-lg">
+<!-- Welcome Card -->
+<section class="relative overflow-hidden rounded-2xl bg-surface-container h-48 flex items-center p-xl border border-outline-variant">
+<div class="absolute inset-0 z-0 opacity-20">
+<img alt="Turf" class="w-full h-full object-cover" data-alt="Aerial cinematic wide shot of a pristine professional soccer turf at night under stadium floodlights. The grass is vibrant neon green, and the atmosphere is high-energy and disciplined. Deep charcoal shadows and bright highlights create a matte, high-contrast aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Nc7VbVZYdbEn1gAX-c0YaZH5pZLLBBswbk_Zli92A5_a6I2qqFg4_9Ph8W8YJS0lvSMUDRGWrD_iKhVUfJQuHCq_Zth_ZDAPv0novvJxqTpz4IcTDVZZq0sjs6hQWrjdzd7EpF_d9EXFb6vhYQfZjCGnAYjCksudkCneJf6x0713SAUkvTyTMqfKdyHtszcnms6070lUpzbvRi0EyYklipT92H2L_38HkGABTSpic3a3q3Cu8thTW-mQBk_WjJ2CzNmO7wxw9O7M"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent"></div>
+</div>
+<div class="relative z-10 space-y-xs">
+<p class="text-primary font-label-sm uppercase tracking-widest">Monday, October 24</p>
+<h2 class="text-display-xl font-display-xl text-on-surface">Welcome back, Coach</h2>
+<p class="text-body-lg text-on-surface-variant">"Precision in preparation determines peak performance on the pitch."</p>
+</div>
+</section>
+<!-- KPI Cards Row -->
+<section class="grid grid-cols-1 md:grid-cols-5 gap-md">
+<!-- Today Bookings -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:border-primary transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant uppercase">Today Bookings</span>
+<span class="material-symbols-outlined text-primary">event_available</span>
+</div>
+<div class="text-headline-lg font-headline-lg mb-xs">42</div>
+<div class="flex items-center gap-xs text-secondary text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+12.5%</span>
+</div>
+</div>
+<!-- Today Revenue -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:border-primary transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant uppercase">Today Revenue</span>
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<div class="text-headline-lg font-headline-lg mb-xs">$2,840</div>
+<div class="flex items-center gap-xs text-secondary text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+8.2%</span>
+</div>
+</div>
+<!-- Active Players -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:border-primary transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant uppercase">Active Players</span>
+<span class="material-symbols-outlined text-primary">group</span>
+</div>
+<div class="text-headline-lg font-headline-lg mb-xs">156</div>
+<div class="flex items-center gap-xs text-error text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>
+<span>-3.1%</span>
+</div>
+</div>
+<!-- Peak Hour -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:border-primary transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant uppercase">Peak Hour</span>
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<div class="text-headline-lg font-headline-lg mb-xs">19:00</div>
+<div class="text-label-sm text-on-surface-variant">Capacity Max</div>
+</div>
+<!-- Turf Occupancy -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:border-primary transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm text-on-surface-variant uppercase">Occupancy</span>
+<span class="material-symbols-outlined text-primary">percent</span>
+</div>
+<div class="text-headline-lg font-headline-lg mb-xs">88%</div>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full w-[88%]"></div>
+</div>
+</div>
+</section>
+<!-- Middle Section: Charts & Heatmap -->
+<section class="grid grid-cols-12 gap-lg">
+<!-- Revenue Line Chart -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container p-md rounded-2xl border border-outline-variant">
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h3 class="text-headline-md font-headline-md">Revenue Analytics</h3>
+<p class="text-label-sm text-on-surface-variant">Financial performance across timeframes</p>
+</div>
+<div class="flex bg-surface-container-highest p-1 rounded-lg">
+<button class="px-4 py-1.5 text-label-sm rounded-md bg-primary text-on-primary">Daily</button>
+<button class="px-4 py-1.5 text-label-sm rounded-md text-on-surface-variant hover:text-on-surface">Weekly</button>
+<button class="px-4 py-1.5 text-label-sm rounded-md text-on-surface-variant hover:text-on-surface">Monthly</button>
+</div>
+</div>
+<!-- Chart Placeholder -->
+<div class="h-64 flex items-end justify-between gap-2 px-2">
+<div class="w-full bg-primary/10 h-32 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-24 rounded-t-lg transition-all group-hover:h-28"></div>
+</div>
+<div class="w-full bg-primary/10 h-40 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-32 rounded-t-lg transition-all group-hover:h-36"></div>
+</div>
+<div class="w-full bg-primary/10 h-48 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-44 rounded-t-lg transition-all group-hover:h-46"></div>
+</div>
+<div class="w-full bg-primary/10 h-36 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-28 rounded-t-lg transition-all group-hover:h-30"></div>
+</div>
+<div class="w-full bg-primary/10 h-56 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-52 rounded-t-lg transition-all group-hover:h-54"></div>
+</div>
+<div class="w-full bg-primary/10 h-44 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-38 rounded-t-lg transition-all group-hover:h-40"></div>
+</div>
+<div class="w-full bg-primary/10 h-64 rounded-t-lg relative group">
+<div class="absolute bottom-0 w-full bg-primary h-60 rounded-t-lg transition-all group-hover:h-62"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-label-sm text-on-surface-variant px-2">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- Slot Heatmap -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container p-md rounded-2xl border border-outline-variant">
+<h3 class="text-headline-md font-headline-md mb-lg">Slot Occupancy</h3>
+<div class="grid grid-cols-4 gap-2">
+<!-- Simulated Heatmap Grid -->
+<div class="h-10 rounded bg-primary/20" title="Low"></div>
+<div class="h-10 rounded bg-primary/40" title="Med"></div>
+<div class="h-10 rounded bg-primary/80" title="High"></div>
+<div class="h-10 rounded bg-primary" title="Peak"></div>
+<div class="h-10 rounded bg-primary/60"></div>
+<div class="h-10 rounded bg-primary/90"></div>
+<div class="h-10 rounded bg-primary/20"></div>
+<div class="h-10 rounded bg-primary/30"></div>
+<div class="h-10 rounded bg-primary/70"></div>
+<div class="h-10 rounded bg-primary/10"></div>
+<div class="h-10 rounded bg-primary/80"></div>
+<div class="h-10 rounded bg-primary/40"></div>
+<div class="h-10 rounded bg-primary/90"></div>
+<div class="h-10 rounded bg-primary/20"></div>
+<div class="h-10 rounded bg-primary/50"></div>
+<div class="h-10 rounded bg-primary/30"></div>
+<div class="h-10 rounded bg-primary/80"></div>
+<div class="h-10 rounded bg-primary/10"></div>
+<div class="h-10 rounded bg-primary/40"></div>
+<div class="h-10 rounded bg-primary/70"></div>
+<div class="h-10 rounded bg-primary/20"></div>
+<div class="h-10 rounded bg-primary/60"></div>
+<div class="h-10 rounded bg-primary/90"></div>
+<div class="h-10 rounded bg-primary/30"></div>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant flex justify-between text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-xs"><div class="w-3 h-3 bg-primary/10 rounded"></div> 0-25%</div>
+<div class="flex items-center gap-xs"><div class="w-3 h-3 bg-primary rounded"></div> 75-100%</div>
+</div>
+</div>
+</section>
+<!-- Lower Section: Table & Actions -->
+<section class="grid grid-cols-12 gap-lg">
+<!-- Recent Bookings Table -->
+<div class="col-span-12 lg:col-span-9 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="text-headline-md font-headline-md">Recent Bookings</h3>
+<button class="text-primary text-label-sm hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-highest/50">
+<th class="px-md py-4 text-label-sm text-on-surface-variant">ID</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">Customer</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">Turf</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">Slot</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">Amount</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant">Status</th>
+<th class="px-md py-4 text-label-sm text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-md py-4 font-label-sm">#TX-1029</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs">JD</div>
+<span>John Doe</span>
+</div>
+</td>
+<td class="px-md py-4">Elite Turf A</td>
+<td class="px-md py-4 text-on-surface-variant">18:00 - 19:00</td>
+<td class="px-md py-4 font-bold text-primary">$45.00</td>
+<td class="px-md py-4">
+<span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[10px] uppercase font-bold tracking-wider">Confirmed</span>
+</td>
+<td class="px-md py-4 text-right">
+<div class="flex justify-end gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">visibility</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">cancel</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-md py-4 font-label-sm">#TX-1030</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-xs">AS</div>
+<span>Alice Smith</span>
+</div>
+</td>
+<td class="px-md py-4">Indoor Arena</td>
+<td class="px-md py-4 text-on-surface-variant">19:00 - 20:00</td>
+<td class="px-md py-4 font-bold text-primary">$60.00</td>
+<td class="px-md py-4">
+<span class="px-2 py-1 rounded bg-tertiary/10 text-tertiary text-[10px] uppercase font-bold tracking-wider">Pending</span>
+</td>
+<td class="px-md py-4 text-right">
+<div class="flex justify-end gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">check_circle</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">cancel</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-md py-4 font-label-sm">#TX-1031</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-bold text-xs">RK</div>
+<span>Robert King</span>
+</div>
+</td>
+<td class="px-md py-4">Elite Turf B</td>
+<td class="px-md py-4 text-on-surface-variant">21:00 - 22:00</td>
+<td class="px-md py-4 font-bold text-primary">$45.00</td>
+<td class="px-md py-4">
+<span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[10px] uppercase font-bold tracking-wider">Confirmed</span>
+</td>
+<td class="px-md py-4 text-right">
+<div class="flex justify-end gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">visibility</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">cancel</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Quick Actions Panel -->
+<div class="col-span-12 lg:col-span-3 space-y-md">
+<div class="bg-surface-container p-md rounded-2xl border border-outline-variant">
+<h3 class="text-headline-md font-headline-md mb-md">Quick Actions</h3>
+<div class="grid grid-cols-1 gap-sm">
+<button class="flex items-center gap-md p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-primary hover:text-on-primary transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary">add_circle</span>
+<div class="text-left">
+<p class="font-bold">Add Turf</p>
+<p class="text-label-sm opacity-70">Register new facility</p>
+</div>
+</button>
+<button class="flex items-center gap-md p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-primary hover:text-on-primary transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary">pending_actions</span>
+<div class="text-left">
+<p class="font-bold">Create Slot</p>
+<p class="text-label-sm opacity-70">Open new bookings</p>
+</div>
+</button>
+<button class="flex items-center gap-md p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-primary hover:text-on-primary transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary">local_offer</span>
+<div class="text-left">
+<p class="font-bold">Add Offer</p>
+<p class="text-label-sm opacity-70">Create a coupon</p>
+</div>
+</button>
+<button class="flex items-center gap-md p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-primary hover:text-on-primary transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary">campaign</span>
+<div class="text-left">
+<p class="font-bold">Send Alert</p>
+<p class="text-label-sm opacity-70">Broadcast message</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Small Alert Panel -->
+<div class="bg-error-container/20 border border-error/20 p-md rounded-2xl text-on-error-container">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-error">warning</span>
+<span class="font-bold uppercase text-label-sm">High Demand Warning</span>
+</div>
+<p class="text-body-md text-on-surface">Slots for Saturday are 95% booked. Consider releasing overflow slots for Turf C.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>
