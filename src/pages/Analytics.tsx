@@ -66,148 +66,144 @@ export default function Analytics() {
   };
 
   return (
-    <div className="space-y-10 pb-12 max-w-[1600px] mx-auto px-4 md:px-0">
-      <div className="flex flex-col md:flex-row justify-between md:items-end gap-6 mb-10">
+    <div className="w-full space-y-8 relative px-4 md:px-0">
+      <div className="flex flex-col md:flex-row justify-between md:items-end gap-5">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/10 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
-            <span className="text-[10px] font-black text-brand-primary tracking-[0.2em] uppercase">Intelligence Engine</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight leading-tight">System <span className="text-brand-primary">Insights.</span></h1>
-          <p className="text-text-secondary font-medium mt-2">Deep-layer analytics for multi-facility optimization.</p>
+          <h1 className="text-2xl font-bold text-text-primary tracking-tight">Performance Analytics</h1>
+          <p className="text-text-secondary text-[13px] mt-0.5">Deep-layer analytics for multi-facility optimization.</p>
         </div>
-        <div className="flex flex-wrap gap-4">
-          <div className="bg-bg-card border border-border-light rounded-2xl p-1.5 flex items-center shadow-sm">
+        <div className="flex flex-wrap gap-3">
+          <div className="bg-white border border-border-light rounded-xl p-1 flex items-center shadow-sm">
             <div className="relative">
               <button 
                 onClick={() => setTimeRange(timeRange === 'Last 30 Days' ? 'Last 7 Days' : 'Last 30 Days')}
-                className="flex items-center px-5 py-2.5 border-r border-border-light hover:bg-bg-secondary transition-all rounded-xl group"
+                className="flex items-center px-4 py-1.5 border-r border-border-light hover:bg-bg-secondary transition-all rounded-lg group"
               >
-                <CalendarIcon className="w-4 h-4 text-brand-primary mr-2.5 group-hover:scale-110 transition-transform" />
-                <span className="text-sm font-bold text-text-primary">{timeRange}</span>
-                <ChevronDown className="w-4 h-4 ml-3 text-text-muted" />
+                <CalendarIcon className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
+                <span className="text-[13px] font-bold text-text-primary">{timeRange}</span>
+                <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
               </button>
             </div>
             <button 
               onClick={() => alert('Venue selection: All Venues')}
-              className="flex items-center px-5 py-2.5 border-r border-border-light hover:bg-bg-secondary transition-all group"
+              className="flex items-center px-4 py-1.5 border-r border-border-light hover:bg-bg-secondary transition-all group"
             >
-              <MapPin className="w-4 h-4 text-brand-primary mr-2.5 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-bold text-text-primary">All Venues</span>
-              <ChevronDown className="w-4 h-4 ml-3 text-text-muted" />
+              <MapPin className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
+              <span className="text-[13px] font-bold text-text-primary">All Venues</span>
+              <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
             </button>
             <button 
               onClick={() => alert('Sport selection: All Sports')}
-              className="flex items-center px-5 py-2.5 hover:bg-bg-secondary transition-all rounded-xl group"
+              className="flex items-center px-4 py-1.5 hover:bg-bg-secondary transition-all rounded-lg group"
             >
-              <Activity className="w-4 h-4 text-brand-primary mr-2.5 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-bold text-text-primary">All Sports</span>
-              <ChevronDown className="w-4 h-4 ml-3 text-text-muted" />
+              <Activity className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
+              <span className="text-[13px] font-bold text-text-primary">All Sports</span>
+              <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
             </button>
           </div>
           <button 
             onClick={handleApplyFilters}
             disabled={isApplying}
-            className="bg-brand-primary text-white px-8 py-3.5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-brand-hover transition-all shadow-[0_8px_20px_rgba(16,185,129,0.2)] hover:-translate-y-0.5 active:scale-95 disabled:opacity-70 disabled:cursor-wait"
+            className="bg-brand-primary text-white px-5 py-2 rounded-lg font-bold text-[13px] hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 hover:-translate-y-0.5 active:scale-95 disabled:opacity-70 disabled:cursor-wait"
           >
             {isApplying ? 'Syncing...' : 'Sync Data'}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-bg-card p-6 rounded-2xl border border-border-light shadow-card hover:border-brand-primary/20 transition-all cursor-default">
-          <div className="flex items-center mb-4">
-            <div className="p-2.5 bg-brand-primary/10 rounded-lg mr-3">
-              <TrendingUp className="w-5 h-5 text-brand-primary" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+          <div className="flex items-center mb-3">
+            <div className="p-2 bg-brand-primary/10 rounded-lg mr-2.5">
+              <TrendingUp className="w-4 h-4 text-brand-primary" />
             </div>
-            <h3 className="text-text-secondary font-bold text-sm tracking-wider uppercase">Key Insight</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Key Insight</h3>
           </div>
-          <p className="text-text-primary font-bold text-lg mb-3">
+          <p className="text-text-primary font-bold text-base mb-2">
             {sportUsage.length > 0 ? `${sportUsage[0].name} is your top performer.` : 'Start taking bookings to see insights.'}
           </p>
-          <div className="flex items-center text-brand-primary font-semibold text-sm">
-            <ArrowUpRight className="w-4 h-4 mr-1" />
+          <div className="flex items-center text-brand-primary font-bold text-[11px] uppercase tracking-wider">
+            <ArrowUpRight className="w-3.5 h-3.5 mr-1" />
             Active growth phase
           </div>
         </div>
 
-        <div className="bg-bg-card p-6 rounded-2xl border border-border-light shadow-card hover:border-brand-primary/20 transition-all cursor-default">
-          <div className="flex items-center mb-4">
-            <div className="p-2.5 bg-status-warning/10 rounded-lg mr-3">
-              <CalendarIcon className="w-4 h-4 text-status-warning" />
+        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+          <div className="flex items-center mb-3">
+            <div className="p-2 bg-status-warning/10 rounded-lg mr-2.5">
+              <CalendarIcon className="w-3.5 h-3.5 text-status-warning" />
             </div>
-            <h3 className="text-text-secondary font-bold text-sm tracking-wider uppercase">Efficiency</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Efficiency</h3>
           </div>
-          <p className="text-text-primary font-bold text-lg mb-3">You have processed {bookings.length} total bookings.</p>
-          <p className="text-text-secondary text-sm font-medium">Keep maintaining 100% data integrity.</p>
+          <p className="text-text-primary font-bold text-base mb-2">You have processed {bookings.length} total bookings.</p>
+          <p className="text-text-secondary text-[12px] font-medium">Keep maintaining 100% data integrity.</p>
         </div>
 
-        <div className="bg-bg-card p-6 rounded-2xl border border-border-light shadow-card hover:border-brand-primary/20 transition-all cursor-default">
-          <div className="flex items-center mb-4">
-            <div className="p-2.5 bg-status-danger/10 rounded-lg mr-3">
-              <Users className="w-5 h-5 text-status-danger" />
+        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+          <div className="flex items-center mb-3">
+            <div className="p-2 bg-status-danger/10 rounded-lg mr-2.5">
+              <Users className="w-4 h-4 text-status-danger" />
             </div>
-            <h3 className="text-text-secondary font-bold text-sm tracking-wider uppercase">Network</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Network</h3>
           </div>
-          <p className="text-text-primary font-bold text-lg mb-3">User database is growing steadily.</p>
-          <p className="text-status-danger font-semibold text-sm">Real-time sync enabled</p>
+          <p className="text-text-primary font-bold text-base mb-2">User database is growing steadily.</p>
+          <p className="text-status-danger font-bold text-[11px] uppercase tracking-wider">Real-time sync enabled</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-bg-card p-8 rounded-[2rem] border border-border-light shadow-card hover:border-brand-primary/10 transition-all">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-text-primary uppercase tracking-tight">Revenue Analytics</h2>
-            <div className="flex gap-4">
-              <select className="bg-bg-secondary border border-border-light text-text-primary text-xs font-bold rounded-xl px-5 py-2.5 outline-none focus:ring-2 focus:ring-brand-primary/20 cursor-pointer transition-colors">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Revenue Analytics</h2>
+            <div className="flex gap-3">
+              <select className="bg-bg-secondary border border-border-light text-text-primary text-[11px] font-bold rounded-lg px-3 py-1.5 outline-none focus:ring-2 focus:ring-brand-primary/10 cursor-pointer transition-colors">
                 <option>Weekly View</option>
                 <option>Monthly View</option>
                 <option>Annual View</option>
               </select>
             </div>
           </div>
-          <div className="h-[400px] w-full">
+          <div className="h-[350px] w-full">
             <ResponsiveContainer width="99%" height="99%">
-              <AreaChart data={PERFORMANCE_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={PERFORMANCE_DATA} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorCurrent" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--brand-primary)" stopOpacity={0.3}/>
+                    <stop offset="5%" stopColor="var(--brand-primary)" stopOpacity={0.2}/>
                     <stop offset="95%" stopColor="var(--brand-primary)" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="4 4" stroke="var(--border-light)" vertical={false} />
-                <XAxis dataKey="name" stroke="var(--text-muted)" tick={{fill: 'var(--text-muted)', fontSize: 13, fontWeight: 500}} tickLine={false} axisLine={false} dy={10} />
-                <YAxis stroke="var(--text-muted)" tick={{fill: 'var(--text-muted)', fontSize: 13, fontWeight: 500}} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
+                <XAxis dataKey="name" stroke="var(--text-muted)" tick={{fill: 'var(--text-muted)', fontSize: 11, fontWeight: 500}} tickLine={false} axisLine={false} dy={5} />
+                <YAxis stroke="var(--text-muted)" tick={{fill: 'var(--text-muted)', fontSize: 11, fontWeight: 500}} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-medium)', borderRadius: '16px', color: 'var(--text-primary)', boxShadow: 'var(--shadow-modal)' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-light)', borderRadius: '12px', color: 'var(--text-primary)', boxShadow: 'var(--shadow-premium)', fontSize: '12px' }}
                   itemStyle={{ color: 'var(--brand-primary)', fontWeight: 'bold' }}
                 />
-                <Area type="monotone" dataKey="current" stroke="var(--brand-primary)" strokeWidth={4} fillOpacity={1} fill="url(#colorCurrent)" activeDot={{ r: 8, fill: 'var(--brand-primary)', strokeWidth: 0, style: { filter: 'drop-shadow(0px 0px 8px rgba(16,185,129,0.5))' } }} />
+                <Area type="monotone" dataKey="current" stroke="var(--brand-primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorCurrent)" activeDot={{ r: 6, fill: 'var(--brand-primary)', strokeWidth: 0 }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-bg-card p-8 rounded-[2rem] border border-border-light shadow-card hover:border-brand-primary/10 transition-all flex flex-col items-center">
-          <div className="w-full mb-8 flex justify-between items-start">
+        <div className="bg-white p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all flex flex-col items-center">
+          <div className="w-full mb-6 flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold text-text-primary uppercase tracking-tight">Facility Distribution</h2>
-              <p className="text-text-secondary text-sm mt-1">Bookings by Turf Type</p>
+              <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Facility Distribution</h2>
+              <p className="text-text-secondary text-[12px] mt-0.5">By Turf Type</p>
             </div>
-            <button onClick={() => alert('Detailed report downloading...')} className="p-2 hover:bg-bg-secondary rounded-lg transition-colors group" title="Download Report">
-              <TrendingUp className="w-5 h-5 text-text-muted group-hover:text-brand-primary transition-colors" />
+            <button onClick={() => alert('Detailed report downloading...')} className="p-1.5 hover:bg-bg-secondary rounded-lg transition-colors group" title="Download Report">
+              <TrendingUp className="w-4 h-4 text-text-muted group-hover:text-brand-primary transition-colors" />
             </button>
           </div>
-          <div className="relative h-[250px] w-full flex items-center justify-center">
+          <div className="relative h-[220px] w-full flex items-center justify-center">
             <ResponsiveContainer width="99%" height="99%">
               <PieChart>
                 <Pie
                   data={displayUsage}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={110}
+                  innerRadius={70}
+                  outerRadius={95}
                   paddingAngle={5}
                   dataKey="value"
                   stroke="none"
@@ -217,29 +213,29 @@ export default function Analytics() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-medium)', borderRadius: '12px', color: 'var(--text-primary)' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-light)', borderRadius: '10px', color: 'var(--text-primary)', fontSize: '11px' }}
                   itemStyle={{ color: 'var(--text-primary)', fontWeight: 'bold' }}
                 />
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-3xl font-black text-text-primary tracking-tight">
+              <span className="text-2xl font-bold text-text-primary tracking-tight">
                 {displayUsage[0]?.value || 0}%
               </span>
-              <span className="text-[10px] font-black text-brand-primary tracking-widest uppercase mt-1">
+              <span className="text-[9px] font-bold text-brand-primary tracking-widest uppercase">
                 {displayUsage[0]?.name || 'N/A'}
               </span>
             </div>
           </div>
           
-          <div className="w-full mt-8 space-y-4">
+          <div className="w-full mt-6 space-y-2">
             {displayUsage.map((sport, index) => (
-              <div key={sport.name} className="flex items-center justify-between p-3 hover:bg-bg-secondary rounded-2xl transition-colors cursor-pointer group">
+              <div key={sport.name} className="flex items-center justify-between p-2 hover:bg-bg-secondary rounded-xl transition-colors cursor-pointer group">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full mr-3 group-hover:scale-125 transition-transform" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                  <span className="text-text-primary font-black text-sm group-hover:text-brand-primary transition-colors">{sport.name}</span>
+                  <div className="w-2.5 h-2.5 rounded-full mr-2.5 group-hover:scale-125 transition-transform" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                  <span className="text-text-primary font-bold text-[13px] group-hover:text-brand-primary transition-colors">{sport.name}</span>
                 </div>
-                <span className="text-text-primary font-black group-hover:text-brand-primary transition-colors">{sport.value}%</span>
+                <span className="text-text-primary font-bold text-[13px] group-hover:text-brand-primary transition-colors">{sport.value}%</span>
               </div>
             ))}
           </div>

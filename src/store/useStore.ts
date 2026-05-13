@@ -68,7 +68,12 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const priceNum = parseFloat(turf.price.replace(/[^0-9.]/g, ''));
       const { data, error } = await supabase.from('turfs').insert([{
-        name: turf.name, type: turf.type, location: turf.location, map_url: turf.map_url, price_per_hour: isNaN(priceNum) ? 0 : priceNum, image_url: turf.image
+        name: turf.name, 
+        type: turf.type, 
+        location: turf.location, 
+        // map_url: turf.map_url, // TODO: Uncomment after running: ALTER TABLE turfs ADD COLUMN map_url TEXT;
+        price_per_hour: isNaN(priceNum) ? 0 : priceNum, 
+        image_url: turf.image
       }]).select();
       
       if (error) throw error;
@@ -84,7 +89,7 @@ export const useStore = create<StoreState>((set, get) => ({
     if (turf.name) updateData.name = turf.name;
     if (turf.type) updateData.type = turf.type;
     if (turf.location) updateData.location = turf.location;
-    if (turf.map_url !== undefined) updateData.map_url = turf.map_url;
+    // if (turf.map_url !== undefined) updateData.map_url = turf.map_url; // TODO: Uncomment after schema update
     if (turf.price) {
       const priceNum = parseFloat(turf.price.replace(/[^0-9.]/g, ''));
       updateData.price_per_hour = isNaN(priceNum) ? 0 : priceNum;

@@ -18,76 +18,79 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
   const title = pathName.charAt(0).toUpperCase() + pathName.slice(1) || 'Overview';
 
   return (
-    <header className="h-24 bg-bg-primary/70 backdrop-blur-2xl border-b border-border-light flex items-center justify-between px-10 sticky top-0 z-30 shrink-0 shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
+    <header className="h-16 bg-white/80 backdrop-blur-md border-b border-border-light flex items-center justify-between px-8 sticky top-0 z-30 shrink-0">
       <div className="flex items-center">
         <button 
           onClick={onMenuClick}
-          className="lg:hidden mr-6 p-3 -ml-2 rounded-2xl text-text-muted hover:text-text-primary hover:bg-bg-secondary transition-all active:scale-95 border border-transparent hover:border-border-light"
+          className="lg:hidden mr-4 p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-secondary transition-all"
         >
-          <Menu className="w-6 h-6" />
+          <Menu className="w-5 h-5" />
         </button>
         <div className="flex flex-col">
-          <h1 className="text-2xl font-black tracking-tight text-text-primary leading-tight">{title}</h1>
-          <div className="flex items-center space-x-2 mt-0.5">
-             <div className="w-1.5 h-1.5 rounded-full bg-brand-primary/40" />
-             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Node: Central-01</p>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-text-primary font-heading leading-tight">{title}</h1>
         </div>
       </div>
 
-      <div className="flex items-center space-x-8">
+      <div className="flex items-center space-x-4">
         <div className="relative hidden md:block group">
-          <Search className={`w-4 h-4 absolute left-5 top-1/2 -translate-y-1/2 transition-all duration-300 ${searchValue ? 'text-brand-primary scale-110' : 'text-text-muted'}`} />
+          <Search className={`w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${searchValue ? 'text-brand-primary' : 'text-text-muted'}`} />
           <input 
             type="text" 
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search Intelligence..." 
-            className="w-80 h-12 pl-12 pr-12 rounded-2xl bg-bg-secondary/50 border border-border-light text-sm font-bold text-text-primary focus:outline-none focus:border-brand-primary/30 focus:ring-8 focus:ring-brand-primary/5 transition-all placeholder:text-text-muted/60 shadow-inner group-hover:bg-bg-secondary"
+            placeholder="Search everything..." 
+            className="w-64 h-9 pl-10 pr-9 rounded-lg bg-bg-secondary border border-transparent focus:bg-white focus:border-brand-primary/20 text-[13px] font-medium text-text-primary outline-none transition-all placeholder:text-text-muted/70"
           />
           <AnimatePresence>
             {searchValue && (
-              <motion.button 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+              <button 
                 onClick={() => setSearchValue('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-bg-card hover:bg-bg-secondary rounded-xl transition-all shadow-sm border border-border-light"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-text-primary"
               >
-                <X className="w-3 h-3 text-text-primary" />
-              </motion.button>
+                <X className="w-3.5 h-3.5" />
+              </button>
             )}
           </AnimatePresence>
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-1.5">
+          {/* Sculptural Theme Switcher */}
           <button 
             onClick={toggleTheme}
-            className="p-3 rounded-2xl text-text-muted hover:text-text-primary hover:bg-bg-secondary transition-all border border-border-light hover:border-brand-primary/20 active:scale-90 relative overflow-hidden group bg-bg-card shadow-sm"
-            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            className="p-2.5 rounded-xl text-text-muted hover:text-brand-primary hover:bg-brand-soft transition-all duration-300 group relative"
           >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={theme}
-                initial={{ y: 20, opacity: 0, rotate: -45 }}
-                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                exit={{ y: -20, opacity: 0, rotate: 45 }}
-                transition={{ duration: 0.3, type: 'spring', stiffness: 200 }}
-              >
-                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-              </motion.div>
-            </AnimatePresence>
+            <div className="relative z-10">
+              {theme === 'light' ? (
+                <motion.div initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}>
+                  <Moon className="w-4.5 h-4.5" />
+                </motion.div>
+              ) : (
+                <motion.div initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}>
+                  <Sun className="w-4.5 h-4.5" />
+                </motion.div>
+              )}
+            </div>
+            <div className="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 rounded-xl transition-all duration-300" />
           </button>
 
+          {/* Premium Notification Center */}
           <button 
             onClick={() => navigate('/notifications')}
-            className="relative p-3 rounded-2xl text-text-muted hover:text-text-primary hover:bg-bg-secondary transition-all border border-border-light hover:border-brand-primary/20 active:scale-90 bg-bg-card shadow-sm"
+            className="relative p-2.5 rounded-xl text-text-muted hover:text-brand-primary hover:bg-brand-soft transition-all duration-300 group"
           >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-status-danger border-2 border-bg-card shadow-[0_0_12px_rgba(239,68,68,0.5)] animate-pulse" />
+            <motion.div 
+              className="relative z-10"
+              whileHover={{ rotate: [0, -10, 10, -10, 10, 0] }}
+              transition={{ duration: 0.5 }}
+            >
+              <Bell className="w-4.5 h-4.5" />
+            </motion.div>
+            
+            <div className="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 rounded-xl transition-all duration-300" />
           </button>
         </div>
       </div>
     </header>
   );
 }
+
