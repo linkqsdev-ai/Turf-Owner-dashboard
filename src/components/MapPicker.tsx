@@ -1,10 +1,10 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
+import { useState, useCallback, useEffect } from 'react';
+import { GoogleMap, useJsApiLoader, Marker, type Libraries } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { X, Search, Navigation, MapPin, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const libraries: ("places" | "drawing" | "geometry" | "localContext" | "visualization")[] = ["places"];
+const libraries: Libraries = ["places"];
 
 const mapContainerStyle = {
   width: '100%',

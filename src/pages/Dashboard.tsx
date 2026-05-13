@@ -32,10 +32,9 @@ const KPICard = ({ title, value, change, isPositive, icon: Icon, onClick }: any)
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { bookings, turfs, customers } = useStore();
+  const { bookings, customers } = useStore();
   
-  const today = new Date().toISOString().split('T')[0];
-  const todayBookings = bookings.filter(b => b.date === today).length;
+
   
   const totalRevenue = bookings.reduce((sum, b) => {
     const amt = parseFloat(b.amount.replace(/[^0-9.]/g, '')) || 0;

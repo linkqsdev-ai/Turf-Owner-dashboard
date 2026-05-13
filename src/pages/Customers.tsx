@@ -1,4 +1,4 @@
-import { Search, Filter, Mail, Phone, MoreHorizontal, X, User, ArrowUpRight } from 'lucide-react';
+import { Search, Filter, MoreHorizontal, X, User } from 'lucide-react';
 import { useStore, type Customer } from '../store/useStore';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';

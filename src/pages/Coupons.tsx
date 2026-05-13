@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Tag, Trash2, Clock, X, Ticket, Sparkles } from 'lucide-react';
+import { Tag, Trash2, Clock, X, Ticket, Sparkles } from 'lucide-react';
 import { useStore, type Coupon } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
