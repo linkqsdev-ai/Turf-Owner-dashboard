@@ -1,14 +1,31 @@
 import { useState } from 'react';
 import { Save, User, Bell, Lock, Globe, Loader2, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Input } from '../components/Input';
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget as HTMLFormElement);
+    const newErrors: Record<string, string> = {};
+
+    const name = fd.get('name') as string;
+    const email = fd.get('email') as string;
+
+    if (!name || name.trim().length < 2) newErrors.name = 'Please enter a valid name.';
+    if (!email || !email.includes('@')) newErrors.email = 'Please enter a valid communication channel.';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     setIsSaving(true);
     // Simulate API call
     setTimeout(() => {
@@ -104,21 +121,29 @@ export default function Settings() {
                   </div>
                 </div>
 
-                <form onSubmit={handleSave} className="space-y-6">
+                <form noValidate onSubmit={handleSave} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Assigned Name</label>
-                      <input type="text" defaultValue="Admin" className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-text-primary text-[13px] outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Entity Family</label>
-                      <input type="text" defaultValue="User" className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-text-primary text-[13px] outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" />
-                    </div>
+                    <Input 
+                      name="name"
+                      label="Assigned Name"
+                      defaultValue="Admin"
+                      error={errors.name}
+                      onChange={() => setErrors(prev => ({ ...prev, name: '' }))}
+                    />
+                    <Input 
+                      name="family"
+                      label="Entity Family"
+                      defaultValue="User"
+                    />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Communication Channel</label>
-                    <input type="email" defaultValue="admin@linkqs.com" className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-text-primary text-[13px] outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" />
-                  </div>
+                  <Input 
+                    name="email"
+                    label="Communication Channel"
+                    type="email"
+                    defaultValue="admin@linkqs.com"
+                    error={errors.email}
+                    onChange={() => setErrors(prev => ({ ...prev, email: '' }))}
+                  />
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">System Biography</label>
                     <textarea rows={3} defaultValue="High-performance facility owner managing premium multi-sport nodes within the Linkqs network." className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-text-primary text-[13px] outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all resize-none" />

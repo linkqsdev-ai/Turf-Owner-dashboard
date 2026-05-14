@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { supabase } from '../services/supabase';
+import { showError, showWarning } from '../utils/alerts';
 
 export type Turf = { id: string | number; name: string; type: string; location: string; map_url: string; status: string; rating: number; price: string; image: string };
 export type Slot = { id: string | number; turf: string; date: string; time: string; price: string; isBooked: boolean };
 export type Booking = { id: string; customer: string; turf: string; date: string; time: string; amount: string; status: string };
-export type Coupon = { id: string | number; code: string; discount: string; type: string; usage: string; expires: string; status: string };
+export type Coupon = { id: string | number; code: string; discount: string; type: string; usage: string; expires: string; status: string; appliesTo: 'all_slots' | 'specific_slots'; selectedSlotIds: (string | number)[] };
 export type Customer = { id: string; name: string; email: string; phone: string; bookings: number; spent: string; lastActive: string };
 
 type StoreState = {
@@ -50,7 +51,7 @@ export const useStore = create<StoreState>((set, get) => ({
   
   fetchTurfs: async () => {
     try {
-      const { data, error } = await supabase.from('turfs').select('*');
+      const { data, error } = await supabase.from('turfs').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       if (data) {
         const formatted = data.map(t => ({
@@ -112,11 +113,28 @@ export const useStore = create<StoreState>((set, get) => ({
   },
   
   fetchSlots: async () => {
-    const { data, error } = await supabase.from('slots').select('*, turfs(name)');
+    const { data, error } = await supabase.from('slots').select('*, turfs(name)').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
     if (!error && data) {
+      const formatTime = (timeStr: string) => {
+        if (!timeStr) return 'N/A';
+        const [h, m] = timeStr.split(':');
+        const hour = parseInt(h);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${m} ${ampm}`;
+      };
+      const formatDate = (dateStr: string) => {
+        if (!dateStr || dateStr === 'Unknown Date') return dateStr;
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return dateStr;
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      };
+
       const formatted = data.map(s => ({
-        id: s.id, turf: s.turfs?.name || 'Unknown Turf', date: s.slot_date, 
-        time: `${s.start_time.substring(0,5)} - ${s.end_time.substring(0,5)}`, price: `₹${s.price}`, isBooked: s.is_booked
+        id: s.id, turf: s.turfs?.name || 'Unknown Turf', 
+        date: formatDate(s.slot_date), 
+        time: `${formatTime(s.start_time)} - ${formatTime(s.end_time)}`, 
+        price: `₹${s.price}`, isBooked: s.is_booked
       }));
       set({ slots: formatted });
     }
@@ -132,16 +150,27 @@ export const useStore = create<StoreState>((set, get) => ({
       if (turfData) {
         const normalizeTime = (t: string) => {
           if (!t) return null;
-          let time = t.trim();
+          let time = t.trim().toUpperCase();
+          const isPM = time.includes('PM');
+          const isAM = time.includes('AM');
+          
+          // Remove AM/PM for parsing
+          time = time.replace(/(AM|PM)/g, '').trim();
+
           if (time.includes(':')) {
             const parts = time.split(':');
-            const h = parts[0].padStart(2, '0');
+            let h = parseInt(parts[0]);
             const m = (parts[1] || '00').padStart(2, '0');
-            const s = (parts[2] || '00').padStart(2, '0');
-            return `${h}:${m}:${s}`;
+            
+            if (isPM && h < 12) h += 12;
+            if (isAM && h === 12) h = 0;
+            
+            return `${h.toString().padStart(2, '0')}:${m}:00`;
           } else {
-            const h = time.padStart(2, '0');
-            return `${h}:00:00`;
+            let h = parseInt(time);
+            if (isPM && h < 12) h += 12;
+            if (isAM && h === 12) h = 0;
+            return `${h.toString().padStart(2, '0')}:00:00`;
           }
         };
 
@@ -171,11 +200,11 @@ export const useStore = create<StoreState>((set, get) => ({
           console.log("Slot generated successfully");
         } else {
           console.error("Slot insert error:", error);
-          alert(`Failed to generate slot: ${error.message}`);
+          showError('Slot Error', `Failed to generate slot: ${error.message}`);
         }
       } else {
         console.warn("Turf not found for slot generation:", slotInfo.turf);
-        alert(`Turf "${slotInfo.turf}" not found. Please ensure the turf exists.`);
+        showWarning('Turf Not Found', `Turf "${slotInfo.turf}" not found. Please ensure the turf exists.`);
       }
     } catch (e) {
       console.error('Failed to generate slot in DB:', e);
@@ -209,13 +238,28 @@ export const useStore = create<StoreState>((set, get) => ({
   },
   
   fetchBookings: async () => {
-    const { data, error } = await supabase.from('bookings').select('*, customers(full_name), slots(slot_date, start_time, end_time, turfs(name))');
+    const { data, error } = await supabase.from('bookings').select('*, customers(full_name), slots(slot_date, start_time, end_time, turfs(name))').order('created_at', { ascending: false });
     if (!error && data) {
+      const formatTime = (timeStr: string) => {
+        if (!timeStr) return 'N/A';
+        const [h, m] = timeStr.split(':');
+        const hour = parseInt(h);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${m} ${ampm}`;
+      };
+      const formatDate = (dateStr: string) => {
+        if (!dateStr || dateStr === 'Unknown Date') return dateStr;
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return dateStr;
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      };
+
       const formatted = data.map(b => ({
         id: b.booking_ref, customer: b.customers?.full_name || 'Unknown', 
         turf: b.slots?.turfs?.name || 'Unknown Turf', 
-        date: b.slots?.slot_date || 'Unknown Date', 
-        time: b.slots ? `${b.slots.start_time.substring(0,5)} - ${b.slots.end_time.substring(0,5)}` : 'Unknown',
+        date: formatDate(b.slots?.slot_date || 'Unknown Date'), 
+        time: b.slots ? `${formatTime(b.slots.start_time)} - ${formatTime(b.slots.end_time)}` : 'Unknown',
         amount: `₹${b.total_amount}`, status: b.status
       }));
       set({ bookings: formatted });
@@ -247,16 +291,26 @@ export const useStore = create<StoreState>((set, get) => ({
       if (turfData) {
         const normalizeTime = (t: string) => {
           if (!t) return null;
-          let time = t.trim();
+          let time = t.trim().toUpperCase();
+          const isPM = time.includes('PM');
+          const isAM = time.includes('AM');
+          
+          time = time.replace(/(AM|PM)/g, '').trim();
+
           if (time.includes(':')) {
             const parts = time.split(':');
-            const h = parts[0].padStart(2, '0');
+            let h = parseInt(parts[0]);
             const m = (parts[1] || '00').padStart(2, '0');
-            const s = (parts[2] || '00').padStart(2, '0');
-            return `${h}:${m}:${s}`;
+            
+            if (isPM && h < 12) h += 12;
+            if (isAM && h === 12) h = 0;
+            
+            return `${h.toString().padStart(2, '0')}:${m}:00`;
           } else {
-            const h = time.padStart(2, '0');
-            return `${h}:00:00`;
+            let h = parseInt(time);
+            if (isPM && h < 12) h += 12;
+            if (isAM && h === 12) h = 0;
+            return `${h.toString().padStart(2, '0')}:00:00`;
           }
         };
 
@@ -273,7 +327,7 @@ export const useStore = create<StoreState>((set, get) => ({
           slotId = slotData.id;
         } else {
           console.warn("Matching slot not found for booking:", { turfId: turfData.id, date: booking.date, start_time });
-          alert("Matching slot not found. Please ensure a slot exists for this time (Format: HH:MM, e.g., 18:00).");
+          showWarning('Slot Conflict', "Matching slot not found. Please ensure a slot exists for this time (Format: HH:MM, e.g., 18:00).");
         }
       } else {
         console.warn("Turf not found for booking:", booking.turf);
@@ -300,7 +354,7 @@ export const useStore = create<StoreState>((set, get) => ({
           console.log("Booking added successfully");
         } else {
           console.error("Booking insert error:", bookingErr);
-          alert(`Failed to add booking: ${bookingErr.message}`);
+          showError('Booking Error', `Failed to add booking: ${bookingErr.message}`);
         }
       }
     } catch (e) {
@@ -330,12 +384,13 @@ export const useStore = create<StoreState>((set, get) => ({
   },
   
   fetchCoupons: async () => {
-    const { data, error } = await supabase.from('coupons').select('*');
+    const { data, error } = await supabase.from('coupons').select('*').order('created_at', { ascending: false });
     if (!error && data) {
       const formatted = data.map(c => ({
         id: c.id, code: c.code, discount: c.discount_type === 'Percentage' ? `${c.discount_value}%` : `₹${c.discount_value}`,
         type: c.discount_type, usage: `${c.usage_count}/${c.usage_limit || 'Unlim'}`,
-        expires: new Date(c.expires_at).toLocaleDateString(), status: c.status
+        expires: new Date(c.expires_at).toLocaleDateString('en-GB'), status: c.status,
+        appliesTo: c.applies_to || 'all_slots', selectedSlotIds: c.selected_slot_ids || []
       }));
       set({ coupons: formatted });
     }
@@ -345,14 +400,17 @@ export const useStore = create<StoreState>((set, get) => ({
     const isPerc = coupon.discount.includes('%');
     const val = parseFloat(coupon.discount.replace(/[^0-9.]/g, ''));
     const { data, error } = await supabase.from('coupons').insert([{
-      code: coupon.code, discount_value: isNaN(val) ? 0 : val, discount_type: isPerc ? 'Percentage' : 'Fixed Amount',
-      expires_at: new Date(coupon.expires).toISOString(), usage_count: 0
+      code: coupon.code, discount_value: isNaN(val) ? 0 : val, discount_type: isPerc ? 'Percentage' : 'Fixed',
+      expires_at: new Date(coupon.expires).toISOString(), usage_count: 0,
+      applies_to: coupon.appliesTo || 'all_slots',
+      selected_slot_ids: coupon.selectedSlotIds || []
     }]).select();
     
     if (!error && data) {
       await get().fetchCoupons();
     } else {
       console.warn("addCoupon failed", error);
+      showError('Coupon Error', `Failed to initialize campaign: ${error?.message || 'Unknown error'}`);
     }
   },
   
@@ -362,14 +420,19 @@ export const useStore = create<StoreState>((set, get) => ({
     if (coupon.discount) {
       const isPerc = coupon.discount.includes('%');
       updateData.discount_value = parseFloat(coupon.discount.replace(/[^0-9.]/g, ''));
-      updateData.discount_type = isPerc ? 'Percentage' : 'Fixed Amount';
+      updateData.discount_type = isPerc ? 'Percentage' : 'Fixed';
     }
     if (coupon.expires) updateData.expires_at = new Date(coupon.expires).toISOString();
     if (coupon.status) updateData.status = coupon.status;
+    if (coupon.appliesTo) updateData.applies_to = coupon.appliesTo;
+    if (coupon.selectedSlotIds) updateData.selected_slot_ids = coupon.selectedSlotIds;
 
     const { error } = await supabase.from('coupons').update(updateData).eq('id', id);
     if (!error) {
       await get().fetchCoupons();
+    } else {
+      console.error("Update coupon error:", error);
+      showError('Update Failed', `Could not update campaign: ${error.message}`);
     }
   },
   
@@ -383,7 +446,7 @@ export const useStore = create<StoreState>((set, get) => ({
   fetchCustomers: async () => {
     try {
       // Use a single query with count if possible, or fetch all and aggregate
-      const { data, error } = await supabase.from('customers').select('*, bookings(id)');
+      const { data, error } = await supabase.from('customers').select('*, bookings(id)').order('created_at', { ascending: false });
       if (error) throw error;
       if (data) {
         const formatted = data.map(c => ({

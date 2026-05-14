@@ -2,6 +2,7 @@ import { Search, Filter, MoreHorizontal, X, User } from 'lucide-react';
 import { useStore, type Customer } from '../store/useStore';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { showToast } from '../utils/alerts';
 
 export default function Customers() {
   const { customers } = useStore();
@@ -29,12 +30,12 @@ export default function Customers() {
               placeholder="Search customers..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-9 pl-9 pr-4 rounded-lg bg-white border border-border-light text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand-primary transition-all placeholder:text-text-muted/50"
+              className="w-full h-9 pl-9 pr-4 rounded-lg bg-bg-primary border border-border-light text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand-primary transition-all placeholder:text-text-muted/50"
             />
           </div>
           <button 
-            onClick={() => alert('Filter logic initialized.')}
-            className="bg-white text-text-primary px-5 h-9 rounded-lg font-bold text-[13px] flex items-center justify-center hover:bg-bg-secondary transition-all border border-border-light active:scale-95"
+            onClick={() => showToast('Filter logic initialized.', 'info')}
+            className="bg-bg-primary text-text-primary px-5 h-9 rounded-lg font-bold text-[13px] flex items-center justify-center hover:bg-bg-secondary transition-all border border-border-light active:scale-95"
           >
             <Filter className="w-3.5 h-3.5 mr-2 text-brand-primary" />
             Filters
@@ -42,7 +43,7 @@ export default function Customers() {
         </div>
       </div>
 
-      <div className="bg-white border border-border-light rounded-xl shadow-premium overflow-hidden">
+      <div className="bg-bg-primary border border-border-light rounded-xl shadow-premium overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -103,7 +104,7 @@ export default function Customers() {
                   <td className="px-5 py-3.5 font-bold text-brand-primary text-[13px]">{customer.spent}</td>
                   <td className="px-5 py-3.5 text-[9px] font-bold text-text-secondary uppercase tracking-wider">{customer.lastActive}</td>
                   <td className="px-5 py-3.5 text-right">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="transition-opacity">
                       <button className="p-1.5 text-text-muted hover:text-brand-primary hover:bg-brand-primary/5 rounded-lg transition-all">
                         <MoreHorizontal className="w-3.5 h-3.5" />
                       </button>
@@ -119,13 +120,13 @@ export default function Customers() {
       <AnimatePresence>
         {selectedCustomer && (
           <div className="fixed inset-0 z-[200] flex items-center justify-end bg-black/60 backdrop-blur-md">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedCustomer(null)} className="absolute inset-0" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0" />
             <motion.div 
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="bg-white w-full max-w-sm h-full shadow-modal relative z-10 overflow-y-auto border-l border-border-light p-6 md:p-8"
+              className="bg-bg-primary w-full max-w-sm h-full shadow-modal relative z-10 overflow-y-auto border-l border-border-light p-6 md:p-8"
             >
               <div className="flex justify-between items-center mb-8">
                 <h3 className="text-[10px] font-bold text-text-secondary uppercase tracking-widest">Customer Profile</h3>
@@ -172,7 +173,7 @@ export default function Customers() {
                 <button className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold text-sm hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10">
                   Send Message
                 </button>
-                <button className="w-full bg-white text-text-primary py-3 rounded-xl font-bold text-sm hover:bg-bg-secondary transition-all border border-border-light">
+                <button className="w-full bg-bg-primary text-text-primary py-3 rounded-xl font-bold text-sm hover:bg-bg-secondary transition-all border border-border-light">
                   View Full History
                 </button>
               </div>

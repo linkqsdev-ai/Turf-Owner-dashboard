@@ -7,22 +7,22 @@
   --font-heading: 'Satoshi', sans-serif;
 
   /* Premium Turf Green Palette - More Organic & Professional */
-  --color-brand-primary: #15803D; /* Deep Forest Turf Green */
-  --color-brand-hover: #166534;
-  --color-brand-deep: #14532D;
-  --color-brand-soft: #F0FDF4; /* Very soft wash */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
   
-  --color-text-primary: #0F172A; /* Slate 900 */
-  --color-text-secondary: #475569; /* Slate 600 */
-  --color-text-muted: #94A3B8; /* Slate 400 */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F8FAFC;
-  --color-bg-card: #FFFFFF;
-  --color-bg-hover: #F1F5F9;
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-hover: var(--bg-hover);
   
-  --color-border-light: #F1F5F9;
-  --color-border-medium: #E2E8F0;
+  --color-border-light: var(--border-light);
+  --color-border-medium: var(--border-medium);
   
   --color-status-success: #22C55E;
   --color-status-warning: #F59E0B;
@@ -32,47 +32,74 @@
   --radius-md: 4px;
   --radius-lg: 6px;
   --radius-xl: 8px;
-  --radius-2xl: 12px;
+  --radius-2xl: 10px;
   
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.02), 0 4px 6px -4px rgb(0 0 0 / 0.02);
-  --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.04), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-premium: 0 8px 20px -6px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.02);
+  --shadow-hover: 0 12px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.03);
 }
 
 @layer base {
   :root {
     --brand-primary: #15803D;
+    --brand-hover: #166534;
+    --brand-deep: #14532D;
+    --brand-soft: #F0FDF4;
     --text-primary: #0F172A;
     --text-secondary: #475569;
     --text-muted: #94A3B8;
     --bg-primary: #FFFFFF;
     --bg-secondary: #F8FAFC;
     --bg-card: #FFFFFF;
+    --bg-hover: #F1F5F9;
     --border-light: #F1F5F9;
     --border-medium: #E2E8F0;
+    --grid-line: rgba(15, 23, 42, 0.03);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+  }
+
+  .dark {
+    --brand-primary: #22C55E;
+    --brand-hover: #4ADE80;
+    --brand-deep: #166534;
+    --brand-soft: rgba(34, 197, 94, 0.1);
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --bg-primary: #020617;
+    --bg-secondary: #0F172A;
+    --bg-card: #1E293B;
+    --bg-hover: #2D3748;
+    --border-light: #1E293B;
+    --border-medium: #334155;
+    --grid-line: rgba(255, 255, 255, 0.03);
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
   }
 
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.45;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-heading);
     color: var(--text-primary);
-    letter-spacing: -0.04em;
+    letter-spacing: -0.025em;
     font-weight: 700;
   }
 
-  h1 { font-size: 34px; line-height: 1.15; }
-  h2 { font-size: 24px; line-height: 1.25; }
-  h3 { font-size: 19px; line-height: 1.35; }
-  h4 { font-size: 15px; line-height: 1.4; }
+  h1 { font-size: 28px; line-height: 1.1; } /* Navbar titles */
+  h2 { font-size: 18px; line-height: 1.2; } /* Section titles */
+  h3 { font-size: 15px; line-height: 1.3; } /* Card titles */
+  h4 { font-size: 13px; line-height: 1.4; } /* Small headings */
 
   /* Premium Scrollbar - More Compact */
   ::-webkit-scrollbar {
@@ -89,27 +116,104 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--brand-primary);
   }
+
+  /* Global Clickable Elements */
+  button, 
+  a, 
+  input[type="submit"],
+  input[type="button"],
+  [role="button"],
+  .cursor-pointer {
+    cursor: pointer !important;
+  }
+
+  /* Prevent icons from capturing pointer events when they are inside clickable parents */
+  button svg, 
+  a svg,
+  [role="button"] svg,
+  .cursor-pointer svg {
+    pointer-events: none;
+  }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--glass-border);
   }
   
   .text-balance {
     text-wrap: balance;
   }
 
+
   .bg-premium-grid {
     background-color: var(--bg-secondary);
     background-image: 
       radial-gradient(at 0% 0%, rgba(21, 128, 61, 0.05) 0px, transparent 50%),
       radial-gradient(at 100% 100%, rgba(21, 128, 61, 0.05) 0px, transparent 50%),
-      linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
   }
+}
+
+/* Premium SweetAlert2 Customization */
+.swal2-premium-popup {
+  border-radius: 16px !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: var(--shadow-premium) !important;
+  padding: 2rem !important;
+  font-family: var(--font-sans) !important;
+}
+
+.swal2-premium-title {
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  font-size: 20px !important;
+  letter-spacing: -0.02em !important;
+}
+
+.swal2-premium-confirm {
+  background-color: var(--brand-primary) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s ease !important;
+  margin: 0.5rem !important;
+}
+
+.swal2-premium-confirm:hover {
+  background-color: var(--brand-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+.swal2-premium-cancel {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border-light) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s ease !important;
+  margin: 0.5rem !important;
+}
+
+.swal2-premium-cancel:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.swal2-premium-icon {
+  border-width: 2px !important;
+  transform: scale(0.8) !important;
 }
 

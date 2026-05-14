@@ -3,8 +3,11 @@ import { Plus, MapPin, Star, X, LayoutGrid, Trash2, Loader2, Map as MapIcon, Ind
 import { useStore, type Turf } from '../store/useStore';
 import { supabase } from '../services/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
+import { showWarning, showError } from '../utils/alerts';
 import MapPicker from '../components/MapPicker';
 import ConfirmModal from '../components/ConfirmModal';
+import { NumericInput } from '../components/NumericInput';
+import { Input } from '../components/Input';
 
 const DEFAULT_TURF_IMAGE = '/assets/images/default-turf.jpg';
 
@@ -22,6 +25,7 @@ export default function Turfs() {
   const [formPrice, setFormPrice] = useState('');
   const [deleteId, setDeleteId] = useState<string | number | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const SUPPORTED_SPORTS = ['Football', 'Cricket', 'Tennis', 'Volleyball', 'Badminton', 'Basketball', 'Padel'];
@@ -30,7 +34,7 @@ export default function Turfs() {
     const file = e.target.files?.[0];
     if (file) {
       if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-        alert('Please upload a JPG, PNG or WEBP image.');
+        showWarning('Invalid File', 'Please upload a JPG, PNG or WEBP image.');
         return;
       }
       setSelectedFile(file);
@@ -65,11 +69,25 @@ export default function Turfs() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
+    // Custom Validation
+    const fd = new FormData(e.currentTarget);
+    const newErrors: Record<string, string> = {};
+    
+    const name = fd.get('name') as string;
+    if (!name || name.trim().length < 2) newErrors.name = 'Please enter a valid facility name.';
+    if (!formLocation || formLocation.trim().length < 3) newErrors.location = 'Please provide a specific location.';
+    if (!formPrice) newErrors.price = 'Please enter a valid hourly rate.';
+    
     if (selectedSports.length === 0) {
-      alert('Please select at least one sport type.');
+      newErrors.sports = 'Select at least one category.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
+    setErrors({});
     setIsUploading(true);
     
     try {
@@ -100,7 +118,7 @@ export default function Turfs() {
       resetModal();
     } catch (error: any) {
       console.error('Error uploading image:', error);
-      alert(error.message || 'Failed to upload image. Please try again.');
+      showError('Upload Failed', error.message || 'Failed to upload image. Please try again.');
     } finally {
       setIsUploading(false);
     }
@@ -171,7 +189,7 @@ export default function Turfs() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-white border border-border-light rounded-xl p-20 flex flex-col items-center justify-center text-center shadow-premium"
+            className="bg-bg-primary border border-border-light rounded-xl p-20 flex flex-col items-center justify-center text-center shadow-premium"
           >
             <div className="w-16 h-16 bg-bg-secondary rounded-xl flex items-center justify-center mb-6 border border-border-light">
               <LayoutGrid className="w-8 h-8 text-brand-primary opacity-20" />
@@ -193,7 +211,7 @@ export default function Turfs() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="bg-white rounded-xl overflow-hidden border border-border-light hover:border-brand-primary/30 transition-all duration-300 shadow-premium hover:shadow-hover group"
+                className="bg-bg-primary rounded-xl overflow-hidden border border-border-light hover:border-brand-primary/30 transition-all duration-300 shadow-premium hover:shadow-hover group"
               >
                 <div className="h-40 relative overflow-hidden bg-bg-secondary">
                   {turf.image ? (
@@ -202,7 +220,7 @@ export default function Turfs() {
                     <img src={DEFAULT_TURF_IMAGE} alt={turf.name} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                   )}
                   
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-text-primary flex items-center shadow-sm border border-border-light">
+                  <div className="absolute top-3 right-3 bg-bg-primary/90 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-text-primary flex items-center shadow-sm border border-border-light">
                     <Star className="w-3 h-3 text-brand-primary mr-1 fill-brand-primary" />
                     {turf.rating}
                   </div>
@@ -221,7 +239,7 @@ export default function Turfs() {
                     </div>
                     <button 
                       onClick={() => handleDelete(turf.id)} 
-                      className="text-text-muted hover:text-status-danger p-1.5 rounded-lg hover:bg-status-danger/5 transition-all opacity-0 group-hover:opacity-100" 
+                      className="text-text-muted hover:text-status-danger p-1.5 rounded-lg hover:bg-status-danger/5 transition-all" 
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -251,9 +269,9 @@ export default function Turfs() {
                     </div>
                     <button 
                       onClick={() => handleEdit(turf)}
-                      className="bg-bg-secondary text-text-primary font-bold text-[11px] uppercase tracking-wider hover:bg-brand-primary hover:text-white transition-all px-4 py-2 rounded-lg border border-border-light hover:border-brand-primary"
+                      className="bg-brand-primary text-white font-bold text-[11px] uppercase tracking-wider hover:bg-brand-hover transition-all px-4 py-2 rounded-lg shadow-sm shadow-brand-primary/10"
                     >
-                      Configure
+                      Edit
                     </button>
                   </div>
                 </div>
@@ -270,14 +288,13 @@ export default function Turfs() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={resetModal}
               className="absolute inset-0 bg-black/80 backdrop-blur-xl"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.98, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 10 }}
-              className="bg-white border border-border-light rounded-xl shadow-modal w-full max-w-4xl relative z-10 overflow-hidden flex flex-col md:flex-row"
+              className="bg-bg-primary border border-border-light rounded-xl shadow-modal w-full max-w-4xl relative z-10 overflow-hidden flex flex-col md:flex-row"
             >
               {/* Left Column: Media */}
               <div className="w-full md:w-[35%] bg-bg-secondary/20 border-r border-border-light flex flex-col p-6">
@@ -310,7 +327,7 @@ export default function Turfs() {
                       <button 
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full py-2.5 bg-white text-text-primary rounded-lg font-bold text-[11px] uppercase tracking-wider hover:bg-brand-primary hover:text-white transition-all"
+                        className="w-full py-2.5 bg-bg-primary text-text-primary rounded-lg font-bold text-[11px] uppercase tracking-wider hover:bg-brand-primary hover:text-white transition-all"
                       >
                         Change Photo
                       </button>
@@ -334,7 +351,7 @@ export default function Turfs() {
               </div>
 
               {/* Right Column: Form */}
-              <div className="flex-1 flex flex-col bg-white">
+              <div className="flex-1 flex flex-col bg-bg-primary">
                 <div className="p-6 border-b border-border-light flex justify-between items-center">
                   <h3 className="font-bold text-text-primary text-sm">Facility Details</h3>
                   <button onClick={resetModal} className="p-1 text-text-muted hover:text-text-primary transition-colors">
@@ -342,16 +359,16 @@ export default function Turfs() {
                   </button>
                 </div>
 
-                <form id="turf-form" onSubmit={handleSubmit} className="p-6 space-y-5 flex-1">
+                <form id="turf-form" noValidate onSubmit={handleSubmit} className="p-6 space-y-5 flex-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Name</label>
-                      <input 
-                        required 
+                    <div className="md:col-span-2">
+                      <Input 
                         name="name" 
+                        label="Name"
                         defaultValue={editingTurf?.name}
-                        className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-medium transition-all" 
-                        placeholder="e.g. Arena-X Prime" 
+                        error={errors.name}
+                        placeholder="e.g. Arena-X Prime"
+                        onChange={() => setErrors(prev => ({ ...prev, name: '' }))}
                       />
                     </div>
                     <div className="space-y-1.5 md:col-span-2">
@@ -364,6 +381,7 @@ export default function Turfs() {
                               key={sport}
                               type="button"
                               onClick={() => {
+                                setErrors(prev => ({ ...prev, sports: '' }));
                                 if (isSelected) {
                                   setSelectedSports(selectedSports.filter(s => s !== sport));
                                 } else {
@@ -381,17 +399,25 @@ export default function Turfs() {
                           );
                         })}
                       </div>
+                      <AnimatePresence>
+                        {errors.sports && (
+                          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[12px] font-bold text-status-danger mt-1.5 ml-0.5">{errors.sports}</motion.p>
+                        )}
+                      </AnimatePresence>
                     </div>
 
-                    <div className="space-y-1.5 md:col-span-2">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Location</label>
-                      <input 
-                        required 
+                    <div className="md:col-span-2">
+                      <Input 
                         name="location" 
+                        label="Location"
                         value={formLocation}
-                        onChange={(e) => setFormLocation(e.target.value)}
-                        className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-medium transition-all" 
-                        placeholder="e.g. South Bangalore" 
+                        error={errors.location}
+                        onChange={(e) => {
+                          setFormLocation(e.target.value);
+                          setErrors(prev => ({ ...prev, location: '' }));
+                        }}
+                        placeholder="e.g. South Bangalore"
+                        icon={<MapPin className="w-3.5 h-3.5" />}
                       />
                     </div>
 
@@ -416,18 +442,19 @@ export default function Turfs() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Hourly Price (₹)</label>
-                      <div className="relative">
-                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-brand-primary" />
-                        <input 
-                          required 
-                          name="price" 
-                          value={formPrice}
-                          onChange={(e) => setFormPrice(e.target.value)}
-                          placeholder="1500" 
-                          className="w-full bg-bg-secondary border border-border-light rounded-lg pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" 
-                        />
-                      </div>
+                      <NumericInput 
+                        name="price" 
+                        label="Hourly Price (₹)"
+                        value={formPrice}
+                        error={errors.price}
+                        onValueChange={(val) => {
+                          setFormPrice(val);
+                          setErrors(prev => ({ ...prev, price: '' }));
+                        }}
+                        placeholder="1500" 
+                        icon={<IndianRupee className="w-3.5 h-3.5" />}
+                        className="w-full bg-bg-secondary border border-border-light rounded-lg pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" 
+                      />
                     </div>
                     
                     <div className="space-y-1.5">

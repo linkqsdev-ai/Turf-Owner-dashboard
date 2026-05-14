@@ -13,6 +13,9 @@ CREATE TABLE turfs (
     price_per_hour DECIMAL(10,2) NOT NULL,
     rating DECIMAL(2,1) DEFAULT 5.0,
     image_url TEXT,
+    owner_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    opening_time TIME,
+    closing_time TIME,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -25,6 +28,7 @@ CREATE TABLE slots (
     end_time TIME NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     is_booked BOOLEAN DEFAULT FALSE,
+    sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -48,6 +52,8 @@ CREATE TABLE coupons (
     usage_count INTEGER DEFAULT 0,
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
     status TEXT DEFAULT 'Active', -- 'Active', 'Expired'
+    applies_to TEXT DEFAULT 'all_slots',
+    selected_slot_ids UUID[] DEFAULT '{}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -70,9 +76,17 @@ ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE coupons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 
--- Create open policies for development (WARNING: Secure these before production!)
-CREATE POLICY "Allow public read/write access to turfs" ON turfs FOR ALL USING (true);
-CREATE POLICY "Allow public read/write access to slots" ON slots FOR ALL USING (true);
+-- Create secure policies for owner-based access
+CREATE POLICY "Owners can manage their own turfs" ON turfs FOR ALL USING (auth.uid() = owner_id);
+CREATE POLICY "Public can view turfs" ON turfs FOR SELECT USING (true);
+
+CREATE POLICY "Owners can manage slots for their turfs" ON slots FOR ALL USING (
+    EXISTS (
+        SELECT 1 FROM turfs 
+        WHERE turfs.id = slots.turf_id AND turfs.owner_id = auth.uid()
+    )
+);
+CREATE POLICY "Public can view slots" ON slots FOR SELECT USING (true);
 CREATE POLICY "Allow public read/write access to customers" ON customers FOR ALL USING (true);
 CREATE POLICY "Allow public read/write access to coupons" ON coupons FOR ALL USING (true);
 CREATE POLICY "Allow public read/write access to bookings" ON bookings FOR ALL USING (true);

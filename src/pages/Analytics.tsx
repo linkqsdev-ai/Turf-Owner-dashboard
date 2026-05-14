@@ -21,6 +21,8 @@ import {
 } from 'recharts';
 import { useStore } from '../store/useStore';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { showToast, showSuccess } from '../utils/alerts';
 
 const PERFORMANCE_DATA = [
   { name: 'Mon', current: 4000, previous: 2400 },
@@ -38,6 +40,14 @@ export default function Analytics() {
   const { bookings, turfs } = useStore();
   const [isApplying, setIsApplying] = useState(false);
   const [timeRange, setTimeRange] = useState('Last 30 Days');
+  const [selectedVenue, setSelectedVenue] = useState('All Venues');
+  const [selectedSport, setSelectedSport] = useState('All Sports');
+  
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const TIME_OPTIONS = ['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'This Year'];
+  const SPORT_OPTIONS = ['All Sports', 'Cricket', 'Football', 'Tennis', 'Badminton', 'Basketball'];
+  const VENUE_OPTIONS = ['All Venues', ...turfs.map(t => t.name)];
 
   // Calculate Sport Usage from real bookings
   const typeCounts: Record<string, number> = {};
@@ -61,7 +71,7 @@ export default function Analytics() {
     setIsApplying(true);
     setTimeout(() => {
       setIsApplying(false);
-      alert('Filters applied successfully!');
+      showSuccess('Applied', 'Filters applied successfully!');
     }, 1000);
   };
 
@@ -73,33 +83,128 @@ export default function Analytics() {
           <p className="text-text-secondary text-[13px] mt-0.5">Deep-layer analytics for multi-facility optimization.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <div className="bg-white border border-border-light rounded-xl p-1 flex items-center shadow-sm">
+          <div className="bg-bg-primary border border-border-light rounded-xl p-1 flex items-center shadow-sm relative">
+            {/* Time Range Dropdown */}
             <div className="relative">
               <button 
-                onClick={() => setTimeRange(timeRange === 'Last 30 Days' ? 'Last 7 Days' : 'Last 30 Days')}
+                onClick={() => setActiveDropdown(activeDropdown === 'time' ? null : 'time')}
                 className="flex items-center px-4 py-1.5 border-r border-border-light hover:bg-bg-secondary transition-all rounded-lg group"
               >
                 <CalendarIcon className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
                 <span className="text-[13px] font-bold text-text-primary">{timeRange}</span>
-                <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
+                <ChevronDown className={`w-3.5 h-3.5 ml-2 text-text-muted transition-transform duration-300 ${activeDropdown === 'time' ? 'rotate-180' : ''}`} />
               </button>
+              
+              <AnimatePresence>
+                {activeDropdown === 'time' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full left-0 mt-2 w-48 bg-bg-primary border border-border-light rounded-xl shadow-modal z-50 overflow-hidden py-1"
+                  >
+                    {TIME_OPTIONS.map(option => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setTimeRange(option);
+                          setActiveDropdown(null);
+                        }}
+                        className={`w-full text-left px-4 py-2 text-[13px] font-bold transition-all ${
+                          timeRange === option ? 'bg-brand-primary/5 text-brand-primary' : 'text-text-primary hover:bg-bg-secondary'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-            <button 
-              onClick={() => alert('Venue selection: All Venues')}
-              className="flex items-center px-4 py-1.5 border-r border-border-light hover:bg-bg-secondary transition-all group"
-            >
-              <MapPin className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
-              <span className="text-[13px] font-bold text-text-primary">All Venues</span>
-              <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
-            </button>
-            <button 
-              onClick={() => alert('Sport selection: All Sports')}
-              className="flex items-center px-4 py-1.5 hover:bg-bg-secondary transition-all rounded-lg group"
-            >
-              <Activity className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
-              <span className="text-[13px] font-bold text-text-primary">All Sports</span>
-              <ChevronDown className="w-3.5 h-3.5 ml-2 text-text-muted" />
-            </button>
+
+            {/* Venue Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setActiveDropdown(activeDropdown === 'venue' ? null : 'venue')}
+                className="flex items-center px-4 py-1.5 border-r border-border-light hover:bg-bg-secondary transition-all group"
+              >
+                <MapPin className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
+                <span className="text-[13px] font-bold text-text-primary truncate max-w-[120px]">{selectedVenue}</span>
+                <ChevronDown className={`w-3.5 h-3.5 ml-2 text-text-muted transition-transform duration-300 ${activeDropdown === 'venue' ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {activeDropdown === 'venue' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-bg-primary border border-border-light rounded-xl shadow-modal z-50 overflow-hidden py-1 max-h-60 overflow-y-auto"
+                  >
+                    {VENUE_OPTIONS.map(option => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setSelectedVenue(option);
+                          setActiveDropdown(null);
+                        }}
+                        className={`w-full text-left px-4 py-2 text-[13px] font-bold transition-all ${
+                          selectedVenue === option ? 'bg-brand-primary/5 text-brand-primary' : 'text-text-primary hover:bg-bg-secondary'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Sport Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setActiveDropdown(activeDropdown === 'sport' ? null : 'sport')}
+                className="flex items-center px-4 py-1.5 hover:bg-bg-secondary transition-all rounded-lg group"
+              >
+                <Activity className="w-3.5 h-3.5 text-brand-primary mr-2 group-hover:scale-110 transition-transform" />
+                <span className="text-[13px] font-bold text-text-primary">{selectedSport}</span>
+                <ChevronDown className={`w-3.5 h-3.5 ml-2 text-text-muted transition-transform duration-300 ${activeDropdown === 'sport' ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {activeDropdown === 'sport' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full right-0 mt-2 w-48 bg-bg-primary border border-border-light rounded-xl shadow-modal z-50 overflow-hidden py-1"
+                  >
+                    {SPORT_OPTIONS.map(option => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setSelectedSport(option);
+                          setActiveDropdown(null);
+                        }}
+                        className={`w-full text-left px-4 py-2 text-[13px] font-bold transition-all ${
+                          selectedSport === option ? 'bg-brand-primary/5 text-brand-primary' : 'text-text-primary hover:bg-bg-secondary'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Click Outside Overlay */}
+            {activeDropdown && (
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setActiveDropdown(null)}
+              />
+            )}
           </div>
           <button 
             onClick={handleApplyFilters}
@@ -112,7 +217,7 @@ export default function Analytics() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+        <div className="bg-bg-primary p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-brand-primary/10 rounded-lg mr-2.5">
               <TrendingUp className="w-4 h-4 text-brand-primary" />
@@ -128,7 +233,7 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+        <div className="bg-bg-primary p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-status-warning/10 rounded-lg mr-2.5">
               <CalendarIcon className="w-3.5 h-3.5 text-status-warning" />
@@ -139,7 +244,7 @@ export default function Analytics() {
           <p className="text-text-secondary text-[12px] font-medium">Keep maintaining 100% data integrity.</p>
         </div>
 
-        <div className="bg-white p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
+        <div className="bg-bg-primary p-4.5 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/20 transition-all cursor-default">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-status-danger/10 rounded-lg mr-2.5">
               <Users className="w-4 h-4 text-status-danger" />
@@ -152,7 +257,7 @@ export default function Analytics() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all">
+        <div className="lg:col-span-2 bg-bg-primary p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Revenue Analytics</h2>
             <div className="flex gap-3">
@@ -163,8 +268,8 @@ export default function Analytics() {
               </select>
             </div>
           </div>
-          <div className="h-[350px] w-full">
-            <ResponsiveContainer width="99%" height="99%">
+          <div className="h-[350px] w-full min-h-[350px]">
+            <ResponsiveContainer width="100%" height="100%" minHeight={350}>
               <AreaChart data={PERFORMANCE_DATA} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorCurrent" x1="0" y1="0" x2="0" y2="1">
@@ -185,18 +290,18 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all flex flex-col items-center">
+        <div className="bg-bg-primary p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all flex flex-col items-center">
           <div className="w-full mb-6 flex justify-between items-start">
             <div>
               <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Facility Distribution</h2>
               <p className="text-text-secondary text-[12px] mt-0.5">By Turf Type</p>
             </div>
-            <button onClick={() => alert('Detailed report downloading...')} className="p-1.5 hover:bg-bg-secondary rounded-lg transition-colors group" title="Download Report">
+            <button onClick={() => showToast('Detailed report downloading...', 'info')} className="p-1.5 hover:bg-bg-secondary rounded-lg transition-colors group" title="Download Report">
               <TrendingUp className="w-4 h-4 text-text-muted group-hover:text-brand-primary transition-colors" />
             </button>
           </div>
-          <div className="relative h-[220px] w-full flex items-center justify-center">
-            <ResponsiveContainer width="99%" height="99%">
+          <div className="relative h-[220px] w-full flex items-center justify-center min-h-[220px]">
+            <ResponsiveContainer width="100%" height="100%" minHeight={220}>
               <PieChart>
                 <Pie
                   data={displayUsage}
