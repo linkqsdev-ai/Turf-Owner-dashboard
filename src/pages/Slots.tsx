@@ -28,7 +28,6 @@ export default function Slots() {
   const [endTime, setEndTime] = useState('08:00 AM');
   
   const [isTurfDropdownOpen, setIsTurfDropdownOpen] = useState(false);
-  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isFilterTurfOpen, setIsFilterTurfOpen] = useState(false);
   const [isFilterDayOpen, setIsFilterDayOpen] = useState(false);
   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState(false);

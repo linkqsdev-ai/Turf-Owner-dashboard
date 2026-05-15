@@ -44,7 +44,7 @@ export default function Analytics() {
   // Calculate Sport Usage from real bookings
   const typeCounts: Record<string, number> = {};
   bookings.forEach(b => {
-    const turf = turfs.find(t => t.name.toLowerCase().includes(b.turf.toLowerCase()));
+    const turf = turfs.find(t => t.name.toLowerCase().includes(b.turfName.toLowerCase()));
     const type = turf ? turf.type : 'Other';
     typeCounts[type] = (typeCounts[type] || 0) + 1;
   });

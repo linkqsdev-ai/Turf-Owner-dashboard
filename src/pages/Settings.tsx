@@ -1,7 +1,6 @@
-import { Save, User, Bell, Lock, Globe, Loader2, CheckCircle2, ShieldCheck, Zap, Camera, Trash2, Edit2, Upload, Clock, Calendar, ToggleLeft as Toggle, ToggleRight, Settings2 } from 'lucide-react';
-import { useRef, useState, useEffect } from 'react';
+import { Save, User, Clock, ToggleLeft as Toggle, Settings2, Globe, Lock, CheckCircle2, Camera, Loader2, ShieldCheck, ToggleRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../services/supabase';
 import { showToast, showConfirm } from '../utils/alerts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '../components/Input';
@@ -25,7 +24,7 @@ const formatTo24 = (t: string) => {
 
 const formatTo12 = (t: string) => {
   if (!t) return '07:00 AM';
-  let [h, m] = t.split(':').map(Number);
+  let [h] = t.split(':').map(Number);
   const period = h >= 12 ? 'PM' : 'AM';
   h = h % 12 || 12;
   return `${h.toString().padStart(2, '0')}:00 ${period}`;
@@ -34,14 +33,14 @@ const formatTo12 = (t: string) => {
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isSaving, setIsSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
   
   const { user, updateProfile, signOut } = useAuthStore();
-  const { turfs, timingRules, fetchTurfs, fetchTimingRules, saveTimingRules, generateSlotsFromRules } = useStore();
+  const { turfs, fetchTurfs, fetchTimingRules, saveTimingRules, generateSlotsFromRules } = useStore();
   
   const [selectedTurfId, setSelectedTurfId] = useState<string>('');
   const [localRules, setLocalRules] = useState<Record<string, { isOpen: boolean, start: string, end: string }>>({});

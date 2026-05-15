@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckCircle, XCircle, Search, Trash2, CalendarX, Plus, User, ArrowRight, ChevronDown, Pencil, X, Clock } from 'lucide-react';
+import { CheckCircle, XCircle, Search, Trash2, CalendarX, Plus, User, ArrowRight, ChevronDown, Pencil, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NumericInput } from '../components/NumericInput';
@@ -30,10 +30,10 @@ export default function Bookings() {
     const fd = new FormData(e.currentTarget);
     const newErrors: Record<string, string> = {};
 
-    const customer = fd.get('customer') as string;
+    const customerName = fd.get('customer') as string;
     const amount = fd.get('amount') as string;
 
-    if (!customer || customer.trim().length < 2) newErrors.customer = 'Customer name required.';
+    if (!customerName || customerName.trim().length < 2) newErrors.customer = 'Customer name required.';
     if (!selectedTurf) newErrors.turf = 'Facility required.';
     if (!selectedSlot) newErrors.slot = 'Time slot required.';
     if (!amount) newErrors.amount = 'Booking amount required.';
@@ -44,11 +44,11 @@ export default function Bookings() {
     }
 
     const bookingData: any = {
-      customer,
+      customerName,
       turfId: selectedTurfId,
-      turf: selectedTurf,
+      turfName: selectedTurf,
       date: selectedDate,
-      time: selectedSlot,
+      timeWindow: selectedSlot,
       amount,
     };
 
@@ -67,13 +67,13 @@ export default function Bookings() {
 
   const handleEdit = (booking: any) => {
     setEditingBooking(booking.id);
-    setSelectedTurf(booking.turf);
+    setSelectedTurf(booking.turfName);
     
     // Find the turf ID from the name if possible, or we might need it in the booking object
-    const turf = turfs.find(t => t.name === booking.turf);
+    const turf = turfs.find(t => t.name === booking.turfName);
     if (turf) setSelectedTurfId(turf.id.toString());
 
-    setSelectedSlot(booking.time); 
+    setSelectedSlot(booking.timeWindow); 
     const dateParts = booking.date.split('/');
     if (dateParts.length === 3) {
       setSelectedDate(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
@@ -105,8 +105,8 @@ export default function Bookings() {
   };
 
   const filteredBookings = bookings.filter(b => 
-    b.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    b.turf.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    b.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    b.turfName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -185,15 +185,15 @@ export default function Bookings() {
                       <div className="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center text-brand-primary border border-border-light shadow-sm">
                         <User className="w-4 h-4" />
                       </div>
-                      <span className="text-text-primary font-bold text-[13px]">{booking.customer}</span>
+                      <span className="text-text-primary font-bold text-[13px]">{booking.customerName}</span>
                     </div>
                   </td>
                   <td className="px-5 py-4">
                     <div className="font-bold text-text-primary text-[13px] flex items-center">
-                      {booking.turf}
+                      {booking.turfName}
                       <ArrowRight className="w-3 h-3 mx-2 text-text-muted opacity-40" />
                     </div>
-                    <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">{booking.date} • {booking.time}</div>
+                    <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">{booking.date} • {booking.timeWindow}</div>
                   </td>
                   <td className="px-5 py-4 font-bold text-text-primary text-[13px]">{booking.amount}</td>
                   <td className="px-5 py-4">
@@ -210,14 +210,14 @@ export default function Bookings() {
                       {booking.status === 'Pending' && (
                         <>
                           <button 
-                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Confirmed', booking.customer); }} 
+                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Confirmed', booking.customerName); }} 
                             className="p-2 text-status-success hover:bg-status-success/10 rounded-lg transition-all" 
                             title="Confirm Booking"
                           >
                             <CheckCircle className="w-3.5 h-3.5" />
                           </button>
                           <button 
-                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Cancelled', booking.customer); }} 
+                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Cancelled', booking.customerName); }} 
                             className="p-2 text-status-danger hover:bg-status-danger/10 rounded-lg transition-all" 
                             title="Cancel Booking"
                           >
@@ -233,7 +233,7 @@ export default function Bookings() {
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button 
-                        onClick={(e) => { e.stopPropagation(); handleDelete(booking.id, booking.customer); }} 
+                        onClick={(e) => { e.stopPropagation(); handleDelete(booking.id, booking.customerName); }} 
                         className="p-2 text-text-muted hover:text-status-danger hover:bg-bg-secondary rounded-lg transition-all" 
                         title="Delete"
                       >
@@ -265,7 +265,7 @@ export default function Bookings() {
                     name="customer"
                     label="Customer Name"
                     placeholder="Enter name"
-                    defaultValue={editingBooking ? filteredBookings.find(b => b.id === editingBooking)?.customer : ''}
+                    defaultValue={editingBooking ? filteredBookings.find(b => b.id === editingBooking)?.customerName : ''}
                     error={errors.customer}
                     icon={<User className="w-4 h-4" />}
                   />

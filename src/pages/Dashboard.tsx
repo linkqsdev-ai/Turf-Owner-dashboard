@@ -15,15 +15,7 @@ import {
   Area
 } from 'recharts';
 
-const MINI_CHART_DATA = [
-  { name: 'Mon', value: 400 },
-  { name: 'Tue', value: 300 },
-  { name: 'Wed', value: 600 },
-  { name: 'Thu', value: 800 },
-  { name: 'Fri', value: 500 },
-  { name: 'Sat', value: 900 },
-  { name: 'Sun', value: 1100 },
-];
+
 
 const KPICard = ({ title, value, change, isPositive, icon: Icon, onClick }: any) => (
   <div 
@@ -144,11 +136,11 @@ export default function Dashboard() {
                 >
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-bg-primary flex items-center justify-center font-bold text-brand-primary shadow-sm border border-border-light group-hover:scale-105 transition-transform">
-                      <span className="text-[11px]">{booking.customer.charAt(0)}</span>
+                      <span className="text-[11px]">{booking.customerName.charAt(0)}</span>
                     </div>
                     <div>
-                      <p className="text-[12px] font-bold text-text-primary leading-tight">{booking.customer}</p>
-                      <p className="text-[10px] text-text-muted font-medium mt-0.5">{booking.turf} • {booking.time}</p>
+                      <p className="text-[12px] font-bold text-text-primary leading-tight">{booking.customerName}</p>
+                      <p className="text-[10px] text-text-muted font-medium mt-0.5">{booking.turfName} • {booking.timeWindow}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-5">

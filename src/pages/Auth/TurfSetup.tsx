@@ -6,7 +6,7 @@ import { useStore, type TimingRule } from '../../store/useStore';
 import { Input } from '../../components/Input';
 import { NumericInput } from '../../components/NumericInput';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, MapPin, ChevronDown, CheckCircle2, Loader2, Calendar, Settings2, ToggleLeft as Toggle, ToggleRight } from 'lucide-react';
+import { Clock, MapPin, CheckCircle2, Loader2, Calendar, Settings2, ToggleLeft as Toggle, ToggleRight } from 'lucide-react';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const TIMES = [

@@ -6,7 +6,7 @@ import { useAuthStore } from './useAuthStore';
 export type Turf = { id: string | number; name: string; type: string; location: string; map_url: string; status: string; rating: number; price: string; image: string };
 export type TimingRule = { id?: string; turf_id: string; day_of_week: string; is_open: boolean; start_time: string; end_time: string; timing_type: 'weekday' | 'weekend' | 'custom' };
 export type Slot = { id: string | number; turf_id?: string; turf: string; date: string; time: string; price: string; isBooked: boolean; status: string; dayOfWeek?: string; sortOrder?: number };
-export type Booking = { id: string; customer: string; turf: string; date: string; time: string; amount: string; status: string };
+export type Booking = { id: string; ownerId: string; turfId: string; slotId?: string; customerName: string; turfName: string; date: string; timeWindow: string; amount: string; status: string; createdAt?: string };
 export type Coupon = { id: string | number; code: string; discount: string; type: string; usage: string; expires: string; status: string; appliesTo: 'all_slots' | 'specific_slots'; selectedSlotIds: (string | number)[] };
 export type Customer = { id: string; name: string; email: string; phone: string; bookings: number; spent: string; lastActive: string };
 
@@ -29,7 +29,7 @@ type StoreState = {
   updateSlot: (id: string | number, slot: Partial<Slot>) => Promise<void>;
   deleteSlot: (id: string | number) => Promise<void>;
   
-  fetchTimingRules: (turfId: string) => Promise<void>;
+  fetchTimingRules: (turfId: string) => Promise<TimingRule[]>;
   saveTimingRules: (turfId: string, rules: TimingRule[]) => Promise<void>;
   
   fetchBookings: () => Promise<void>;
@@ -132,45 +132,7 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
   
-  fetchSlots: async () => {
-    const userId = useAuthStore.getState().user?.id;
-    if (!userId) return;
-    const { data, error } = await supabase
-      .from('slots')
-      .select('*, turfs(name)')
-      .eq('owner_id', userId)
-      .order('slot_date', { ascending: false })
-      .order('sort_order', { ascending: true });
-    
-    if (!error && data) {
-      const formatTime = (timeStr: string) => {
-        if (!timeStr) return 'N/A';
-        const [h, m] = timeStr.split(':');
-        const hour = parseInt(h);
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const displayHour = hour % 12 || 12;
-        return `${displayHour}:${m} ${ampm}`;
-      };
-      const formatDate = (dateStr: string) => {
-        if (!dateStr || dateStr === 'Unknown Date') return dateStr;
-        const parts = dateStr.split('-');
-        if (parts.length !== 3) return dateStr;
-        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-      };
 
-      const formatted = data.map(s => ({
-        id: s.id, turf: s.turfs?.name || 'Unknown Turf', 
-        date: formatDate(s.slot_date), 
-        time: `${formatTime(s.start_time)} - ${formatTime(s.end_time)}`, 
-        price: `₹${s.price}`, 
-        isBooked: s.is_booked,
-        status: s.status || (s.is_booked ? 'Booked' : 'Available'),
-        dayOfWeek: s.day_of_week,
-        sortOrder: s.sort_order
-      }));
-      set({ slots: formatted });
-    }
-  },
   
   generateSlots: async (slotInfo) => {
     const userId = useAuthStore.getState().user?.id;
@@ -357,7 +319,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const userId = useAuthStore.getState().user?.id;
     if (!userId) return;
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('slots')
         .select('*, turfs!inner(id, name, owner_id)')
         .eq('turfs.owner_id', userId)
@@ -407,11 +369,13 @@ export const useStore = create<StoreState>((set, get) => ({
 
   fetchTimingRules: async (turfId) => {
     const userId = useAuthStore.getState().user?.id;
-    if (!userId) return;
+    if (!userId) return [];
     const { data, error } = await supabase.from('timing_rules').select('*').eq('turf_id', turfId);
     if (!error && data) {
       set({ timingRules: data });
+      return data;
     }
+    return [];
   },
 
   saveTimingRules: async (turfId, rules) => {
@@ -462,12 +426,16 @@ export const useStore = create<StoreState>((set, get) => ({
 
       const formatted = data.map(b => ({
         id: b.id, 
-        ref: b.booking_ref,
-        customer: b.customers?.full_name || 'Unknown', 
-        turf: b.slots?.turfs?.name || 'Unknown Turf', 
+        ownerId: b.owner_id,
+        turfId: b.slots?.turfs?.id || '',
+        slotId: b.slot_id,
+        customerName: b.customers?.full_name || 'Unknown', 
+        turfName: b.slots?.turfs?.name || 'Unknown Turf', 
         date: formatDate(b.slots?.slot_date || 'Unknown Date'), 
-        time: b.slots ? `${formatTime(b.slots.start_time)} - ${formatTime(b.slots.end_time)}` : 'Unknown',
-        amount: `₹${Math.round(b.total_amount || 0)}`, status: b.status
+        timeWindow: b.slots ? `${formatTime(b.slots.start_time)} - ${formatTime(b.slots.end_time)}` : 'Unknown',
+        amount: `₹${Math.round(b.total_amount || 0)}`, 
+        status: b.status,
+        createdAt: b.created_at
       }));
       set({ bookings: formatted });
     } else if (error) {
@@ -481,7 +449,7 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       console.log("Adding booking:", booking);
       let customerId = null;
-      const { data: custData } = await supabase.from('customers').select('id, owner_id').eq('full_name', booking.customer).maybeSingle();
+      const { data: custData } = await supabase.from('customers').select('id, owner_id').eq('full_name', booking.customerName).maybeSingle();
       
       if (custData) {
         customerId = custData.id;
@@ -491,9 +459,9 @@ export const useStore = create<StoreState>((set, get) => ({
         }
       } else {
         const { data: newCust, error: custErr } = await supabase.from('customers').insert({ 
-          full_name: booking.customer, 
+          full_name: booking.customerName, 
           owner_id: userId,
-          email: `${booking.customer.replace(/\s+/g, '').toLowerCase()}${Math.floor(Math.random()*1000)}@example.com` 
+          email: `${booking.customerName.replace(/\s+/g, '').toLowerCase()}${Math.floor(Math.random()*1000)}@example.com` 
         }).select('id').single();
         if (!custErr && newCust) customerId = newCust.id;
         else console.error("Customer creation error:", custErr);
@@ -502,8 +470,8 @@ export const useStore = create<StoreState>((set, get) => ({
       let slotId = null;
       let turfId = booking.turfId;
 
-      if (!turfId && booking.turf) {
-        const { data: turfData } = await supabase.from('turfs').select('id').eq('name', booking.turf).maybeSingle();
+      if (!turfId && booking.turfName) {
+        const { data: turfData } = await supabase.from('turfs').select('id').eq('name', booking.turfName).maybeSingle();
         if (turfData) turfId = turfData.id;
       }
 
@@ -533,7 +501,7 @@ export const useStore = create<StoreState>((set, get) => ({
           }
         };
 
-        const times = booking.time.split('-').map(t => t.trim());
+        const times = booking.timeWindow.split('-').map(t => t.trim());
         const start_time = normalizeTime(times[0]) || '00:00:00';
         
         const { data: slotData } = await supabase.from('slots').select('id')
@@ -549,7 +517,7 @@ export const useStore = create<StoreState>((set, get) => ({
           showWarning('Slot Conflict', "Matching slot not found. Please ensure a slot exists for this time (Format: HH:MM, e.g., 18:00).");
         }
       } else {
-        console.warn("Turf not found for booking:", booking.turf);
+        console.warn("Turf not found for booking:", booking.turfName);
       }
 
       if (customerId && slotId) {
@@ -593,15 +561,16 @@ export const useStore = create<StoreState>((set, get) => ({
       const updateData: any = {};
       
       // Update customer if changed
-      if (booking.customer && booking.customer !== (existing.customers?.full_name)) {
+      if (booking.customerName && booking.customerName !== (existing.customers?.full_name)) {
         let customerId = null;
-        const { data: custData } = await supabase.from('customers').select('id').eq('full_name', booking.customer).maybeSingle();
+        const { data: custData } = await supabase.from('customers').select('id').eq('full_name', booking.customerName).maybeSingle();
         if (custData) {
           customerId = custData.id;
         } else {
           const { data: newCust } = await supabase.from('customers').insert({ 
-            full_name: booking.customer, 
-            email: `${booking.customer.replace(/\s+/g, '').toLowerCase()}${Math.floor(Math.random()*1000)}@example.com` 
+            full_name: booking.customerName, 
+            owner_id: userId,
+            email: `${booking.customerName.replace(/\s+/g, '').toLowerCase()}${Math.floor(Math.random()*1000)}@example.com` 
           }).select('id').single();
           if (newCust) customerId = newCust.id;
         }
@@ -615,11 +584,11 @@ export const useStore = create<StoreState>((set, get) => ({
       }
 
       // Update slot if turf, date, or time changed
-      if (booking.turf || booking.turfId || booking.date || booking.time) {
+      if (booking.turfName || booking.turfId || booking.date || booking.timeWindow) {
         let turfId = booking.turfId;
-        const turfName = booking.turf || existing.slots?.turfs?.name;
+        const turfName = booking.turfName || existing.slots?.turfs?.name;
         const date = booking.date || existing.slots?.slot_date;
-        const time = booking.time || `${existing.slots?.start_time} - ${existing.slots?.end_time}`;
+        const time = booking.timeWindow || `${existing.slots?.start_time} - ${existing.slots?.end_time}`;
 
         if (!turfId && turfName) {
           const { data: turfData } = await supabase.from('turfs').select('id').eq('name', turfName).maybeSingle();
@@ -661,7 +630,7 @@ export const useStore = create<StoreState>((set, get) => ({
             // Unbook old slot
             await supabase.from('slots').update({ is_booked: false }).eq('id', existing.slot_id);
             // Book new slot
-            await supabase.from('slots').update({ is_booked: true }).eq('id', slotId);
+            await supabase.from('slots').update({ is_booked: true }).eq('id', slotData.id);
             updateData.slot_id = slotData.id;
           }
         }
