@@ -86,7 +86,7 @@ export default function Customers() {
                 >
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-bg-secondary flex items-center justify-center text-brand-primary border border-border-light shadow-sm">
+                      <div className="w-7 h-7 rounded-full bg-bg-secondary flex items-center justify-center text-brand-primary border border-border-light shadow-sm">
                         <span className="text-[13px] font-bold">{customer.name.charAt(0)}</span>
                       </div>
                       <span className="text-text-primary font-bold text-[13px]">{customer.name}</span>
@@ -97,7 +97,7 @@ export default function Customers() {
                     <div className="text-[9px] text-text-secondary font-bold uppercase tracking-wider">{customer.phone}</div>
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className="px-2 py-0.5 rounded-md bg-bg-secondary text-text-primary text-[9px] font-bold border border-border-light uppercase tracking-wider">
+                    <span className="px-2.5 py-0.5 rounded-full bg-bg-secondary text-text-primary text-[9px] font-bold border border-border-light uppercase tracking-wider">
                       {customer.bookings} Sessions
                     </span>
                   </td>
@@ -134,7 +134,7 @@ export default function Customers() {
               </div>
 
               <div className="flex flex-col items-center text-center mb-10">
-                <div className="w-20 h-20 rounded-xl bg-bg-secondary flex items-center justify-center text-brand-primary text-2xl font-bold border border-border-light shadow-sm mb-4">
+                <div className="w-20 h-20 rounded-2xl bg-bg-secondary flex items-center justify-center text-brand-primary text-2xl font-bold border border-border-light shadow-sm mb-4">
                   {selectedCustomer.name.charAt(0)}
                 </div>
                 <h3 className="text-xl font-bold text-text-primary tracking-tight">{selectedCustomer.name}</h3>
@@ -142,11 +142,11 @@ export default function Customers() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-10">
-                <div className="bg-bg-secondary/50 p-6 rounded-xl border border-border-light">
+                <div className="bg-bg-secondary/50 p-6 rounded-2xl border border-border-light">
                   <p className="text-[10px] font-bold text-text-secondary uppercase tracking-wider mb-2">Total Value</p>
                   <p className="text-xl font-bold text-brand-primary">{selectedCustomer.spent}</p>
                 </div>
-                <div className="bg-bg-secondary/50 p-6 rounded-xl border border-border-light">
+                <div className="bg-bg-secondary/50 p-6 rounded-2xl border border-border-light">
                   <p className="text-[10px] font-bold text-text-secondary uppercase tracking-wider mb-2">Total Bookings</p>
                   <p className="text-xl font-bold text-text-primary">{selectedCustomer.bookings}</p>
                 </div>

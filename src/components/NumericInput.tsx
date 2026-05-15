@@ -25,8 +25,10 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   useEffect(() => {
     if (value !== undefined) {
       setInternalValue(value as string);
+    } else if (defaultValue !== undefined) {
+      setInternalValue(defaultValue as string);
     }
-  }, [value]);
+  }, [value, defaultValue]);
 
   const validateAndSanitize = (val: string) => {
     const sanitized = val.replace(/[^0-9]/g, '');

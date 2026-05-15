@@ -1,6 +1,7 @@
-import { Bell, Menu, Sun, Moon } from 'lucide-react';
+import { Bell, Menu, Sun, Moon, User as UserIcon } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from '../../store/useStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { motion } from 'framer-motion';
 
 interface TopNavbarProps {
@@ -11,9 +12,13 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useStore();
+  const { user } = useAuthStore();
   
   const pathName = location.pathname.substring(1);
   const title = pathName.charAt(0).toUpperCase() + pathName.slice(1) || 'Overview';
+  
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Admin';
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=15803D&color=fff&bold=true`;
 
   return (
     <header className="h-12 bg-bg-primary/80 backdrop-blur-md border-b border-border-light flex items-center justify-between px-5 sticky top-0 z-30 shrink-0">
@@ -70,4 +75,3 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
     </header>
   );
 }
-

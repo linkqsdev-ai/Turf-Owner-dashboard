@@ -1,39 +1,29 @@
 import { useState } from 'react';
-import { CheckCircle, XCircle, Search, Trash2, CalendarX, Plus, User, ArrowRight, ChevronDown } from 'lucide-react';
+import { CheckCircle, XCircle, Search, Trash2, CalendarX, Plus, User, ArrowRight, ChevronDown, Pencil, X, Clock } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NumericInput } from '../components/NumericInput';
 import { Input } from '../components/Input';
 import { showConfirm } from '../utils/alerts';
 
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export default function Bookings() {
-  const { bookings, turfs, updateBookingStatus, addBooking, deleteBooking } = useStore();
+  const { bookings, turfs, slots, updateBookingStatus, addBooking, updateBooking, deleteBooking } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingBooking, setEditingBooking] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTurf, setSelectedTurf] = useState<string>('');
+  const [selectedTurfId, setSelectedTurfId] = useState<string>('');
   const [isTurfDropdownOpen, setIsTurfDropdownOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [selectedDay, setSelectedDay] = useState('Monday');
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [selectedSlot, setSelectedSlot] = useState('');
 
-  const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const TIME_SLOTS = [
-    '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', 
-    '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM'
-  ];
-
-  const getActualDate = (dayName: string) => {
-    const today = new Date();
-    const dayIndex = DAYS.indexOf(dayName);
-    const todayIndex = (today.getDay() + 6) % 7; // Convert Sun-Sat (0-6) to Mon-Sun (0-6)
-    
-    let diff = dayIndex - todayIndex;
-    if (diff < 0) diff += 7; // If day has passed, pick next week's day
-    
-    const targetDate = new Date(today);
-    targetDate.setDate(today.getDate() + diff);
-    return targetDate.toISOString().split('T')[0];
-  };
+  const availableSlotsForSelection = slots.filter(s => {
+    const slotDateRaw = s.date.split('/').reverse().join('-');
+    return String(s.turf_id) === String(selectedTurfId) && slotDateRaw === selectedDate;
+  }).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,27 +33,52 @@ export default function Bookings() {
     const customer = fd.get('customer') as string;
     const amount = fd.get('amount') as string;
 
-    if (!customer || customer.trim().length < 2) newErrors.customer = 'Please enter customer name.';
-    if (!selectedTurf) newErrors.turf = 'Please select a facility.';
-    if (!selectedSlot) newErrors.slot = 'Please select a time slot.';
-    if (!amount) newErrors.amount = 'Enter booking amount.';
+    if (!customer || customer.trim().length < 2) newErrors.customer = 'Customer name required.';
+    if (!selectedTurf) newErrors.turf = 'Facility required.';
+    if (!selectedSlot) newErrors.slot = 'Time slot required.';
+    if (!amount) newErrors.amount = 'Booking amount required.';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    setErrors({});
-    addBooking({
+    const bookingData: any = {
       customer,
+      turfId: selectedTurfId,
       turf: selectedTurf,
-      date: getActualDate(selectedDay),
+      date: selectedDate,
       time: selectedSlot,
       amount,
-    });
+    };
+
+    if (editingBooking) {
+      updateBooking(editingBooking, bookingData);
+    } else {
+      addBooking(bookingData);
+    }
+
     setIsModalOpen(false);
+    setEditingBooking(null);
     setSelectedTurf('');
+    setSelectedTurfId('');
     setSelectedSlot('');
+  };
+
+  const handleEdit = (booking: any) => {
+    setEditingBooking(booking.id);
+    setSelectedTurf(booking.turf);
+    
+    // Find the turf ID from the name if possible, or we might need it in the booking object
+    const turf = turfs.find(t => t.name === booking.turf);
+    if (turf) setSelectedTurfId(turf.id.toString());
+
+    setSelectedSlot(booking.time); 
+    const dateParts = booking.date.split('/');
+    if (dateParts.length === 3) {
+      setSelectedDate(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+    }
+    setIsModalOpen(true);
   };
 
   const handleDelete = async (id: string, customer: string) => {
@@ -77,39 +92,55 @@ export default function Bookings() {
     }
   };
 
+  const handleStatusUpdate = async (id: string, status: 'Confirmed' | 'Cancelled', customer: string) => {
+    const actionText = status === 'Confirmed' ? 'Confirm' : 'Cancel';
+    const confirmed = await showConfirm(
+      `${actionText} Booking`,
+      `Are you sure you want to ${actionText.toLowerCase()} booking for ${customer}?`,
+      actionText
+    );
+    if (confirmed) {
+      updateBookingStatus(id, status);
+    }
+  };
+
   const filteredBookings = bookings.filter(b => 
     b.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.turf.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const selectedDayName = DAYS[new Date(selectedDate).getDay()];
+
   return (
-    <div className="w-full space-y-8 relative px-4 md:px-0">
+    <div className="w-full space-y-8 relative px-4 md:px-0 pb-12">
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-5">
         <div>
           <h1 className="text-2xl font-bold text-text-primary tracking-tight">Booking Management</h1>
-          <p className="text-text-secondary text-[13px] mt-0.5">Oversee and validate the complete reservation lifecycle.</p>
+          <p className="text-text-secondary text-[13px] mt-0.5">Manage and track manual bookings and reservations.</p>
         </div>
         <div className="flex flex-col md:flex-row gap-2.5 w-full md:w-auto">
-          <div className="relative group flex-1 md:w-60">
-            <Search className={`w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${searchTerm ? 'text-brand-primary' : 'text-text-muted'}`} />
+          <div className="relative group flex-1 md:w-64">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted transition-colors group-focus-within:text-brand-primary" />
             <input 
               type="text" 
-              placeholder="Search bookings..." 
+              placeholder="Search customers or facilities..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-9 pl-9 pr-4 rounded-lg bg-bg-primary border border-border-light text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand-primary transition-all placeholder:text-text-muted/50"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-bg-primary border border-border-light text-[13px] font-bold text-text-primary focus:outline-none focus:border-brand-primary transition-all shadow-sm"
             />
           </div>
           <button 
             onClick={() => {
+              setEditingBooking(null);
               setSelectedTurf('');
+              setSelectedSlot('');
               setIsModalOpen(true);
             }} 
-            className="bg-brand-primary text-white px-5 h-9 rounded-lg font-bold text-[13px] flex items-center justify-center hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 active:scale-95"
+            className="bg-brand-primary text-white px-6 h-10 rounded-xl font-bold text-[13px] flex items-center justify-center hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/20 active:scale-95"
           >
-            <Plus className="w-3.5 h-3.5 mr-2" />
-            New Booking
+            <Plus className="w-4 h-4 mr-2" />
+            New Entry
           </button>
         </div>
       </div>
@@ -119,31 +150,26 @@ export default function Bookings() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-bg-secondary/30 border-b border-border-light text-text-muted text-[10px] font-bold uppercase tracking-wider">
-                <th className="px-5 py-3.5">ID</th>
-                <th className="px-5 py-3.5">Customer</th>
-                <th className="px-5 py-3.5">Facility & Schedule</th>
-                <th className="px-5 py-3.5">Amount</th>
-                <th className="px-5 py-3.5">Status</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th className="px-5 py-4">Customer</th>
+                <th className="px-5 py-4">Facility & Schedule</th>
+                <th className="px-5 py-4">Amount</th>
+                <th className="px-5 py-4">Status</th>
+                <th className="px-5 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border-light">
               {filteredBookings.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-24 text-center">
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center space-y-4"
-                    >
-                      <div className="w-16 h-16 bg-bg-secondary rounded-xl flex items-center justify-center border border-border-light">
+                  <td colSpan={5} className="py-24 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-4">
+                      <div className="w-16 h-16 bg-bg-secondary rounded-2xl flex items-center justify-center border border-border-light shadow-inner">
                         <CalendarX className="w-8 h-8 text-brand-primary opacity-20" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold text-text-primary">No records found</p>
-                        <p className="text-text-secondary text-sm">Adjust filters or create a new reservation.</p>
+                        <p className="text-lg font-bold text-text-primary">No bookings found</p>
+                        <p className="text-text-secondary text-[13px]">Create a new entry or adjust your search.</p>
                       </div>
-                    </motion.div>
+                    </div>
                   </td>
                 </tr>
               ) : filteredBookings.map((booking, idx) => (
@@ -151,48 +177,68 @@ export default function Bookings() {
                   key={booking.id}
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.03 }}
-                  className="hover:bg-bg-secondary/20 transition-colors"
+                  transition={{ delay: idx * 0.02 }}
+                  className="hover:bg-bg-secondary/20 transition-colors group"
                 >
-                  <td className="px-5 py-3.5">
-                    <span className="text-brand-primary font-bold text-[9px] px-1.5 py-0.5 bg-brand-primary/5 rounded border border-brand-primary/10">
-                      #{booking.id.slice(-6).toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6.5 h-6.5 rounded-lg bg-bg-secondary flex items-center justify-center text-brand-primary border border-border-light shadow-sm">
-                        <User className="w-3 h-3" />
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center text-brand-primary border border-border-light shadow-sm">
+                        <User className="w-4 h-4" />
                       </div>
                       <span className="text-text-primary font-bold text-[13px]">{booking.customer}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-5 py-4">
                     <div className="font-bold text-text-primary text-[13px] flex items-center">
                       {booking.turf}
-                      <ArrowRight className="w-2.5 h-2.5 mx-2 text-text-muted opacity-40" />
+                      <ArrowRight className="w-3 h-3 mx-2 text-text-muted opacity-40" />
                     </div>
-                    <div className="text-[9px] text-text-secondary font-bold uppercase tracking-wider mt-0.5">{booking.date} • {booking.time}</div>
+                    <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">{booking.date} • {booking.time}</div>
                   </td>
-                  <td className="px-4 py-2.5 font-bold text-text-primary text-[13px]">{booking.amount}</td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-5 py-4 font-bold text-text-primary text-[13px]">{booking.amount}</td>
+                  <td className="px-5 py-4">
                     <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border transition-all ${
-                      booking.status === 'Confirmed' ? 'bg-brand-primary/5 text-brand-primary border-brand-primary/10' : 
-                      booking.status === 'Pending' ? 'bg-status-warning/5 text-status-warning border-status-warning/10' : 
-                      'bg-status-danger/5 text-status-danger border-status-danger/10'
+                      booking.status === 'Confirmed' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/20' : 
+                      booking.status === 'Pending' ? 'bg-status-warning/10 text-status-warning border-status-warning/20' : 
+                      'bg-status-danger/10 text-status-danger border-status-danger/20'
                     }`}>
                       {booking.status}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 text-right">
+                  <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       {booking.status === 'Pending' && (
                         <>
-                          <button onClick={() => updateBookingStatus(booking.id, 'Confirmed')} className="p-1.5 text-text-muted hover:text-brand-primary hover:bg-brand-primary/5 rounded-lg transition-all" title="Confirm"><CheckCircle className="w-3 h-3" /></button>
-                          <button onClick={() => updateBookingStatus(booking.id, 'Cancelled')} className="text-text-muted hover:text-status-danger p-1.5 rounded-lg hover:bg-status-danger/5 transition-all" title="Reject"><XCircle className="w-3 h-3" /></button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Confirmed', booking.customer); }} 
+                            className="p-2 text-status-success hover:bg-status-success/10 rounded-lg transition-all" 
+                            title="Confirm Booking"
+                          >
+                            <CheckCircle className="w-3.5 h-3.5" />
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); handleStatusUpdate(booking.id, 'Cancelled', booking.customer); }} 
+                            className="p-2 text-status-danger hover:bg-status-danger/10 rounded-lg transition-all" 
+                            title="Cancel Booking"
+                          >
+                            <XCircle className="w-3.5 h-3.5" />
+                          </button>
                         </>
                       )}
-                      <button onClick={() => handleDelete(booking.id, booking.customer)} className="p-1.5 text-text-muted hover:text-status-danger hover:bg-status-danger/5 rounded-lg transition-all" title="Delete"><Trash2 className="w-3 h-3" /></button>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); handleEdit(booking); }} 
+                        className="p-2 text-text-muted hover:text-brand-primary hover:bg-bg-secondary rounded-lg transition-all" 
+                        title="Edit"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); handleDelete(booking.id, booking.customer); }} 
+                        className="p-2 text-text-muted hover:text-status-danger hover:bg-bg-secondary rounded-lg transition-all" 
+                        title="Delete"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </td>
                 </motion.tr>
@@ -205,152 +251,142 @@ export default function Bookings() {
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
-            <motion.div initial={{ opacity: 0, scale: 0.98, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: 10 }} className="bg-bg-primary border border-border-light rounded-xl shadow-modal w-full max-w-md relative z-10" >
-              <div className="p-6 border-b border-border-light flex justify-between items-center">
-                <h3 className="font-bold text-text-primary text-sm">Manual Booking Entry</h3>
-                <button onClick={() => { setIsModalOpen(false); setSelectedTurf(''); }} className="p-1 text-text-muted hover:text-text-primary transition-colors" >
-                  <XCircle className="w-5 h-5" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => { setIsModalOpen(false); setSelectedTurf(''); }} />
+            <motion.div initial={{ opacity: 0, scale: 0.98, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: 10 }} className="bg-bg-primary border border-border-light rounded-2xl shadow-modal w-full max-w-lg relative z-10 overflow-hidden" >
+              <div className="p-6 border-b border-border-light flex justify-between items-center bg-bg-secondary/30">
+                <h3 className="font-bold text-text-primary text-sm uppercase tracking-widest">{editingBooking ? 'Edit Booking' : 'Manual Entry'}</h3>
+                <button onClick={() => { setIsModalOpen(false); setSelectedTurf(''); setEditingBooking(null); }} className="p-2 text-text-muted hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-all" >
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <form noValidate onSubmit={handleSubmit} className="p-6 space-y-5">
-                <Input 
-                  name="customer"
-                  label="Customer Name"
-                  placeholder="e.g. Rahul Sharma"
-                  error={errors.customer}
-                  onChange={() => setErrors(prev => ({ ...prev, customer: '' }))}
-                  icon={<User className="w-4 h-4" />}
-                />
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Facility</label>
-                  <div className="relative">
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        setIsTurfDropdownOpen(!isTurfDropdownOpen);
-                        setErrors(prev => ({ ...prev, turf: '' }));
-                      }}
-                      className={`w-full bg-bg-secondary border rounded-lg px-4 py-2.5 text-sm text-left flex justify-between items-center transition-all hover:border-brand-primary/30 ${
-                        isTurfDropdownOpen ? 'border-brand-primary ring-4 ring-brand-primary/5' : ''
-                      } ${
-                        errors.turf ? 'border-status-danger ring-4 ring-status-danger/5' : 'border-border-light'
-                      }`}
-                    >
-                      <span className={`font-medium ${selectedTurf ? 'text-text-primary' : 'text-text-muted'}`}>
-                        {selectedTurf || 'Select Facility'}
-                      </span>
-                      <ChevronDown className={`w-4 h-4 text-text-muted transition-transform duration-300 ${isTurfDropdownOpen ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    <AnimatePresence>
-                      {errors.turf && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-1.5 ml-0.5">
-                          <p className="text-[12px] font-bold text-status-danger leading-none">{errors.turf}</p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    <AnimatePresence>
+              <form noValidate onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Input 
+                    name="customer"
+                    label="Customer Name"
+                    placeholder="Enter name"
+                    defaultValue={editingBooking ? filteredBookings.find(b => b.id === editingBooking)?.customer : ''}
+                    error={errors.customer}
+                    icon={<User className="w-4 h-4" />}
+                  />
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Facility</label>
+                    <div className="relative">
+                      <button 
+                        type="button"
+                        onClick={() => setIsTurfDropdownOpen(!isTurfDropdownOpen)}
+                        className={`w-full bg-bg-secondary border rounded-xl px-4 py-2.5 text-[13px] text-left flex justify-between items-center transition-all ${
+                          isTurfDropdownOpen ? 'border-brand-primary ring-4 ring-brand-primary/5' : 'border-border-light'
+                        } ${errors.turf ? 'border-status-danger' : ''}`}
+                      >
+                        <span className={`font-bold ${selectedTurf ? 'text-text-primary' : 'text-text-muted'}`}>{selectedTurf || 'Select Facility'}</span>
+                        <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isTurfDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
                       {isTurfDropdownOpen && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute z-50 top-full left-0 right-0 mt-2 bg-bg-primary border border-border-light rounded-xl shadow-modal overflow-hidden"
-                        >
-                          <div className="max-h-60 overflow-y-auto py-1">
-                            {turfs.map(t => (
-                              <button
-                                key={t.id}
-                                type="button"
-                                onClick={() => {
-                                  setSelectedTurf(t.name);
-                                  setIsTurfDropdownOpen(false);
-                                  setErrors(prev => ({ ...prev, turf: '' }));
-                                }}
-                                className={`w-full text-left px-4 py-2.5 text-[13px] font-bold transition-all ${
-                                  selectedTurf === t.name ? 'bg-brand-primary/5 text-brand-primary' : 'text-text-primary hover:bg-bg-secondary'
-                                }`}
-                              >
-                                {t.name}
-                              </button>
-                            ))}
-                          </div>
-                        </motion.div>
+                        <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-bg-primary border border-border-light rounded-xl shadow-modal overflow-hidden py-1">
+                          {turfs.length === 0 ? (
+                            <div className="px-4 py-3 text-center">
+                              <p className="text-[11px] font-bold text-status-danger uppercase tracking-wider">No Facilities Found</p>
+                              <p className="text-[10px] text-text-muted mt-1">Complete setup in Settings</p>
+                            </div>
+                          ) : (
+                            turfs.map(t => (
+                              <button key={t.id} type="button" onClick={() => { 
+                                setSelectedTurf(t.name); 
+                                setSelectedTurfId(t.id.toString());
+                                setIsTurfDropdownOpen(false); 
+                                setErrors({...errors, turf: ''}); 
+                              }} className="w-full text-left px-4 py-2 text-[12px] font-bold hover:bg-bg-secondary text-text-primary">{t.name}</button>
+                            ))
+                          )}
+                        </div>
                       )}
-                    </AnimatePresence>
-
-                    <input type="hidden" name="turf" value={selectedTurf} />
-                    
-                    {isTurfDropdownOpen && (
-                      <div className="fixed inset-0 z-40" onClick={() => setIsTurfDropdownOpen(false)} />
-                    )}
+                    </div>
+                    {errors.turf && <p className="text-[11px] font-bold text-status-danger mt-1.5">{errors.turf}</p>}
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider ml-0.5">Select Schedule</label>
-                    <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
-                      {DAYS.map(day => (
-                        <button
-                          key={day}
-                          type="button"
-                          onClick={() => setSelectedDay(day)}
-                          className={`px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap transition-all border ${
-                            selectedDay === day 
-                              ? 'bg-brand-primary text-white border-brand-primary' 
-                              : 'bg-bg-primary text-text-muted border-border-light hover:border-brand-primary/30'
-                          }`}
-                        >
-                          {day}
-                        </button>
-                      ))}
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Booking Date</label>
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="date" 
+                      value={selectedDate}
+                      onChange={(e) => { setSelectedDate(e.target.value); setSelectedSlot(''); }}
+                      className="flex-1 bg-bg-secondary border border-border-light rounded-xl px-4 py-2.5 text-[13px] font-bold text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 [color-scheme:dark]"
+                    />
+                    <div className="px-4 py-2.5 bg-brand-primary/10 border border-brand-primary/20 rounded-xl text-[11px] font-extrabold text-brand-primary uppercase tracking-widest min-w-[100px] text-center">
+                      {selectedDayName}
                     </div>
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-4 gap-2">
-                      {TIME_SLOTS.map(slot => {
-                        const isSelected = selectedSlot === slot;
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">
+                    Select Time Slot
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {!selectedTurfId ? (
+                      <div className="col-span-full py-10 text-center bg-bg-secondary/50 rounded-2xl border border-dashed border-border-light">
+                        <Plus className="w-8 h-8 text-text-muted mx-auto mb-2 opacity-20" />
+                        <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider">Please Select Facility</p>
+                        <p className="text-[10px] text-text-muted mt-1">Choose a facility above to see slots.</p>
+                      </div>
+                    ) : availableSlotsForSelection.length === 0 ? (
+                      <div className="col-span-full py-10 text-center bg-status-danger/5 rounded-2xl border border-dashed border-status-danger/20">
+                        <CalendarX className="w-8 h-8 text-status-danger mx-auto mb-2 opacity-30" />
+                        <p className="text-[11px] font-bold text-status-danger uppercase tracking-wider">No Slots Generated</p>
+                        <p className="text-[10px] text-text-muted mt-1">Check timing rules in Settings.</p>
+                      </div>
+                    ) : (
+                      availableSlotsForSelection.map(slot => {
+                        const isSelected = selectedSlot === slot.time;
+                        const isDisabled = slot.status !== 'Available';
                         return (
                           <button
-                            key={slot}
+                            key={slot.id}
                             type="button"
-                            onClick={() => {
-                              setSelectedSlot(slot);
-                              setErrors(prev => ({ ...prev, slot: '' }));
-                            }}
-                            className={`py-2 rounded-lg text-[12px] font-bold transition-all border ${
+                            disabled={isDisabled}
+                            onClick={() => { setSelectedSlot(slot.time); setErrors({...errors, slot: ''}); }}
+                            className={`relative py-3 rounded-xl text-[12px] font-bold transition-all border flex flex-col items-center justify-center gap-1 ${
                               isSelected
-                                ? 'bg-brand-primary text-white border-brand-primary shadow-sm'
-                                : 'bg-bg-primary text-text-primary border-border-light hover:border-brand-primary/30'
+                                ? 'bg-brand-primary text-white border-brand-primary shadow-lg shadow-brand-primary/20 scale-[1.02] z-10'
+                                : isDisabled
+                                  ? 'bg-bg-secondary text-text-muted border-border-light opacity-50 cursor-not-allowed'
+                                  : 'bg-bg-primary text-text-primary border-border-light hover:border-brand-primary/50 hover:bg-bg-secondary'
                             }`}
                           >
-                            {slot}
+                            <span className="tracking-tight">{slot.time}</span>
+                            {!isSelected && !isDisabled && <span className="text-[9px] text-brand-primary uppercase opacity-60">Available</span>}
+                            {isDisabled && <span className="text-[9px] uppercase">{slot.status}</span>}
                           </button>
                         );
-                      })}
-                    </div>
-                    <AnimatePresence>
-                      {errors.slot && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-1 ml-0.5">
-                          <p className="text-[12px] font-bold text-status-danger leading-none">{errors.slot}</p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                      })
+                    )}
+                  </div>
+                  {errors.slot && <p className="text-[11px] font-bold text-status-danger mt-1.5">{errors.slot}</p>}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                  <NumericInput 
+                    name="amount" 
+                    label="Booking Amount (₹)"
+                    error={errors.amount}
+                    defaultValue={editingBooking ? filteredBookings.find(b => b.id === editingBooking)?.amount.replace('₹', '') : ''}
+                    onValueChange={() => setErrors({...errors, amount: ''})}
+                    placeholder="1200" 
+                    icon={<div className="text-[13px] font-bold">₹</div>}
+                  />
+                  <div className="flex items-end">
+                    <button 
+                      type="submit" 
+                      disabled={!selectedTurfId || !selectedSlot}
+                      className="w-full bg-brand-primary text-white h-[45px] rounded-xl font-bold text-[13px] uppercase tracking-wider hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/20 active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+                    >
+                      {editingBooking ? 'Save Changes' : 'Confirm Entry'}
+                    </button>
                   </div>
                 </div>
-                <NumericInput 
-                  name="amount" 
-                  label="Booking Amount (₹)"
-                  error={errors.amount}
-                  onValueChange={() => setErrors(prev => ({ ...prev, amount: '' }))}
-                  placeholder="1200" 
-                  icon={<div className="text-sm font-bold">₹</div>}
-                  className="w-full bg-bg-secondary border border-border-light rounded-lg pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" 
-                />
-                <button type="submit" className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold text-sm hover:bg-brand-hover transition-all mt-2 shadow-lg shadow-brand-primary/10 active:scale-[0.98]">Confirm Booking</button>
               </form>
             </motion.div>
           </div>

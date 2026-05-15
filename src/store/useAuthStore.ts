@@ -12,6 +12,7 @@ interface AuthState {
   signOut: () => Promise<void>;
   initialize: () => Promise<void>;
   checkTurfSetup: () => Promise<void>;
+  updateProfile: (metadata: { full_name?: string; avatar_url?: string | null }) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -24,6 +25,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signOut: async () => {
     await supabase.auth.signOut();
     set({ user: null, session: null, hasTurf: null });
+  },
+  updateProfile: async (metadata) => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: metadata
+    });
+    if (!error) {
+      set({ user: data.user });
+    } else {
+      throw error;
+    }
   },
   checkTurfSetup: async () => {
     const { user } = get();
@@ -38,6 +49,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .from('turfs')
         .select('id')
         .eq('owner_id', user.id)
+        .eq('setup_completed', true)
         .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {

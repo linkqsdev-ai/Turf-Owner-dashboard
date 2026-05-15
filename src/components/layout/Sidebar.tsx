@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Map as MapIcon, 
@@ -11,7 +11,8 @@ import {
   Settings,
   LogOut,
   X,
-  Trophy
+  Trophy,
+  User as UserIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { showConfirm, showToast } from '../../utils/alerts';
@@ -36,6 +37,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const navigate = useNavigate();
   const { user, signOut } = useAuthStore();
   const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const displayEmail = user?.email || 'authenticated user';
@@ -89,35 +91,51 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         ))}
       </div>
 
-      <div className="p-2 border-t border-border-light shrink-0">
+      <div className="p-2 border-t border-border-light shrink-0 space-y-1">
         <div 
           onClick={() => {
-            window.location.href = '/settings';
+            navigate('/settings');
             if (window.innerWidth < 1024) onClose?.();
           }}
-          className="flex items-center p-1.5 rounded bg-bg-secondary hover:bg-bg-hover transition-all cursor-pointer border border-border-light hover:border-border-medium group"
+          className="flex items-center p-2 rounded-lg bg-bg-secondary hover:bg-bg-hover transition-all cursor-pointer border border-border-light hover:border-brand-primary/20 group shadow-sm"
         >
-          <div className="w-6 h-6 rounded-sm bg-bg-primary flex items-center justify-center overflow-hidden border border-border-light shadow-sm">
-            <img src={`https://ui-avatars.com/api/?name=${displayName}&background=15803D&color=fff&bold=true`} alt="User" className="w-full h-full object-cover" />
+          <div className="w-8 h-8 rounded-lg bg-bg-primary flex items-center justify-center overflow-hidden border border-border-light shadow-sm shrink-0 relative">
+            <img 
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=15803D&color=fff&bold=true`} 
+              alt="User" 
+              className="w-full h-full object-cover" 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+              }}
+            />
+            <div className="fallback-icon hidden w-full h-full items-center justify-center bg-brand-soft text-brand-primary">
+              <UserIcon className="w-4 h-4" />
+            </div>
           </div>
           <div className="ml-2 flex-1 overflow-hidden">
             <p className="text-[10px] font-bold text-text-primary truncate">{displayName}</p>
             <p className="text-[8px] font-medium text-text-muted leading-tight truncate">{displayEmail}</p>
           </div>
-          <button 
-            onClick={async (e) => {
-              e.stopPropagation();
-              const confirmed = await showConfirm('Logout', 'Are you sure you want to log out?', 'Sign Out');
-              if (confirmed) {
-                showToast('Logging out...', 'info');
-                await signOut();
-              }
-            }}
-            className="p-1 hover:text-status-danger transition-colors"
-          >
-            <LogOut className="w-3 h-3" />
-          </button>
+
         </div>
+
+        <button 
+          onClick={async (e) => {
+            e.stopPropagation();
+            const confirmed = await showConfirm('Logout', 'Are you sure you want to log out?', 'Sign Out');
+            if (confirmed) {
+              showToast('Logging out...', 'info');
+              await signOut();
+              navigate('/signin');
+            }
+          }}
+          className="w-full flex items-center justify-center gap-2 px-2 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-status-danger hover:bg-status-danger/5 border border-transparent hover:border-status-danger/10 transition-all group"
+        >
+          <LogOut className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          Logout
+        </button>
       </div>
     </div>
   );

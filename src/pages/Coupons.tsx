@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tag, Trash2, Clock, X, Ticket, Sparkles, Search, CheckCircle2, Calendar, MapPin } from 'lucide-react';
+import { Tag, Trash2, Clock, X, Ticket, Sparkles, Search, CheckCircle2, Calendar, MapPin, ChevronDown } from 'lucide-react';
 import { useStore, type Coupon } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NumericInput } from '../components/NumericInput';
@@ -243,26 +243,55 @@ export default function Coupons() {
                         defaultValue={editingCoupon?.discount ? editingCoupon.discount.replace(/[^0-9.]/g, '') : ''}
                         placeholder="50" 
                         icon={<div className="text-[11px] font-bold">%</div>}
+                        className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all h-[42px]"
                       />
                       
                       <div className="space-y-1.5">
                         <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Structure</label>
-                        <select name="type" className="w-full bg-bg-secondary border border-border-light rounded-lg px-3 py-2 text-sm text-text-primary outline-none focus:border-brand-primary transition-all font-bold h-[42px]">
-                          <option value="Percentage">Percentage</option>
-                          <option value="Fixed">Fixed Amount</option>
-                        </select>
+                        <div className="relative">
+                          <select 
+                            name="type" 
+                            className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold appearance-none transition-all h-[42px]"
+                          >
+                            <option value="Percentage">Percentage</option>
+                            <option value="Fixed">Fixed Amount</option>
+                          </select>
+                          <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        </div>
                       </div>
                     </div>
 
-                    <Input 
-                      name="expires"
-                      label="Lifecycle Expiry"
-                      type="date"
-                      error={errors.expires}
-                      onChange={() => setErrors(prev => ({ ...prev, expires: '' }))}
-                      defaultValue={editingCoupon?.expires}
-                      icon={<Clock className="w-4 h-4" />}
-                    />
+                    <div className="space-y-3">
+                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider block ml-0.5">Campaign Lifecycle</label>
+                      <div className="bg-bg-secondary border border-border-light rounded-xl p-4 space-y-4">
+                        <div className="relative group">
+                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-primary">
+                            <Calendar className="w-4 h-4" />
+                          </div>
+                          <input 
+                            name="expires"
+                            type="date"
+                            required
+                            defaultValue={editingCoupon?.expires}
+                            onChange={() => setErrors(prev => ({ ...prev, expires: '' }))}
+                            className={`w-full bg-bg-primary border rounded-lg pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none transition-all font-bold [color-scheme:dark] md:[color-scheme:light] dark:[color-scheme:dark] ${
+                              errors.expires 
+                                ? 'border-status-danger ring-4 ring-status-danger/5' 
+                                : 'border-border-light focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5'
+                            }`}
+                          />
+                        </div>
+                        
+                        {errors.expires && (
+                          <p className="text-[11px] font-bold text-status-danger ml-0.5 mt-1">{errors.expires}</p>
+                        )}
+                        
+                        <div className="flex items-center gap-2 px-1 text-[10px] text-text-muted font-medium">
+                          <Clock className="w-3 h-3 text-brand-primary" />
+                          <span>Campaign automatically deactivates at midnight.</span>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="space-y-2.5">
                       <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Coupon Applies To</label>
@@ -273,7 +302,7 @@ export default function Coupons() {
                           className={`flex-1 py-2.5 rounded-lg border font-bold text-[12px] transition-all ${
                             appliesTo === 'all_slots' 
                               ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' 
-                              : 'bg-bg-secondary border-border-light text-text-muted hover:border-border-medium'
+                              : 'bg-bg-secondary border-border-light text-text-primary hover:border-border-medium'
                           }`}
                         >
                           All Slots
@@ -284,7 +313,7 @@ export default function Coupons() {
                           className={`flex-1 py-2.5 rounded-lg border font-bold text-[12px] transition-all ${
                             appliesTo === 'specific_slots' 
                               ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' 
-                              : 'bg-bg-secondary border-border-light text-text-muted hover:border-border-medium'
+                              : 'bg-bg-secondary border-border-light text-text-primary hover:border-border-medium'
                           }`}
                         >
                           Specific Slots
@@ -325,7 +354,7 @@ export default function Coupons() {
                               className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between group ${
                                 selectedSlotIds.includes(slot.id)
                                   ? 'bg-brand-primary/5 border-brand-primary shadow-sm'
-                                  : 'bg-bg-secondary/50 border-border-light hover:border-border-medium'
+                                  : 'bg-bg-secondary border-border-light hover:border-border-medium'
                               }`}
                             >
                               <div className="flex-1 min-w-0">
