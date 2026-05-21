@@ -176,7 +176,7 @@ export default function Settings() {
               onClick={() => setActiveTab(tab.id)}
               className={`w-full text-left px-4 py-3 rounded-xl font-bold text-[13px] flex items-center transition-all border ${
                 activeTab === tab.id
-                  ? 'bg-white text-brand-primary border-brand-primary/20 shadow-sm'
+                  ? 'bg-bg-primary text-brand-primary border-brand-primary/20 shadow-sm'
                   : 'text-text-muted hover:text-text-primary hover:bg-bg-secondary border-transparent'
               }`}
             >
@@ -191,7 +191,7 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="lg:col-span-9 bg-white border border-border-light rounded-2xl shadow-premium p-6 md:p-10 relative overflow-hidden">
+        <div className="lg:col-span-9 bg-bg-card border border-border-light rounded-2xl shadow-premium p-6 md:p-10 relative overflow-hidden">
           <AnimatePresence mode="wait">
             {activeTab === 'profile' ? (
               <motion.div key="profile" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-8">
@@ -267,7 +267,7 @@ export default function Settings() {
                           <select 
                             value={localRules[day].start}
                             onChange={(e) => setLocalRules({...localRules, [day]: {...localRules[day], start: e.target.value}})}
-                            className="bg-white border border-border-light rounded-xl px-3 py-2 text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary"
+                            className="bg-bg-primary border border-border-light rounded-xl px-3 py-2 text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary"
                           >
                             {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                           </select>
@@ -275,7 +275,7 @@ export default function Settings() {
                           <select 
                             value={localRules[day].end}
                             onChange={(e) => setLocalRules({...localRules, [day]: {...localRules[day], end: e.target.value}})}
-                            className="bg-white border border-border-light rounded-xl px-3 py-2 text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary"
+                            className="bg-bg-primary border border-border-light rounded-xl px-3 py-2 text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary"
                           >
                             {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                           </select>

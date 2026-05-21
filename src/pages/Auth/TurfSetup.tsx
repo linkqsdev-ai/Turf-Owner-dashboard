@@ -159,7 +159,7 @@ export default function TurfSetup() {
               <div className="w-8 h-8 rounded-lg bg-bg-secondary flex items-center justify-center border border-border-light">
                 <Settings2 className="w-4 h-4 text-brand-primary" />
               </div>
-              <h2 className="text-sm font-bold text-text-primary uppercase tracking-widest">Basic Details</h2>
+              <h2 className="text-sm font-bold text-text-primary tracking-widest">Basic Details</h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -189,13 +189,13 @@ export default function TurfSetup() {
                 <div className="w-8 h-8 rounded-lg bg-bg-secondary flex items-center justify-center border border-border-light">
                   <Clock className="w-4 h-4 text-brand-primary" />
                 </div>
-                <h2 className="text-sm font-bold text-text-primary uppercase tracking-widest">Opening Hours</h2>
+                <h2 className="text-sm font-bold text-text-primary tracking-widest">Opening Hours</h2>
               </div>
               
               <button 
                 type="button"
                 onClick={() => setCustomizing(!customizing)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all border ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold tracking-wider transition-all border ${
                   customizing ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' : 'bg-bg-secondary border-border-light text-text-muted hover:text-text-primary'
                 }`}
               >
@@ -218,11 +218,11 @@ export default function TurfSetup() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-brand-primary" />
-                        <span className="text-[12px] font-bold text-text-primary uppercase tracking-wider">Weekdays (Mon - Fri)</span>
+                        <span className="text-[12px] font-bold text-text-primary tracking-wider">Weekdays (Mon - Fri)</span>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-text-muted uppercase ml-0.5">Start</label>
+                          <label className="text-[10px] font-bold text-text-muted ml-0.5">Start</label>
                           <select 
                             value={weekdayTiming.start}
                             onChange={(e) => setWeekdayTiming({...weekdayTiming, start: e.target.value})}
@@ -232,7 +232,7 @@ export default function TurfSetup() {
                           </select>
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-text-muted uppercase ml-0.5">End</label>
+                          <label className="text-[10px] font-bold text-text-muted ml-0.5">End</label>
                           <select 
                             value={weekdayTiming.end}
                             onChange={(e) => setWeekdayTiming({...weekdayTiming, end: e.target.value})}
@@ -248,11 +248,11 @@ export default function TurfSetup() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-status-warning" />
-                        <span className="text-[12px] font-bold text-text-primary uppercase tracking-wider">Weekend (Sat - Sun)</span>
+                        <span className="text-[12px] font-bold text-text-primary tracking-wider">Weekend (Sat - Sun)</span>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-text-muted uppercase ml-0.5">Start</label>
+                          <label className="text-[10px] font-bold text-text-muted ml-0.5">Start</label>
                           <select 
                             value={weekendTiming.start}
                             onChange={(e) => setWeekendTiming({...weekendTiming, start: e.target.value})}
@@ -262,7 +262,7 @@ export default function TurfSetup() {
                           </select>
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-text-muted uppercase ml-0.5">End</label>
+                          <label className="text-[10px] font-bold text-text-muted ml-0.5">End</label>
                           <select 
                             value={weekendTiming.end}
                             onChange={(e) => setWeekendTiming({...weekendTiming, end: e.target.value})}
@@ -321,7 +321,7 @@ export default function TurfSetup() {
                           </select>
                         </div>
                       ) : (
-                        <span className="text-[11px] font-bold text-status-danger uppercase tracking-widest px-4">Closed</span>
+                        <span className="text-[11px] font-bold text-status-danger tracking-widest px-4">Closed</span>
                       )}
                     </div>
                   ))}
@@ -333,7 +333,7 @@ export default function TurfSetup() {
           <div className="pt-6">
             <button 
               disabled={loading}
-              className="w-full bg-brand-primary text-white py-4 rounded-2xl font-bold text-[14px] uppercase tracking-wider hover:bg-brand-hover transition-all shadow-xl shadow-brand-primary/20 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-3"
+              className="w-full bg-brand-primary text-white py-4 rounded-2xl font-bold text-[14px] tracking-wider hover:bg-brand-hover transition-all shadow-xl shadow-brand-primary/20 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-3"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
               {loading ? 'Finalizing Setup...' : 'Complete Onboarding'}

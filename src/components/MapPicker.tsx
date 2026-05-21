@@ -106,7 +106,7 @@ export default function MapPicker({ initialLocation, onSelect, onClose }: MapPic
           <AlertCircle className="w-16 h-16 text-status-danger mx-auto mb-6" />
           <h3 className="text-2xl font-black text-text-primary mb-2">Maps API Error</h3>
           <p className="text-text-muted mb-8 font-medium">Failed to load Google Maps. Please check your API key in .env</p>
-          <button onClick={onClose} className="w-full bg-bg-secondary py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-status-danger hover:text-white transition-all">Close</button>
+          <button onClick={onClose} className="w-full bg-bg-secondary py-4 rounded-2xl font-black text-xs tracking-widest hover:bg-status-danger hover:text-white transition-all">Close</button>
        </div>
     </div>
   );
@@ -135,8 +135,8 @@ export default function MapPicker({ initialLocation, onSelect, onClose }: MapPic
                 To provide a real Google Maps experience with search and precise navigation, please add your <span className="text-brand-primary font-bold">VITE_GOOGLE_MAPS_API_KEY</span> to the .env file.
               </p>
               <div className="flex gap-4">
-                <button onClick={onClose} className="flex-1 bg-bg-secondary py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-border-medium transition-all">Go Back</button>
-                <a href="https://console.cloud.google.com/google/maps-apis/credentials" target="_blank" rel="noopener noreferrer" className="flex-1 bg-brand-primary text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-brand-hover transition-all text-center">Get Key</a>
+                <button onClick={onClose} className="flex-1 bg-bg-secondary py-4 rounded-2xl font-black text-xs tracking-widest hover:bg-border-medium transition-all">Go Back</button>
+                <a href="https://console.cloud.google.com/google/maps-apis/credentials" target="_blank" rel="noopener noreferrer" className="flex-1 bg-brand-primary text-white py-4 rounded-2xl font-black text-xs tracking-widest hover:bg-brand-hover transition-all text-center">Get Key</a>
               </div>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function MapPicker({ initialLocation, onSelect, onClose }: MapPic
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-text-muted">
               <div className="w-12 h-12 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin" />
-              <p className="font-black text-[10px] uppercase tracking-[0.2em]">Initializing Google Engines...</p>
+              <p className="font-black text-[10px] tracking-[0.2em]">Initializing Google Engines...</p>
             </div>
           )}
 
@@ -199,7 +199,7 @@ export default function MapPicker({ initialLocation, onSelect, onClose }: MapPic
                   <Navigation className="w-6 h-6 text-brand-primary" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary mb-1 block">Verified Location</span>
+                  <span className="text-[10px] font-black tracking-[0.2em] text-brand-primary mb-1 block">Verified Location</span>
                   <p className="text-sm font-bold text-text-primary leading-relaxed mb-1">
                     {address || "Locating precision coordinates..."}
                   </p>
@@ -212,7 +212,7 @@ export default function MapPicker({ initialLocation, onSelect, onClose }: MapPic
             
             <button 
               onClick={handleConfirm}
-              className="bg-brand-primary text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-brand-hover transition-all shadow-[0_12px_40px_rgba(16,185,129,0.3)] hover:-translate-y-1 active:scale-95 pointer-events-auto flex items-center gap-3"
+              className="bg-brand-primary text-white px-12 py-5 rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-brand-hover transition-all shadow-[0_12px_40px_rgba(16,185,129,0.3)] hover:-translate-y-1 active:scale-95 pointer-events-auto flex items-center gap-3"
             >
               Confirm Deployment
             </button>

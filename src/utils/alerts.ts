@@ -8,7 +8,9 @@ const themeConfig = {
     title: 'swal2-premium-title',
     confirmButton: 'swal2-premium-confirm',
     cancelButton: 'swal2-premium-cancel',
-    icon: 'swal2-premium-icon'
+    icon: 'swal2-premium-icon',
+    htmlContainer: 'swal2-premium-text',
+    actions: 'swal2-premium-actions'
   },
   buttonsStyling: false,
   background: 'var(--bg-card)',
@@ -43,15 +45,27 @@ export const showConfirm = async (title: string, text: string, confirmText: stri
   return result.isConfirmed;
 };
 
-export const showToast = (title: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+export const showToast = (message: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+  const titles = {
+    success: 'Success',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Information'
+  };
+
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
+    showCloseButton: true,
     timer: 3000,
-    timerProgressBar: true,
-    background: 'var(--bg-card)',
-    color: 'var(--text-primary)',
+    timerProgressBar: false,
+    customClass: {
+      popup: `swal2-premium-toast toast-${icon}`,
+      title: `swal2-premium-toast-title text-${icon}`,
+      htmlContainer: 'swal2-premium-toast-text',
+      closeButton: 'swal2-premium-toast-close'
+    },
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer);
       toast.addEventListener('mouseleave', Swal.resumeTimer);
@@ -59,7 +73,7 @@ export const showToast = (title: string, icon: 'success' | 'error' | 'warning' |
   });
 
   Toast.fire({
-    icon,
-    title
+    title: titles[icon],
+    text: message
   });
 };

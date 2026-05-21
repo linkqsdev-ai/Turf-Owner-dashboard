@@ -12,6 +12,8 @@ export default function Coupons() {
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [appliesTo, setAppliesTo] = useState<'all_slots' | 'specific_slots'>('all_slots');
+  const [couponType, setCouponType] = useState<string>('Percentage');
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [selectedSlotIds, setSelectedSlotIds] = useState<(string | number)[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -69,12 +71,15 @@ export default function Coupons() {
     setAppliesTo('all_slots');
     setSelectedSlotIds([]);
     setSearchTerm('');
+    setCouponType('Percentage');
+    setIsTypeDropdownOpen(false);
   };
 
   const openEditModal = (coupon: Coupon) => {
     setEditingCoupon(coupon);
     setAppliesTo(coupon.appliesTo || 'all_slots');
     setSelectedSlotIds(coupon.selectedSlotIds || []);
+    setCouponType(coupon.type || 'Percentage');
     setIsModalOpen(true);
   };
 
@@ -106,12 +111,14 @@ export default function Coupons() {
         <button 
           onClick={() => {
             setEditingCoupon(null);
+            setCouponType('Percentage');
+            setIsTypeDropdownOpen(false);
             setIsModalOpen(true);
           }} 
           className="bg-brand-primary text-white px-5 py-2.5 rounded-lg font-bold text-[13px] flex items-center hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 hover:-translate-y-0.5 active:scale-95"
         >
           <Sparkles className="w-3.5 h-3.5 mr-2" />
-          Deploy Campaign
+          Add Coupons
         </button>
       </div>
 
@@ -126,13 +133,18 @@ export default function Coupons() {
             <div className="w-16 h-16 bg-bg-secondary rounded-xl flex items-center justify-center mb-6 border border-border-light shadow-inner">
               <Ticket className="w-8 h-8 text-brand-primary opacity-20" />
             </div>
-            <h2 className="text-xl font-bold text-text-primary mb-2">No Active Campaigns</h2>
+            <h2 className="text-xl font-bold text-text-primary mb-2">No Active Coupons</h2>
             <p className="text-text-secondary max-w-sm mb-8 text-[13px]">Incentivize your elite athletes with precision-targeted discount structures.</p>
             <button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setEditingCoupon(null);
+                setCouponType('Percentage');
+                setIsTypeDropdownOpen(false);
+                setIsModalOpen(true);
+              }}
               className="bg-brand-primary text-white px-6 py-2.5 rounded-lg font-bold text-[13px] hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 active:scale-95"
             >
-              Initialize Campaign
+              Add Coupon
             </button>
           </motion.div>
         ) : (
@@ -153,8 +165,8 @@ export default function Coupons() {
                       <Tag className="w-4 h-4 text-brand-primary" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-text-primary tracking-wider uppercase">{coupon.code}</h3>
-                      <span className={`text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md mt-0.5 inline-block border ${
+                      <h3 className="text-base font-bold text-text-primary tracking-wider">{coupon.code}</h3>
+                      <span className={`text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded-md mt-0.5 inline-block border ${
                         coupon.status === 'Active' ? 'bg-brand-primary/5 text-brand-primary border-brand-primary/10' : 'bg-bg-secondary text-text-muted border-border-light'
                       }`}>
                         {coupon.status}
@@ -165,19 +177,19 @@ export default function Coupons() {
                 
                 <div className="space-y-3 flex-1">
                   <div className="flex justify-between items-end pb-3 border-b border-border-light">
-                    <span className="text-text-muted text-[9px] font-bold uppercase tracking-wider">Discount</span>
+                    <span className="text-text-muted text-[9px] font-bold tracking-wider">Discount</span>
                     <span className="text-xl font-bold text-brand-primary tracking-tight">{coupon.discount}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-text-muted text-[9px] font-bold uppercase tracking-wider">Redemptions</span>
+                    <span className="text-text-muted text-[9px] font-bold tracking-wider">Redemptions</span>
                     <span className="text-text-primary font-bold text-sm">{coupon.usage}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-text-muted text-[9px] font-bold uppercase tracking-wider flex items-center"><Clock className="w-3 h-3 mr-1.5 text-brand-primary" /> Lifecycle</span>
+                    <span className="text-text-muted text-[9px] font-bold tracking-wider flex items-center"><Clock className="w-3 h-3 mr-1.5 text-brand-primary" /> Lifecycle</span>
                     <span className="text-text-primary font-bold text-[11px]">{coupon.expires}</span>
                   </div>
                   <div className="flex justify-between items-center pt-2 border-t border-border-light/50">
-                    <span className="text-text-muted text-[9px] font-bold uppercase tracking-wider">Targeting</span>
+                    <span className="text-text-muted text-[9px] font-bold tracking-wider">Targeting</span>
                     <span className="text-[10px] font-bold text-brand-primary bg-brand-primary/5 px-2 py-0.5 rounded-full">
                       {coupon.appliesTo === 'specific_slots' ? `${coupon.selectedSlotIds?.length || 0} Slots` : 'All Slots'}
                     </span>
@@ -213,7 +225,7 @@ export default function Coupons() {
             >
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h2 className="text-xl font-bold text-text-primary tracking-tight">{editingCoupon ? 'Edit Campaign' : 'Initialize Campaign'}</h2>
+                  <h2 className="text-xl font-bold text-text-primary tracking-tight">{editingCoupon ? 'Edit Coupon' : 'Add Coupon'}</h2>
                   <p className="text-text-muted text-[13px] mt-0.5">Define promotional parameters</p>
                 </div>
                 <button onClick={closeModal} className="p-1.5 text-text-muted hover:text-status-danger transition-colors" >
@@ -226,7 +238,7 @@ export default function Coupons() {
                   <div className="space-y-5">
                     <Input 
                       name="code"
-                      label="Campaign Identifier"
+                      label="Coupon Code"
                       defaultValue={editingCoupon?.code}
                       error={errors.code}
                       onChange={() => setErrors(prev => ({ ...prev, code: '' }))}
@@ -242,27 +254,50 @@ export default function Coupons() {
                         onValueChange={() => setErrors(prev => ({ ...prev, discount: '' }))}
                         defaultValue={editingCoupon?.discount ? editingCoupon.discount.replace(/[^0-9.]/g, '') : ''}
                         placeholder="50" 
-                        icon={<div className="text-[11px] font-bold">%</div>}
+                        icon={<div className="text-[11px] font-bold">{couponType === 'Fixed' ? '₹' : '%'}</div>}
                         className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all h-[42px]"
                       />
                       
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Structure</label>
+                         <label className="text-[11px] font-bold text-text-secondary tracking-wider">Structure</label>
                         <div className="relative">
-                          <select 
-                            name="type" 
-                            className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold appearance-none transition-all h-[42px]"
+                          <input type="hidden" name="type" value={couponType} />
+                          <button 
+                            type="button"
+                            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                            className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold flex justify-between items-center transition-all h-[42px]"
                           >
-                            <option value="Percentage">Percentage</option>
-                            <option value="Fixed">Fixed Amount</option>
-                          </select>
-                          <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                            <span>{couponType === 'Percentage' ? 'Percentage' : 'Fixed Amount'}</span>
+                            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isTypeDropdownOpen ? 'rotate-180' : ''}`} />
+                          </button>
+                          
+                          <AnimatePresence>
+                            {isTypeDropdownOpen && (
+                              <motion.div 
+                                initial={{ opacity: 0, y: 5 }} 
+                                animate={{ opacity: 1, y: 0 }} 
+                                exit={{ opacity: 0, y: 5 }} 
+                                className="absolute z-20 top-full left-0 right-0 mt-2 bg-bg-primary border border-border-light rounded-xl shadow-modal overflow-hidden py-1"
+                              >
+                                {['Percentage', 'Fixed'].map(t => (
+                                  <button 
+                                    key={t}
+                                    type="button"
+                                    onClick={() => { setCouponType(t); setIsTypeDropdownOpen(false); }} 
+                                    className="w-full text-left px-4 py-2.5 text-[13px] font-bold hover:bg-bg-secondary text-text-primary transition-colors"
+                                  >
+                                    {t === 'Percentage' ? 'Percentage' : 'Fixed Amount'}
+                                  </button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider block ml-0.5">Campaign Lifecycle</label>
+                       <label className="text-[11px] font-bold text-text-secondary tracking-wider block ml-0.5">Coupon Lifecycle</label>
                       <div className="bg-bg-secondary border border-border-light rounded-xl p-4 space-y-4">
                         <div className="relative group">
                           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-primary">
@@ -272,7 +307,7 @@ export default function Coupons() {
                             name="expires"
                             type="date"
                             required
-                            defaultValue={editingCoupon?.expires}
+                            defaultValue={editingCoupon?.expires || new Date().toISOString().split('T')[0]}
                             onChange={() => setErrors(prev => ({ ...prev, expires: '' }))}
                             className={`w-full bg-bg-primary border rounded-lg pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none transition-all font-bold [color-scheme:dark] md:[color-scheme:light] dark:[color-scheme:dark] ${
                               errors.expires 
@@ -288,13 +323,13 @@ export default function Coupons() {
                         
                         <div className="flex items-center gap-2 px-1 text-[10px] text-text-muted font-medium">
                           <Clock className="w-3 h-3 text-brand-primary" />
-                          <span>Campaign automatically deactivates at midnight.</span>
+                          <span>Coupon automatically deactivates at midnight.</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="space-y-2.5">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Coupon Applies To</label>
+                       <label className="text-[11px] font-bold text-text-secondary tracking-wider">Campaign Applies To</label>
                       <div className="flex gap-3">
                         <button 
                           type="button"
@@ -324,7 +359,7 @@ export default function Coupons() {
 
                   {appliesTo === 'specific_slots' && (
                     <div className="flex flex-col h-[400px]">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex justify-between items-center">
+                       <label className="text-[11px] font-bold text-text-secondary tracking-wider mb-2 flex justify-between items-center">
                         Select Targeted Slots
                         <span className="text-brand-primary lowercase font-medium">{selectedSlotIds.length} selected</span>
                       </label>
@@ -385,7 +420,7 @@ export default function Coupons() {
                 </div>
 
                 <button type="submit" className="w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold text-[13px] hover:bg-brand-hover transition-all mt-2 shadow-lg shadow-brand-primary/10 active:scale-[0.98]">
-                  {editingCoupon ? 'Confirm Update' : 'Initialize Campaign'}
+                  {editingCoupon ? 'Confirm Update' : 'Add Coupon'}
                 </button>
               </form>
             </motion.div>

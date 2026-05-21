@@ -86,7 +86,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   return (
     <div className="space-y-1.5 w-full relative">
       {label && (
-        <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider block">
+        <label className="text-[11px] font-bold text-text-secondary tracking-wider block">
           {label}
         </label>
       )}
@@ -105,7 +105,13 @@ export const NumericInput: React.FC<NumericInputProps> = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          className={`${className} ${icon ? 'pl-10' : ''} ${error || externalError ? 'border-status-danger focus:border-status-danger focus:ring-status-danger/5' : ''}`}
+          className={`w-full bg-bg-secondary border rounded-lg px-4 py-2.5 text-sm text-text-primary outline-none transition-all font-bold placeholder:text-text-muted/40 ${
+            icon ? 'pl-10' : ''
+          } ${
+            error || externalError 
+              ? 'border-status-danger ring-4 ring-status-danger/5' 
+              : 'border-border-light focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5'
+          } ${className}`}
         />
       </div>
       

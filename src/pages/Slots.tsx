@@ -14,7 +14,7 @@ export default function Slots() {
   const [editingSlot, setEditingSlot] = useState<Slot | null>(null);
   
   // Filters
-  const [filterTurf, setFilterTurf] = useState<string>('All Facilities');
+  const [filterTurf, setFilterTurf] = useState<string>('All Turf');
   const [filterDate, setFilterDate] = useState<string>('');
   const [filterDay, setFilterDay] = useState<string>('All Days');
   const [filterStatus, setFilterStatus] = useState<string>('All Statuses');
@@ -36,7 +36,7 @@ export default function Slots() {
 
   const filteredSlots = useMemo(() => {
     return slots.filter(slot => {
-      const matchTurf = filterTurf === 'All Facilities' || slot.turf === filterTurf;
+      const matchTurf = filterTurf === 'All Turf' || slot.turf === filterTurf;
       const matchStatus = filterStatus === 'All Statuses' || slot.status === filterStatus;
       const matchDay = filterDay === 'All Days' || slot.dayOfWeek === filterDay;
       
@@ -55,7 +55,7 @@ export default function Slots() {
     const price = fd.get('price') as string;
     const status = editingSlot ? selectedStatus : 'Available';
 
-    if (!selectedTurf) newErrors.turf = 'Facility required.';
+    if (!selectedTurf) newErrors.turf = 'Turf required.';
     if (!price || parseInt(price) <= 0) newErrors.price = 'Valid price required.';
     
     if (Object.keys(newErrors).length > 0) {
@@ -113,9 +113,9 @@ export default function Slots() {
   });
 
   return (
-    <div className="w-full space-y-8 relative px-4 md:px-0 pb-12">
+    <div className="w-full h-full flex flex-col space-y-6 relative pb-2">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between md:items-end gap-5">
+      <div className="flex flex-col md:flex-row justify-between md:items-end gap-5 shrink-0">
         <div>
           <h1 className="text-2xl font-bold text-text-primary tracking-tight">Slot Management</h1>
           <p className="text-text-secondary text-[13px] mt-0.5">View and manage generated slots for your facilities.</p>
@@ -137,14 +137,14 @@ export default function Slots() {
       </div>
 
       {/* Filters Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-5 bg-bg-primary border border-border-light rounded-xl shadow-premium">
-        {/* Facility Filter */}
-        <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Facility</label>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-5 bg-bg-primary border border-border-light rounded-xl shadow-premium shrink-0">
+        {/* Turf Filter */}
+        <div className="flex flex-col gap-1 w-full md:w-48">
+          <label className="text-[10px] font-bold text-text-muted tracking-wider ml-0.5">Turf</label>
           <div className="relative">
             <button 
               onClick={() => setIsFilterTurfOpen(!isFilterTurfOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
+              className="w-full flex items-center justify-between px-3 h-[38px] bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
             >
               <div className="flex items-center gap-2">
                 <Search className="w-3 h-3 text-brand-primary" />
@@ -155,7 +155,7 @@ export default function Slots() {
             <AnimatePresence>
               {isFilterTurfOpen && (
                 <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }} className="absolute z-20 top-full left-0 right-0 mt-2 bg-bg-primary border border-border-light rounded-xl shadow-modal overflow-hidden py-1">
-                  <button onClick={() => { setFilterTurf('All Facilities'); setIsFilterTurfOpen(false); }} className="w-full text-left px-4 py-2 text-[12px] font-bold hover:bg-bg-secondary text-text-primary">All Facilities</button>
+                  <button onClick={() => { setFilterTurf('All Turf'); setIsFilterTurfOpen(false); }} className="w-full text-left px-4 py-2 text-[12px] font-bold hover:bg-bg-secondary text-text-primary">All Turf</button>
                   {turfs.map(t => (
                     <button key={t.id} onClick={() => { setFilterTurf(t.name); setIsFilterTurfOpen(false); }} className="w-full text-left px-4 py-2 text-[12px] font-bold hover:bg-bg-secondary text-text-primary">{t.name}</button>
                   ))}
@@ -167,24 +167,24 @@ export default function Slots() {
 
         {/* Date Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Date</label>
+          <label className="text-[10px] font-bold text-text-muted tracking-wider ml-0.5">Date</label>
           <div className="relative">
             <input 
               type="date" 
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
-              className="w-full px-3 py-2 bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary transition-all [color-scheme:dark]"
+              className="w-full px-3 h-[38px] py-0 bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary outline-none focus:border-brand-primary transition-all [color-scheme:dark]"
             />
           </div>
         </div>
 
         {/* Day Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Day</label>
+          <label className="text-[10px] font-bold text-text-muted tracking-wider ml-0.5">Day</label>
           <div className="relative">
             <button 
               onClick={() => setIsFilterDayOpen(!isFilterDayOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
+              className="w-full flex items-center justify-between px-3 h-[38px] bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
             >
               <div className="flex items-center gap-2">
                 <CalendarIcon className="w-3 h-3 text-brand-primary" />
@@ -207,11 +207,11 @@ export default function Slots() {
 
         {/* Status Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider ml-0.5">Status</label>
+          <label className="text-[10px] font-bold text-text-muted tracking-wider ml-0.5">Status</label>
           <div className="relative">
             <button 
               onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
+              className="w-full flex items-center justify-between px-3 h-[38px] bg-bg-secondary border border-border-light rounded-lg text-[12px] font-bold text-text-primary transition-all hover:border-brand-primary/30"
             >
               <div className="flex items-center gap-2">
                 <Filter className="w-3 h-3 text-brand-primary" />
@@ -233,12 +233,12 @@ export default function Slots() {
       </div>
 
       {/* Table */}
-      <div className="bg-bg-primary border border-border-light rounded-xl shadow-premium overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="bg-bg-primary border border-border-light rounded-xl shadow-premium overflow-hidden flex flex-col flex-1 min-h-0">
+        <div className="overflow-auto flex-1 custom-scrollbar">
           <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-bg-secondary/30 border-b border-border-light text-text-muted text-[10px] font-bold uppercase tracking-wider">
-                <th className="px-5 py-3.5">Facility</th>
+            <thead className="sticky top-0 z-10">
+              <tr className="bg-bg-secondary/90 backdrop-blur-md border-b border-border-light text-text-muted text-[10px] font-bold tracking-wider">
+                <th className="px-5 py-3.5">Turf</th>
                 <th className="px-5 py-3.5">Date</th>
                 <th className="px-5 py-3.5">Day</th>
                 <th className="px-5 py-3.5">Time Window</th>
@@ -289,9 +289,9 @@ export default function Slots() {
                   </td>
                   <td className="px-5 py-3.5 font-bold text-brand-primary text-[12px] tracking-tight">{slot.price}</td>
                   <td className="px-5 py-3.5">
-                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border transition-all ${
+                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider border transition-all ${
                       slot.status === 'Booked' 
-                        ? 'bg-bg-secondary text-text-muted border-border-light' 
+                        ? 'bg-status-warning/10 text-status-warning border-status-warning/20' 
                         : slot.status === 'Under Maintenance'
                           ? 'bg-status-danger/10 text-status-danger border-status-danger/20'
                           : 'bg-brand-primary/10 text-brand-primary border-brand-primary/20'
@@ -331,7 +331,7 @@ export default function Slots() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setIsModalOpen(false)} />
             <motion.div initial={{ opacity: 0, scale: 0.98, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: 10 }} className="bg-bg-primary border border-border-light rounded-2xl shadow-modal w-full max-w-md relative z-10 overflow-hidden">
               <div className="p-6 border-b border-border-light flex justify-between items-center bg-bg-secondary/30">
-                <h3 className="font-bold text-text-primary text-sm uppercase tracking-wider">
+                <h3 className="font-bold text-text-primary text-sm tracking-wider">
                   {editingSlot ? 'Edit Slot' : 'Generate Quick Slot'}
                 </h3>
                 <button onClick={() => { setIsModalOpen(false); setEditingSlot(null); }} className="p-1 text-text-muted hover:text-text-primary transition-colors">
@@ -340,7 +340,7 @@ export default function Slots() {
               </div>
               <form noValidate onSubmit={handleSubmit} className="p-6 pb-8 space-y-6">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Facility</label>
+                  <label className="text-[11px] font-bold text-text-secondary tracking-wider">Turf</label>
                   <div className="relative">
                     <button 
                       type="button"
@@ -351,7 +351,7 @@ export default function Slots() {
                         errors.turf ? 'border-status-danger ring-4 ring-status-danger/5' : ''
                       }`}
                     >
-                      <span className={`font-bold ${selectedTurf ? 'text-text-primary' : 'text-text-muted'}`}>{selectedTurf || 'Select Facility'}</span>
+                      <span className={`font-bold ${selectedTurf ? 'text-text-primary' : 'text-text-muted'}`}>{selectedTurf || 'Select Turf'}</span>
                       <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isTurfDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isTurfDropdownOpen && (
@@ -371,19 +371,19 @@ export default function Slots() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Slot Date</label>
+                  <label className="text-[11px] font-bold text-text-secondary tracking-wider">Slot Date</label>
                   <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-[13px] font-bold text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 [color-scheme:dark]" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Start</label>
+                    <label className="text-[11px] font-bold text-text-secondary tracking-wider">Start</label>
                     <select value={startTime} onChange={(e) => setStartTime(e.target.value)} className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-[13px] font-bold text-text-primary outline-none focus:border-brand-primary">
                       {TIMES_12H.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">End</label>
+                    <label className="text-[11px] font-bold text-text-secondary tracking-wider">End</label>
                     <select value={endTime} onChange={(e) => setEndTime(e.target.value)} className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-[13px] font-bold text-text-primary outline-none focus:border-brand-primary">
                       {TIMES_12H.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
@@ -394,7 +394,7 @@ export default function Slots() {
 
                 {editingSlot && (
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Status</label>
+                    <label className="text-[11px] font-bold text-text-secondary tracking-wider">Status</label>
                     <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} className="w-full bg-bg-secondary border border-border-light rounded-lg px-4 py-2.5 text-[13px] font-bold text-brand-primary outline-none focus:border-brand-primary">
                       {['Available', 'Booked', 'Under Maintenance'].map(s => <option key={s} value={s}>{s}</option>)}
                     </select>

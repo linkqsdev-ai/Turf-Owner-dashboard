@@ -7,7 +7,6 @@ import {
   Users, 
   Ticket, 
   BarChart3, 
-  Bell, 
   Settings,
   LogOut,
   X,
@@ -27,7 +26,6 @@ const NAV_ITEMS = [
   { name: 'Coupons', path: '/coupons', icon: Ticket },
   { name: 'Analytics', path: '/analytics', icon: BarChart3 },
   { name: 'Tournament', path: '/tournament', icon: Trophy, isSoon: true },
-  { name: 'Notifications', path: '/notifications', icon: Bell },
   { name: 'Settings', path: '/settings', icon: Settings },
 ];
 
@@ -131,7 +129,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               navigate('/signin');
             }
           }}
-          className="w-full flex items-center justify-center gap-2 px-2 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-status-danger hover:bg-status-danger/5 border border-transparent hover:border-status-danger/10 transition-all group"
+          className="w-full flex items-center justify-center gap-2 px-2 py-2 rounded-lg text-[10px] font-bold tracking-widest text-text-muted hover:text-status-danger hover:bg-status-danger/5 border border-transparent hover:border-status-danger/10 transition-all group"
         >
           <LogOut className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
           Logout

@@ -1,5 +1,5 @@
-import { Bell, Menu, Sun, Moon } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu, Sun, Moon, Bell } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 import { useStore } from '../../store/useStore';
 import { motion } from 'framer-motion';
 
@@ -9,7 +9,6 @@ interface TopNavbarProps {
 
 export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
   const location = useLocation();
-  const navigate = useNavigate();
   const { theme, toggleTheme } = useStore();
 
   
@@ -53,22 +52,13 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
             </div>
             <div className="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 rounded transition-all duration-300" />
           </button>
-
-          {/* Premium Notification Center */}
-          <button 
-            onClick={() => navigate('/notifications')}
-            className="relative p-1.5 rounded text-text-muted hover:text-brand-primary hover:bg-brand-soft transition-all duration-300 group"
+          <Link 
+            to="/notifications"
+            className="p-1.5 rounded text-text-muted hover:text-brand-primary hover:bg-brand-soft transition-all duration-300 relative group"
+            title="Notifications"
           >
-            <motion.div 
-              className="relative z-10"
-              whileHover={{ rotate: [0, -10, 10, -10, 10, 0] }}
-              transition={{ duration: 0.5 }}
-            >
-              <Bell className="w-3.5 h-3.5" />
-            </motion.div>
-            
-            <div className="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 rounded transition-all duration-300" />
-          </button>
+            <Bell className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
     </header>

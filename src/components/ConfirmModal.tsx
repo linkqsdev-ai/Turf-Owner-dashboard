@@ -33,39 +33,49 @@ export default function ConfirmModal({
             className="absolute inset-0 bg-black/80 backdrop-blur-md"
           />
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-bg-card border border-border-light p-8 md:p-10 rounded-[2.5rem] shadow-modal w-full max-w-md relative z-10 text-center"
+            exit={{ opacity: 0, scale: 0.98, y: 10 }}
+            className="bg-bg-primary border border-border-light rounded-2xl shadow-modal w-full max-w-md relative z-10 overflow-hidden"
           >
-            <div className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center mx-auto mb-6 ${
-              type === 'danger' ? 'bg-status-danger/10 text-status-danger' : 
-              type === 'warning' ? 'bg-amber-500/10 text-amber-500' : 
-              'bg-brand-primary/10 text-brand-primary'
-            }`}>
-              <AlertTriangle className="w-10 h-10" />
+            {/* Header */}
+            <div className="p-6 border-b border-border-light flex justify-between items-center bg-bg-secondary/30">
+              <h3 className="font-bold text-text-primary text-sm tracking-wider">
+                {title}
+              </h3>
+              <button onClick={onCancel} className="p-1 text-text-muted hover:text-text-primary transition-colors">
+                <AlertTriangle className={`w-4 h-4 ${
+                  type === 'danger' ? 'text-status-danger' : 
+                  type === 'warning' ? 'text-amber-500' : 
+                  'text-brand-primary'
+                }`} />
+              </button>
             </div>
 
-            <h3 className="text-2xl font-black text-text-primary mb-3">{title}</h3>
-            <p className="text-text-muted font-medium mb-10 leading-relaxed">{message}</p>
+            {/* Body */}
+            <div className="p-6 space-y-6">
+              <p className="text-text-secondary font-medium text-[13px] leading-relaxed">
+                {message}
+              </p>
 
-            <div className="flex gap-4">
-              <button 
-                onClick={onCancel}
-                className="flex-1 bg-bg-secondary text-text-primary py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-border-light transition-all active:scale-95 border border-border-light"
-              >
-                {cancelText}
-              </button>
-              <button 
-                onClick={onConfirm}
-                className={`flex-1 py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white transition-all active:scale-95 shadow-lg ${
-                  type === 'danger' ? 'bg-status-danger hover:bg-red-600 shadow-red-500/20' : 
-                  type === 'warning' ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20' : 
-                  'bg-brand-primary hover:bg-brand-hover shadow-brand-primary/20'
-                }`}
-              >
-                {confirmText}
-              </button>
+              <div className="flex gap-3">
+                <button 
+                  onClick={onCancel}
+                  className="flex-1 bg-bg-secondary text-text-primary py-3 rounded-xl font-bold text-[13px] hover:bg-bg-hover transition-all active:scale-[0.98] border border-border-light"
+                >
+                  {cancelText}
+                </button>
+                <button 
+                  onClick={onConfirm}
+                  className={`flex-[1.5] py-3 rounded-xl font-bold text-[13px] text-white transition-all active:scale-[0.98] shadow-lg ${
+                    type === 'danger' ? 'bg-status-danger hover:bg-red-600 shadow-status-danger/10' : 
+                    type === 'warning' ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/10' : 
+                    'bg-brand-primary hover:bg-brand-hover shadow-brand-primary/10'
+                  }`}
+                >
+                  {confirmText}
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

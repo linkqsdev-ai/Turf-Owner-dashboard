@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { supabase } from '../services/supabase';
-import { showError, showWarning } from '../utils/alerts';
+import { showError, showWarning, showToast } from '../utils/alerts';
 import { useAuthStore } from './useAuthStore';
 
 export type Turf = { id: string | number; name: string; type: string; location: string; map_url: string; status: string; rating: number; price: string; image: string };
 export type TimingRule = { id?: string; turf_id: string; day_of_week: string; is_open: boolean; start_time: string; end_time: string; timing_type: 'weekday' | 'weekend' | 'custom' };
 export type Slot = { id: string | number; turf_id?: string; turf: string; date: string; time: string; price: string; isBooked: boolean; status: string; dayOfWeek?: string; sortOrder?: number };
-export type Booking = { id: string; ownerId: string; turfId: string; slotId?: string; customerName: string; turfName: string; date: string; timeWindow: string; amount: string; status: string; createdAt?: string };
+export type Booking = { id: string; ownerId: string; turfId: string; slotId?: string; customerName: string; turfName: string; date: string; timeWindow: string; amount: string; status: string; createdAt?: string; sport?: string };
 export type Coupon = { id: string | number; code: string; discount: string; type: string; usage: string; expires: string; status: string; appliesTo: 'all_slots' | 'specific_slots'; selectedSlotIds: (string | number)[] };
 export type Customer = { id: string; name: string; email: string; phone: string; bookings: number; spent: string; lastActive: string };
 
@@ -19,7 +19,7 @@ type StoreState = {
   timingRules: TimingRule[];
   
   fetchTurfs: () => Promise<void>;
-  addTurf: (turf: Omit<Turf, 'id' | 'rating' | 'status'>) => Promise<void>;
+  addTurf: (turf: Omit<Turf, 'id' | 'rating'>) => Promise<void>;
   updateTurf: (id: string | number, turf: Partial<Turf>) => Promise<void>;
   deleteTurf: (id: string | number) => Promise<void>;
   
@@ -48,6 +48,8 @@ type StoreState = {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   setTheme: (theme: 'light' | 'dark') => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
 };
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -57,10 +59,13 @@ export const useStore = create<StoreState>((set, get) => ({
   coupons: [],
   customers: [],
   timingRules: [],
+  isLoading: false,
+  setIsLoading: (loading) => set({ isLoading: loading }),
   
   fetchTurfs: async () => {
     const userId = useAuthStore.getState().user?.id;
     if (!userId) return;
+    set({ isLoading: true });
     try {
       const { data, error } = await supabase
         .from('turfs')
@@ -77,6 +82,8 @@ export const useStore = create<StoreState>((set, get) => ({
       }
     } catch (error) {
       console.error("fetchTurfs error:", error);
+    } finally {
+      set({ isLoading: false });
     }
   },
   
@@ -91,11 +98,15 @@ export const useStore = create<StoreState>((set, get) => ({
         location: turf.location, 
         owner_id: userId,
         price_per_hour: isNaN(priceNum) ? 0 : priceNum, 
-        image_url: turf.image
+        image_url: turf.image,
+        status: turf.status || 'Active'
       }]).select();
       
       if (error) throw error;
-      if (data) await get().fetchTurfs();
+      if (data) {
+        await get().fetchTurfs();
+        showToast('Turf added successfully!', 'success');
+      }
     } catch (error: any) {
       console.error("addTurf error:", error);
       throw new Error(`Failed to add turf: ${error.message}`);
@@ -114,10 +125,12 @@ export const useStore = create<StoreState>((set, get) => ({
       updateData.price_per_hour = isNaN(priceNum) ? 0 : priceNum;
     }
     if (turf.image !== undefined) updateData.image_url = turf.image;
+    if (turf.status !== undefined) updateData.status = turf.status;
 
     const { error } = await supabase.from('turfs').update(updateData).eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchTurfs();
+      showToast('Turf updated successfully!', 'success');
     }
   },
   
@@ -127,6 +140,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const { error } = await supabase.from('turfs').delete().eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchTurfs();
+      showToast('Turf deleted successfully!', 'success');
     } else {
       console.warn("deleteTurf failed.");
     }
@@ -299,6 +313,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const { error } = await supabase.from('slots').update(updateData).eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchSlots();
+      showToast('Slot updated successfully!', 'success');
     } else {
       console.error("Update slot error:", error);
     }
@@ -310,6 +325,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const { error } = await supabase.from('slots').delete().eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchSlots();
+      showToast('Slot deleted successfully!', 'success');
     } else {
       console.error("Delete slot error:", error);
     }
@@ -318,6 +334,7 @@ export const useStore = create<StoreState>((set, get) => ({
   fetchSlots: async () => {
     const userId = useAuthStore.getState().user?.id;
     if (!userId) return;
+    set({ isLoading: true });
     try {
       const { data } = await supabase
         .from('slots')
@@ -364,16 +381,25 @@ export const useStore = create<StoreState>((set, get) => ({
       }
     } catch (err) {
       console.error("fetchSlots error:", err);
+    } finally {
+      set({ isLoading: false });
     }
   },
 
   fetchTimingRules: async (turfId) => {
     const userId = useAuthStore.getState().user?.id;
     if (!userId) return [];
-    const { data, error } = await supabase.from('timing_rules').select('*').eq('turf_id', turfId);
-    if (!error && data) {
-      set({ timingRules: data });
-      return data;
+    set({ isLoading: true });
+    try {
+      const { data, error } = await supabase.from('timing_rules').select('*').eq('turf_id', turfId);
+      if (!error && data) {
+        set({ timingRules: data });
+        return data;
+      }
+    } catch (err) {
+      console.error("fetchTimingRules error:", err);
+    } finally {
+      set({ isLoading: false });
     }
     return [];
   },
@@ -394,6 +420,7 @@ export const useStore = create<StoreState>((set, get) => ({
       if (error) throw error;
 
       await get().fetchTimingRules(turfId);
+      showToast('Timing rules saved successfully!', 'success');
     } catch (e) {
       console.error('saveTimingRules error:', e);
       throw e;
@@ -424,23 +451,31 @@ export const useStore = create<StoreState>((set, get) => ({
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
       };
 
-      const formatted = data.map(b => ({
-        id: b.id, 
-        ownerId: b.owner_id,
-        turfId: b.slots?.turfs?.id || '',
-        slotId: b.slot_id,
-        customerName: b.customers?.full_name || 'Unknown', 
-        turfName: b.slots?.turfs?.name || 'Unknown Turf', 
-        date: formatDate(b.slots?.slot_date || 'Unknown Date'), 
-        timeWindow: b.slots ? `${formatTime(b.slots.start_time)} - ${formatTime(b.slots.end_time)}` : 'Unknown',
-        amount: `₹${Math.round(b.total_amount || 0)}`, 
-        status: b.status,
-        createdAt: b.created_at
-      }));
+      const formatted = data.map(b => {
+        const slot = b.slots;
+        const refParts = b.booking_ref ? b.booking_ref.split('-') : [];
+        const sport = refParts.length > 2 ? refParts.slice(2).join('-') : undefined;
+
+        return {
+          id: b.id, 
+          ownerId: b.owner_id,
+          turfId: b.slots?.turfs?.id || '',
+          slotId: b.slot_id,
+          customerName: b.customers?.full_name || 'Unknown', 
+          turfName: b.slots?.turfs?.name || 'Unknown Turf', 
+          date: formatDate(slot?.slot_date || 'Unknown Date'), 
+          timeWindow: slot ? `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}` : 'Unknown',
+          amount: `₹${Math.round(b.total_amount || 0)}`, 
+          status: b.status,
+          sport: sport,
+          createdAt: b.created_at
+        };
+      });
       set({ bookings: formatted });
     } else if (error) {
       console.error("Fetch bookings error:", error);
     }
+    set({ isLoading: false });
   },
   
   addBooking: async (booking) => {
@@ -518,12 +553,17 @@ export const useStore = create<StoreState>((set, get) => ({
         }
       } else {
         console.warn("Turf not found for booking:", booking.turfName);
+        showError('Error', 'Facility not found.');
+      }
+
+      if (!customerId) {
+        showError('Error', 'Failed to create or find customer.');
       }
 
       if (customerId && slotId) {
         const amountNum = typeof booking.amount === 'string' ? parseFloat(booking.amount.replace(/[^0-9.]/g, '')) : booking.amount;
         const amount = isNaN(amountNum) ? 0 : amountNum;
-        const ref = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
+        const ref = `BK-${Math.floor(1000 + Math.random() * 9000)}${booking.sport ? `-${booking.sport.replace(/[^a-zA-Z0-9]/g, '')}` : ''}`;
 
         const { error: bookingErr } = await supabase.from('bookings').insert({
           booking_ref: ref,
@@ -540,6 +580,7 @@ export const useStore = create<StoreState>((set, get) => ({
           await get().fetchSlots();
           await get().fetchCustomers();
           console.log("Booking added successfully");
+          showToast('Booking added successfully!', 'success');
         } else {
           console.error("Booking insert error:", bookingErr);
           showError('Booking Error', `Failed to add booking: ${bookingErr.message}`);
@@ -640,6 +681,7 @@ export const useStore = create<StoreState>((set, get) => ({
       if (!error) {
         await get().fetchBookings();
         await get().fetchSlots();
+        showToast('Booking updated successfully!', 'success');
       }
     } catch (e) {
       console.error('Failed to update booking:', e);
@@ -659,6 +701,7 @@ export const useStore = create<StoreState>((set, get) => ({
       }
       await get().fetchBookings();
       await get().fetchSlots();
+      showToast('Booking status updated!', 'success');
     }
   },
 
@@ -675,6 +718,7 @@ export const useStore = create<StoreState>((set, get) => ({
     if (!error) {
       await get().fetchBookings();
       await get().fetchSlots();
+      showToast('Booking deleted successfully!', 'success');
     }
   },
   
@@ -686,6 +730,8 @@ export const useStore = create<StoreState>((set, get) => ({
       .select('*')
       .eq('owner_id', userId)
       .order('created_at', { ascending: false });
+    
+    set({ isLoading: true });
     if (!error && data) {
       const formatted = data.map(c => ({
         id: c.id, code: c.code, discount: c.discount_type === 'Percentage' ? `${c.discount_value}%` : `₹${c.discount_value}`,
@@ -695,6 +741,7 @@ export const useStore = create<StoreState>((set, get) => ({
       }));
       set({ coupons: formatted });
     }
+    set({ isLoading: false });
   },
   
   addCoupon: async (coupon) => {
@@ -726,6 +773,7 @@ export const useStore = create<StoreState>((set, get) => ({
     
     if (!error && data) {
       await get().fetchCoupons();
+      showToast('Coupon added successfully!', 'success');
     } else {
       console.warn("addCoupon failed", error);
       showError('Coupon Error', `Failed to initialize campaign: ${error?.message || 'Unknown error'}`);
@@ -750,6 +798,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const { error } = await supabase.from('coupons').update(updateData).eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchCoupons();
+      showToast('Coupon updated successfully!', 'success');
     } else {
       console.error("Update coupon error:", error);
       showError('Update Failed', `Could not update campaign: ${error.message}`);
@@ -762,6 +811,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const { error } = await supabase.from('coupons').delete().eq('id', id).eq('owner_id', userId);
     if (!error) {
       await get().fetchCoupons();
+      showToast('Coupon deleted successfully!', 'success');
     }
   },
 
@@ -775,6 +825,7 @@ export const useStore = create<StoreState>((set, get) => ({
         .select('*, bookings(id, total_amount, owner_id)')
         .or(`owner_id.eq.${userId}`)
         .order('created_at', { ascending: false });
+      set({ isLoading: true });
       if (error) throw error;
       if (data) {
         const formatted = data.map(c => {
@@ -793,6 +844,8 @@ export const useStore = create<StoreState>((set, get) => ({
       }
     } catch (error) {
       console.error("fetchCustomers error:", error);
+    } finally {
+      set({ isLoading: false });
     }
   },
 

@@ -32,7 +32,7 @@ const KPICard = ({ title, value, change, isPositive, icon: Icon, onClick }: any)
       </div>
     </div>
     <div>
-      <p className="text-text-secondary text-[8.5px] font-bold uppercase tracking-wider mb-0.5 opacity-70">{title}</p>
+      <p className="text-text-secondary text-[8.5px] font-bold tracking-wider mb-0.5 opacity-70">{title}</p>
       <h3 className="text-base font-bold tracking-tight text-text-primary">{value}</h3>
     </div>
   </div>
@@ -118,7 +118,7 @@ export default function Dashboard() {
                 <h3 className="text-base font-bold tracking-tight">Recent Activity</h3>
                 <p className="text-text-muted text-[11px] font-medium opacity-70">Real-time facility updates</p>
               </div>
-              <button onClick={() => navigate('/bookings')} className="text-brand-primary text-[9px] font-bold uppercase tracking-wider hover:underline border border-brand-primary/20 px-2.5 py-1 rounded-md hover:bg-brand-soft transition-all">
+              <button onClick={() => navigate('/bookings')} className="text-brand-primary text-[9px] font-bold tracking-wider hover:underline border border-brand-primary/20 px-2.5 py-1 rounded-md hover:bg-brand-soft transition-all">
                 View Audit Log
               </button>
             </div>
@@ -126,7 +126,7 @@ export default function Dashboard() {
               {recentBookings.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 opacity-40 bg-bg-primary rounded-xl border border-border-light">
                   <CalendarDays className="w-10 h-10 text-text-muted mb-3" strokeWidth={1.5} />
-                  <p className="text-text-muted text-[11px] font-bold uppercase tracking-[0.2em]">System Quiet</p>
+                  <p className="text-text-muted text-[11px] font-bold tracking-[0.2em]">System Quiet</p>
                 </div>
               ) : recentBookings.map((booking) => (
                 <div 
@@ -146,7 +146,7 @@ export default function Dashboard() {
                   <div className="flex items-center gap-5">
                     <div className="text-right">
                       <p className="text-[12px] font-bold text-text-primary leading-tight">{booking.amount}</p>
-                      <span className={`text-[7.5px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider mt-1 inline-block ${
+                      <span className={`text-[7.5px] font-bold px-1.5 py-0.5 rounded tracking-wider mt-1 inline-block ${
                         booking.status === 'Confirmed' ? 'bg-status-success/10 text-status-success' : 
                         'bg-status-warning/10 text-status-warning'
                       }`}>
@@ -172,7 +172,7 @@ export default function Dashboard() {
               <div className="bg-bg-primary border border-border-light rounded-xl p-3.5 shadow-premium">
                 <div className="flex justify-between items-center mb-2.5">
                   <div>
-                    <p className="text-[8.5px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Revenue Pulse</p>
+                    <p className="text-[8.5px] font-bold text-text-muted tracking-widest mb-0.5">Revenue Pulse</p>
                     <div className="flex items-center gap-1.5">
                       <h4 className="text-sm font-bold text-text-primary">₹14.2k</h4>
                       <span className="text-[8.5px] font-bold text-status-success">+14%</span>
@@ -200,7 +200,7 @@ export default function Dashboard() {
               {/* View Full Analytics Link */}
               <button 
                 onClick={() => navigate('/analytics')}
-                className="w-full py-2 bg-bg-secondary hover:bg-bg-card text-text-primary rounded-lg font-bold text-[9px] uppercase tracking-widest transition-all border border-border-light flex items-center justify-center group"
+                className="w-full py-2 bg-bg-secondary hover:bg-bg-card text-text-primary rounded-lg font-bold text-[9px] tracking-widest transition-all border border-border-light flex items-center justify-center group"
               >
                 Go to Analytics Protocol
                 <ArrowUpRight className="w-2.5 h-2.5 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

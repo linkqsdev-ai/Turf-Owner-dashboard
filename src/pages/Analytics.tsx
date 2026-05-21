@@ -230,12 +230,12 @@ export default function Analytics() {
             <div className="p-2 bg-brand-primary/10 rounded-lg mr-2.5">
               <TrendingUp className="w-4 h-4 text-brand-primary" />
             </div>
-            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Key Insight</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider">Key Insight</h3>
           </div>
           <p className="text-text-primary font-bold text-base mb-2">
             {sportUsage.length > 0 ? `${sportUsage[0].name} is your top performer.` : 'Start taking bookings to see insights.'}
           </p>
-          <div className="flex items-center text-brand-primary font-bold text-[11px] uppercase tracking-wider">
+          <div className="flex items-center text-brand-primary font-bold text-[11px] tracking-wider">
             <ArrowUpRight className="w-3.5 h-3.5 mr-1" />
             Active growth phase
           </div>
@@ -246,7 +246,7 @@ export default function Analytics() {
             <div className="p-2 bg-status-warning/10 rounded-lg mr-2.5">
               <CalendarIcon className="w-3.5 h-3.5 text-status-warning" />
             </div>
-            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Efficiency</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider">Efficiency</h3>
           </div>
           <p className="text-text-primary font-bold text-base mb-2">You have processed {bookings.length} total bookings.</p>
           <p className="text-text-secondary text-[12px] font-medium">Keep maintaining 100% data integrity.</p>
@@ -257,17 +257,17 @@ export default function Analytics() {
             <div className="p-2 bg-status-danger/10 rounded-lg mr-2.5">
               <Users className="w-4 h-4 text-status-danger" />
             </div>
-            <h3 className="text-text-muted font-bold text-[10px] tracking-wider uppercase">Network</h3>
+            <h3 className="text-text-muted font-bold text-[10px] tracking-wider">Network</h3>
           </div>
           <p className="text-text-primary font-bold text-base mb-2">User database is growing steadily.</p>
-          <p className="text-status-danger font-bold text-[11px] uppercase tracking-wider">Real-time sync enabled</p>
+          <p className="text-status-danger font-bold text-[11px] tracking-wider">Real-time sync enabled</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="lg:col-span-2 bg-bg-primary p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Revenue Analytics</h2>
+            <h2 className="text-lg font-bold text-text-primary tracking-tight">Revenue Analytics</h2>
             <div className="flex gap-3">
               <select className="bg-bg-secondary border border-border-light text-text-primary text-[11px] font-bold rounded-lg px-3 py-1.5 outline-none focus:ring-2 focus:ring-brand-primary/10 cursor-pointer transition-colors">
                 <option>Weekly View</option>
@@ -301,7 +301,7 @@ export default function Analytics() {
         <div className="bg-bg-primary p-6 rounded-xl border border-border-light shadow-premium hover:border-brand-primary/10 transition-all flex flex-col items-center">
           <div className="w-full mb-6 flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-bold text-text-primary uppercase tracking-tight">Facility Distribution</h2>
+              <h2 className="text-lg font-bold text-text-primary tracking-tight">Facility Distribution</h2>
               <p className="text-text-secondary text-[12px] mt-0.5">By Turf Type</p>
             </div>
             <button onClick={() => showToast('Detailed report downloading...', 'info')} className="p-1.5 hover:bg-bg-secondary rounded-lg transition-colors group" title="Download Report">
@@ -335,7 +335,7 @@ export default function Analytics() {
               <span className="text-2xl font-bold text-text-primary tracking-tight">
                 {displayUsage[0]?.value || 0}%
               </span>
-              <span className="text-[9px] font-bold text-brand-primary tracking-widest uppercase">
+              <span className="text-[9px] font-bold text-brand-primary tracking-widest">
                 {displayUsage[0]?.name || 'N/A'}
               </span>
             </div>

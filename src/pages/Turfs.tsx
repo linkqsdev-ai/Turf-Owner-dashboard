@@ -1,15 +1,84 @@
 import { useState, useRef } from 'react';
-import { Plus, MapPin, Star, X, LayoutGrid, Trash2, Loader2, Map as MapIcon, IndianRupee, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { Plus, MapPin, Star, X, LayoutGrid, Trash2, Loader2, Map as MapIcon, IndianRupee, ShieldCheck, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useStore, type Turf } from '../store/useStore';
 import { supabase } from '../services/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { showWarning, showError } from '../utils/alerts';
+import { showWarning, showError, showConfirm } from '../utils/alerts';
 import MapPicker from '../components/MapPicker';
-import ConfirmModal from '../components/ConfirmModal';
 import { NumericInput } from '../components/NumericInput';
 import { Input } from '../components/Input';
 
 const DEFAULT_TURF_IMAGE = '/assets/images/default-turf.jpg';
+
+const SportIcon = ({ sport, className = "w-4 h-4" }: { sport: string, className?: string }) => {
+  switch (sport) {
+    case 'Football':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="m6.7 6.7 10.6 10.6" />
+          <path d="m6.7 17.3 10.6-10.6" />
+          <path d="M12 2v20" />
+          <path d="M2 12h20" />
+        </svg>
+      );
+    case 'Cricket':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <path d="M14.5 2.5 3 14l3 3L17.5 5.5l-3-3z" />
+          <circle cx="20" cy="20" r="2" />
+        </svg>
+      );
+    case 'Tennis':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <circle cx="16" cy="8" r="6" />
+          <path d="M11.5 12.5 3 21" />
+          <path d="M7 15l4 4" />
+          <circle cx="21" cy="3" r="2" />
+        </svg>
+      );
+    case 'Basketball':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2v20" />
+          <path d="M2 12h20" />
+          <path d="M4.93 4.93 19.07 19.07" />
+          <path d="M4.93 19.07 19.07 4.93" />
+        </svg>
+      );
+    case 'Volleyball':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a10 10 0 0 1 10 10" />
+          <path d="M2 12a10 10 0 0 1 10 10" />
+          <path d="M12 12 2 12" />
+          <path d="M12 12v10" />
+        </svg>
+      );
+    case 'Badminton':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <path d="M7 7 17 17" />
+          <path d="M10 7 17 14" />
+          <path d="M7 10 14 17" />
+          <circle cx="19" cy="5" r="2" />
+        </svg>
+      );
+    case 'Padel':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+          <circle cx="14" cy="10" r="8" />
+          <path d="M8 16 2 22" />
+          <circle cx="20" cy="4" r="2" />
+        </svg>
+      );
+    default:
+      return <LayoutGrid className={className} />;
+  }
+};
 
 export default function Turfs() {
   const { turfs, addTurf, updateTurf, deleteTurf } = useStore();
@@ -23,8 +92,8 @@ export default function Turfs() {
   const [formLocation, setFormLocation] = useState('');
   const [formMapUrl, setFormMapUrl] = useState('');
   const [formPrice, setFormPrice] = useState('');
-  const [deleteId, setDeleteId] = useState<string | number | null>(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [formStatus, setFormStatus] = useState<string>('Active');
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -79,7 +148,7 @@ export default function Turfs() {
     if (!formPrice) newErrors.price = 'Please enter a valid hourly rate.';
     
     if (selectedSports.length === 0) {
-      newErrors.sports = 'Select at least one category.';
+      newErrors.sports = 'Please select a sport category.';
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -106,7 +175,8 @@ export default function Turfs() {
         location: formLocation,
         map_url: formMapUrl,
         price: formPrice,
-        image: imageUrl || DEFAULT_TURF_IMAGE
+        image: imageUrl || DEFAULT_TURF_IMAGE,
+        status: formStatus
       };
 
       if (editingTurf) {
@@ -129,7 +199,8 @@ export default function Turfs() {
     setPreviewUrl(turf.image && !turf.image.includes('unsplash.com') ? turf.image : null);
     setFormLocation(turf.location);
     setFormMapUrl(turf.map_url);
-    setFormPrice(turf.price);
+    setFormPrice(turf.price.replace(/[^0-9]/g, ''));
+    setFormStatus(turf.status || 'Active');
     setSelectedSports(turf.type.split(',').map(s => s.trim()));
     setIsModalOpen(true);
   };
@@ -142,20 +213,20 @@ export default function Turfs() {
     setFormLocation('');
     setFormMapUrl('');
     setFormPrice('');
+    setFormStatus('Active');
+    setIsStatusDropdownOpen(false);
     setSelectedSports([]);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handleDelete = (id: string | number) => {
-    setDeleteId(id);
-    setIsDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (deleteId) {
-      deleteTurf(deleteId);
-      setIsDeleteModalOpen(false);
-      setDeleteId(null);
+  const handleDelete = async (id: string | number) => {
+    const confirmed = await showConfirm(
+      'Decommission Facility',
+      'Are you sure you want to decommission this facility? All associated booking slots will be permanently purged from the system.',
+      'Decommission'
+    );
+    if (confirmed) {
+      deleteTurf(id);
     }
   };
 
@@ -163,7 +234,7 @@ export default function Turfs() {
     <div className="w-full space-y-8 relative px-4 md:px-0">
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-5">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary tracking-tight">Your Facilities</h1>
+          <h1 className="text-2xl font-bold text-text-primary tracking-tight">Your Turf</h1>
           <p className="text-text-secondary text-[13px] mt-0.5">Manage and optimize your facility network.</p>
         </div>
         <button 
@@ -174,12 +245,13 @@ export default function Turfs() {
             setFormLocation('');
             setFormMapUrl('');
             setFormPrice('');
+            setFormStatus('Active');
             setIsModalOpen(true);
           }}
           className="bg-brand-primary text-white px-5 py-2.5 rounded-lg font-bold text-[13px] flex items-center hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 hover:-translate-y-0.5 active:scale-95"
         >
           <Plus className="w-3.5 h-3.5 mr-2" />
-          Add New Facility
+          Add Turf
         </button>
       </div>
 
@@ -204,7 +276,7 @@ export default function Turfs() {
             </button>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {turfs.map((turf, idx) => (
               <motion.div 
                 key={turf.id}
@@ -213,63 +285,73 @@ export default function Turfs() {
                 transition={{ delay: idx * 0.05 }}
                 className="bg-bg-primary rounded-xl overflow-hidden border border-border-light hover:border-brand-primary/30 transition-all duration-300 shadow-premium hover:shadow-hover group"
               >
-                <div className="h-40 relative overflow-hidden bg-bg-secondary">
+                <div className="h-32 relative overflow-hidden bg-bg-secondary">
                   {turf.image ? (
                     <img src={turf.image} alt={turf.name} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                   ) : (
                     <img src={DEFAULT_TURF_IMAGE} alt={turf.name} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                   )}
                   
-                  <div className="absolute top-3 right-3 bg-bg-primary/90 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-text-primary flex items-center shadow-sm border border-border-light">
-                    <Star className="w-3 h-3 text-brand-primary mr-1 fill-brand-primary" />
+                  <div className="absolute top-2.5 right-2.5 bg-bg-primary/90 backdrop-blur-md px-2 py-0.5 rounded text-[9px] font-bold text-text-primary flex items-center shadow-sm border border-border-light">
+                    <Star className="w-2.5 h-2.5 text-brand-primary mr-0.5 fill-brand-primary" />
                     {turf.rating}
                   </div>
                   
-                  <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm ${
-                    turf.status === 'Active' ? 'bg-brand-primary text-white' : 'bg-status-danger text-white'
+                  <div className={`absolute top-2.5 left-2.5 px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wider shadow-sm ${
+                    turf.status === 'Active' 
+                      ? 'bg-brand-primary text-white' 
+                      : turf.status === 'Maintenance' || turf.status === 'maintenance'
+                      ? 'bg-status-warning text-white'
+                      : 'bg-status-danger text-white'
                   }`}>
                     {turf.status}
                   </div>
                 </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-base font-bold text-text-primary group-hover:text-brand-primary transition-colors">{turf.name}</h3>
-                      <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mt-0.5">{turf.type}</p>
+                <div className="p-3.5">
+                  <div className="flex justify-between items-start mb-2.5">
+                    <div className="flex flex-col min-w-0">
+                      <h3 className="text-[14px] font-bold text-text-primary group-hover:text-brand-primary transition-colors truncate" title={turf.name}>{turf.name}</h3>
+                      <div className="flex items-center gap-1 mt-1">
+                        {turf.type.split(',').map(s => s.trim()).map(sport => (
+                          <div key={sport} className="p-1 bg-brand-soft rounded text-brand-primary border border-brand-primary/5 shadow-sm" title={sport}>
+                            <SportIcon sport={sport} className="w-2.5 h-2.5" />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <button 
                       onClick={() => handleDelete(turf.id)} 
-                      className="text-text-muted hover:text-status-danger p-1.5 rounded-lg hover:bg-status-danger/5 transition-all" 
-                      title="Delete"
+                      className="text-text-muted hover:text-status-danger p-1 rounded-lg hover:bg-status-danger/5 transition-all ml-2 flex-shrink-0" 
+                      title="Decommission"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                   
-                  <div className="space-y-1.5 mb-5">
-                    <div className="flex items-center text-text-secondary text-[13px] font-medium">
-                      <MapPin className="w-3.5 h-3.5 mr-1.5 text-brand-primary" /> {turf.location}
+                  <div className="space-y-1 mb-4">
+                    <div className="flex items-center text-text-secondary text-[12px] font-medium truncate">
+                      <MapPin className="w-3.5 h-3.5 mr-1 text-brand-primary flex-shrink-0" /> {turf.location}
                     </div>
                     {turf.map_url && (
                       <a 
                         href={turf.map_url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-brand-primary text-[11px] font-bold hover:underline inline-flex items-center gap-1"
+                        className="text-brand-primary text-[10px] font-bold hover:underline inline-flex items-center gap-0.5"
                       >
                         Navigate <ArrowUpRight className="w-3 h-3" />
                       </a>
                     )}
                   </div>
                   
-                  <div className="flex justify-between items-center pt-4 border-t border-border-light">
+                  <div className="flex justify-between items-center pt-3 border-t border-border-light">
                     <div className="flex flex-col">
-                      <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider">Hourly</span>
-                      <div className="text-text-primary font-bold text-lg tracking-tight">{turf.price}</div>
+                      <span className="text-[8px] text-text-muted font-bold tracking-wider uppercase">Hourly</span>
+                      <div className="text-text-primary font-bold text-sm tracking-tight">{turf.price}</div>
                     </div>
                     <button 
                       onClick={() => handleEdit(turf)}
-                      className="bg-brand-primary text-white font-bold text-[11px] uppercase tracking-wider hover:bg-brand-hover transition-all px-4 py-2 rounded-lg shadow-sm shadow-brand-primary/10"
+                      className="bg-brand-primary text-white font-bold text-[10px] tracking-wider hover:bg-brand-hover transition-all px-3 py-1.5 rounded-lg shadow-sm shadow-brand-primary/10"
                     >
                       Edit
                     </button>
@@ -300,7 +382,7 @@ export default function Turfs() {
               <div className="w-full md:w-[35%] bg-bg-secondary/20 border-r border-border-light flex flex-col p-6">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-text-primary tracking-tight">
-                    {editingTurf ? 'Edit Facility' : 'New Facility'}
+                    {editingTurf ? 'Edit turf' : 'New turf'}
                   </h2>
                 </div>
 
@@ -327,7 +409,7 @@ export default function Turfs() {
                       <button 
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full py-2.5 bg-bg-primary text-text-primary rounded-lg font-bold text-[11px] uppercase tracking-wider hover:bg-brand-primary hover:text-white transition-all"
+                        className="w-full py-2.5 bg-bg-primary text-text-primary rounded-lg font-bold text-[11px] tracking-wider hover:bg-brand-primary hover:text-white transition-all"
                       >
                         Change Photo
                       </button>
@@ -340,7 +422,7 @@ export default function Turfs() {
                             setPreviewUrl(null);
                             if (fileInputRef.current) fileInputRef.current.value = '';
                           }}
-                          className="w-full py-2.5 bg-status-danger text-white rounded-lg font-bold text-[11px] uppercase tracking-wider transition-all"
+                          className="w-full py-2.5 bg-status-danger text-white rounded-lg font-bold text-[11px] tracking-wider transition-all"
                         >
                           Remove
                         </button>
@@ -353,7 +435,7 @@ export default function Turfs() {
               {/* Right Column: Form */}
               <div className="flex-1 flex flex-col bg-bg-primary">
                 <div className="p-6 border-b border-border-light flex justify-between items-center">
-                  <h3 className="font-bold text-text-primary text-sm">Facility Details</h3>
+                  <h3 className="font-bold text-text-primary text-sm">Turf Details</h3>
                   <button onClick={resetModal} className="p-1 text-text-muted hover:text-text-primary transition-colors">
                     <X className="w-5 h-5" />
                   </button>
@@ -364,15 +446,14 @@ export default function Turfs() {
                     <div className="md:col-span-2">
                       <Input 
                         name="name" 
-                        label="Name"
                         defaultValue={editingTurf?.name}
                         error={errors.name}
-                        placeholder="e.g. Arena-X Prime"
+                        placeholder="Facility Name (e.g. Arena-X Prime)"
                         onChange={() => setErrors(prev => ({ ...prev, name: '' }))}
                       />
                     </div>
                     <div className="space-y-1.5 md:col-span-2">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Sport Categories (Select Multiple)</label>
+                      <label className="text-[11px] font-bold text-text-secondary tracking-wider">Sport Category (Select One)</label>
                       <div className="flex flex-wrap gap-2 pt-1">
                         {SUPPORTED_SPORTS.map(sport => {
                           const isSelected = selectedSports.includes(sport);
@@ -383,18 +464,22 @@ export default function Turfs() {
                               onClick={() => {
                                 setErrors(prev => ({ ...prev, sports: '' }));
                                 if (isSelected) {
-                                  setSelectedSports(selectedSports.filter(s => s !== sport));
+                                  setSelectedSports([]);
                                 } else {
-                                  setSelectedSports([...selectedSports, sport]);
+                                  setSelectedSports([sport]);
                                 }
                               }}
-                              className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all border ${
+                              className={`w-12 h-12 rounded-xl transition-all border flex flex-col items-center justify-center gap-1.5 relative group ${
                                 isSelected 
-                                  ? 'bg-brand-primary text-white border-brand-primary shadow-sm' 
-                                  : 'bg-bg-secondary text-text-muted border-border-light hover:border-brand-primary/30'
+                                  ? 'bg-brand-primary text-white border-brand-primary shadow-lg shadow-brand-primary/20 scale-105' 
+                                  : 'bg-bg-secondary text-text-muted border-border-light hover:border-brand-primary/30 hover:bg-bg-card'
                               }`}
+                              title={sport}
                             >
-                              {sport}
+                              <SportIcon sport={sport} className="w-5 h-5" />
+                              <span className={`text-[7px] font-black tracking-tighter absolute -bottom-4 opacity-0 group-hover:opacity-100 transition-opacity ${isSelected ? 'opacity-100 text-brand-primary' : 'text-text-muted'}`}>
+                                {sport}
+                              </span>
                             </button>
                           );
                         })}
@@ -422,7 +507,7 @@ export default function Turfs() {
                     </div>
 
                     <div className="space-y-1.5 md:col-span-2">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Map Pointer (Optional)</label>
+                      <label className="text-[11px] font-bold text-text-secondary tracking-wider">Map Pointer (Optional)</label>
                       <div className="flex gap-2">
                         <input 
                           name="map_url" 
@@ -441,7 +526,6 @@ export default function Turfs() {
                       </div>
                     </div>
 
-                    <div className="space-y-1.5">
                       <NumericInput 
                         name="price" 
                         label="Hourly Price (₹)"
@@ -453,19 +537,81 @@ export default function Turfs() {
                         }}
                         placeholder="1500" 
                         icon={<IndianRupee className="w-3.5 h-3.5" />}
-                        className="w-full bg-bg-secondary border border-border-light rounded-lg pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all" 
                       />
-                    </div>
                     
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Status</label>
-                      <div className="w-full bg-bg-secondary/50 border border-border-light rounded-lg px-4 py-2.5 flex items-center justify-between">
+                    <div className="space-y-1.5 relative">
+                      <label className="text-[11px] font-bold text-text-secondary tracking-wider block ml-0.5">Status</label>
+                      
+                      {/* Dropdown Toggle Button */}
+                      <button
+                        type="button"
+                        onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                        className="w-full bg-bg-secondary border border-border-light rounded-lg pl-9 pr-10 py-2.5 text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/5 font-bold transition-all h-[42px] flex items-center justify-between text-left shadow-sm hover:bg-bg-card active:scale-[0.99]"
+                      >
                         <div className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
-                          <span className="text-[11px] font-bold text-text-primary uppercase">Active</span>
+                          <div className={`w-2 h-2 rounded-full ${
+                            formStatus === 'Active' 
+                              ? 'bg-status-success animate-pulse' 
+                              : formStatus === 'Maintenance' 
+                              ? 'bg-status-warning animate-pulse' 
+                              : 'bg-status-danger'
+                          }`} />
+                          <span>{formStatus}</span>
                         </div>
-                        <ShieldCheck className="w-4 h-4 text-brand-primary" />
-                      </div>
+                        <ChevronDown className={`w-4 h-4 text-text-muted transition-transform duration-200 ${isStatusDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {isStatusDropdownOpen && (
+                          <>
+                            {/* Transparent Click-outside Backdrop */}
+                            <div 
+                              className="fixed inset-0 z-[110]" 
+                              onClick={() => setIsStatusDropdownOpen(false)} 
+                            />
+                            
+                            {/* Menu Container */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                              transition={{ duration: 0.15, ease: 'easeOut' }}
+                              className="absolute left-0 right-0 bottom-full mb-2 bg-bg-primary border border-border-light rounded-xl shadow-modal overflow-hidden z-[120]"
+                            >
+                              <div className="p-1.5 space-y-1 bg-bg-primary/95 backdrop-blur-md">
+                                {[
+                                  { value: 'Active', label: 'Active', color: 'bg-status-success', desc: 'Fully operational & open' },
+                                  { value: 'Closed', label: 'Closed', color: 'bg-status-danger', desc: 'Decommissioned or shut down' },
+                                  { value: 'Maintenance', label: 'Maintenance', color: 'bg-status-warning', desc: 'Undergoing upgrades or repairs' }
+                                ].map((opt) => (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setFormStatus(opt.value);
+                                      setIsStatusDropdownOpen(false);
+                                    }}
+                                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex flex-col gap-0.5 hover:bg-brand-primary/5 group ${
+                                      formStatus === opt.value 
+                                        ? 'bg-brand-primary/10 text-brand-primary' 
+                                        : 'text-text-primary hover:text-brand-primary'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <div className={`w-2 h-2 rounded-full ${opt.color} ${opt.value !== 'Closed' ? 'animate-pulse' : ''}`} />
+                                      <span>{opt.label}</span>
+                                    </div>
+                                    <span className="text-[9px] text-text-muted font-normal pl-4 group-hover:text-brand-primary/70 transition-colors">
+                                      {opt.desc}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </motion.div>
+                          </>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </form>
@@ -484,7 +630,7 @@ export default function Turfs() {
                       </>
                     ) : (
                       <>
-                        {editingTurf ? 'Update facility' : 'Add facility'}
+                        {editingTurf ? 'Update turf' : 'Add turf'}
                       </>
                     )}
                   </button>
@@ -512,14 +658,6 @@ export default function Turfs() {
         )}
       </AnimatePresence>
       
-      <ConfirmModal 
-        isOpen={isDeleteModalOpen}
-        title="Confirm Deletion"
-        message="Are you sure you want to decommission this facility? All associated booking slots will be permanently purged from the system."
-        onConfirm={confirmDelete}
-        onCancel={() => setIsDeleteModalOpen(false)}
-        confirmText="Decommission"
-      />
     </div>
   );
 }

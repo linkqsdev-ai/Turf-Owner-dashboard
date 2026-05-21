@@ -106,7 +106,7 @@ export default function SignIn() {
 
             <button 
               disabled={loading}
-              className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold text-[13px] uppercase tracking-wider hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
+              className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold text-[13px] tracking-wider hover:bg-brand-hover transition-all shadow-lg shadow-brand-primary/10 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
             >
               {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
               {loading ? 'Authenticating...' : 'Sign In'}

@@ -16,8 +16,8 @@ export default function Customers() {
   );
 
   return (
-    <div className="w-full space-y-8 relative px-4 md:px-0">
-      <div className="flex flex-col md:flex-row justify-between md:items-end gap-5">
+    <div className="w-full h-full flex flex-col space-y-6 relative pb-2">
+      <div className="flex flex-col md:flex-row justify-between md:items-end gap-5 shrink-0">
         <div>
           <h1 className="text-2xl font-bold text-text-primary tracking-tight">Customer Directory</h1>
           <p className="text-text-secondary text-[13px] mt-0.5">Manage your user base and analyze individual engagement metrics.</p>
@@ -43,11 +43,11 @@ export default function Customers() {
         </div>
       </div>
 
-      <div className="bg-bg-primary border border-border-light rounded-xl shadow-premium overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="bg-bg-primary border border-border-light rounded-xl shadow-premium overflow-hidden flex flex-col flex-1 min-h-0">
+        <div className="overflow-auto flex-1 custom-scrollbar">
           <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-bg-secondary/30 border-b border-border-light text-text-muted text-[10px] font-bold uppercase tracking-wider">
+            <thead className="sticky top-0 z-10">
+              <tr className="bg-bg-secondary/90 backdrop-blur-md border-b border-border-light text-text-muted text-[10px] font-bold uppercase tracking-wider">
                 <th className="px-5 py-3.5">Customer</th>
                 <th className="px-5 py-3.5">Contact Information</th>
                 <th className="px-5 py-3.5">Sessions</th>
