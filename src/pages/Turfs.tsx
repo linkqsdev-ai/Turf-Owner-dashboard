@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, MapPin, Star, X, LayoutGrid, Trash2, Loader2, Map as MapIcon, IndianRupee, ShieldCheck, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { Plus, MapPin, Star, X, LayoutGrid, Trash2, Loader2, Map as MapIcon, IndianRupee, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useStore, type Turf } from '../store/useStore';
 import { supabase } from '../services/supabase';
 import { motion, AnimatePresence } from 'framer-motion';

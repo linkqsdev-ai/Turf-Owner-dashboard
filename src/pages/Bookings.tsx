@@ -3,7 +3,6 @@ import { CheckCircle, XCircle, Search, Trash2, CalendarX, Plus, User, ArrowRight
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NumericInput } from '../components/NumericInput';
-import { Input } from '../components/Input';
 import { showConfirm } from '../utils/alerts';
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -31,7 +30,6 @@ export default function Bookings() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
     const newErrors: Record<string, string> = {};
 
     const customerName = customerSearch;

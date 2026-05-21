@@ -33,7 +33,7 @@ type StoreState = {
   saveTimingRules: (turfId: string, rules: TimingRule[]) => Promise<void>;
   
   fetchBookings: () => Promise<void>;
-  addBooking: (booking: Omit<Booking, 'id' | 'status'>) => Promise<void>;
+  addBooking: (booking: Omit<Booking, 'id' | 'status' | 'ownerId'>) => Promise<void>;
   updateBooking: (id: string, booking: Partial<Omit<Booking, 'id' | 'status'>>) => Promise<void>;
   updateBookingStatus: (id: string, status: string) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
